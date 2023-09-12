@@ -1,7 +1,7 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=11818477)
 <div align="center">
 
-# Project Name
+# Garden Sensor Array
 [![Report Issue on Jira](https://img.shields.io/badge/Report%20Issues-Jira-0052CC?style=flat&logo=jira-software)](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/DT/issues)
 [![Deploy Docs](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml/badge.svg)](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml)
 [![Documentation Website Link](https://img.shields.io/badge/-Documentation%20Website-brightgreen)](https://applebaumian.github.io/tu-cis-4398-docs-template/)
@@ -16,23 +16,48 @@ Section #, as well as any words that quickly give your peers insights into the a
 
 ## Project Abstract
 
-This document proposes a novel application of a text message (SMS or Email) read-out and hands-free call interacted between an Android Smartphone and an infotainment platform (headunit) in a car environment. When a phone receives an SMS or Email, the text message is transferred from the phone to the headunit through a Bluetooth connection. On the headunit, user can control which and when the received SMS or E-mail to be read out through the in-vehicle audio system. The user may press one button on the headunit to activate the hands-free feature to call back the SMS sender.
+The purpose of this project is to provide the average community gardener with little to no technical knowledge the ability to place previously implemented sensors in their garden that will notify them through a webpage, sensor information related to gardening i.e., sunlight, soil moisture, and ambient temperature. Through achieving this we will be able to reduce the working hours of community gardeners in food-desert areas in Philadelphia. This will help reduce the fresh food shortage in areas that have less common access to nutrition. We will do this by accomplishing three things, making the sensors cost-effective, reliable, and with high levels of UX design.
 
 ## High Level Requirement
 
-Describe the requirements – i.e., what the product does and how it does it from a user point of view – at a high level.
+To meet those accomplishments, we will focus on having the sensors themselves require the user to simply power them on and install them into the soil where the plants occupy. The sensors will utilize wireless I2C Bluetooth communication to a local unit. This local unit will then utilize cellular connection to a webpage with MQTT. The webpage when logged in through the local unit’s login credentials will display the sensor’s collected information through an easy-to-understand display.
 
 ## Conceptual Design
 
-Describe the initial design concept: Hardware/software architecture, programming language, operating system, etc.
+The sensors will be using Raspberry Pico W (microcontroller) hardware to be able to retrieve and send their sensors (BH1750 and Stemma Soil Sensor) information to another Raspberry Pico W. They will send this information through packets containing the following integers of sunlight, soil moisture, and temperature. All of the software will utilize python and several libraries that are already made for the sensors and Bluetooth capabilities.
 
+In order for the local unit to be able to publish the information to the webpage, we will use MQTT(Message Query Telemetry Transport) that will send the packets as they are retrieved in real time.
+
+Once the webpage receives the information it will store it using a Web API on a file server. When queried from an outside source, the webpage will verify the credentials requesting the information to ensure that it displays the correct local unit’s sensor information.
 ## Background
 
-The background will contain a more detailed description of the product and a comparison to existing similar projects/products. A literature search should be conducted and the results listed. Proper citation of sources is required. If there are similar open-source products, you should state whether existing source will be used and to what extent. If there are similar closed-source/proprietary products, you should state how the proposed product will be similar and different.
+There are already several companies that make garden sensors but when looking at the amateur gardener level there is no cost-effective sensor that relays its information in a Local Area Network to then a Wide Area Network. With the information being incredibly lightweight, this is a perfect job for microcontrollers to handle. Instead of having gardeners who work at community gardens take their time out of the day to confirm whether their garden requires certain levels of maintenance they can now only spend their working hours on items that are necessary. Another future concept of this device’s implementation is to provide automatic watering and LED lighting.
 
 ## Required Resources
 
-Discuss what you need to develop this project. This includes background information you will need to acquire, hardware resources, and software resources. If these are not part of the standard Computer Science Department lab resources, these must be identified early and discussed with the instructor.
+·         Software Requirements
+
+o   Python
+
+o   Web API JavaScript
+
+o   MQTT
+
+·         Hardware Requirements
+
+o   (3) Raspberry Pico W
+
+o   (1) Cellular Data plan
+
+o   (2) BH1750 Sunlight sensors with dome
+
+o   (2) Adafruit Stemma Soil Sensors
+
+o   Soldering Kit
+
+o   Electric Static Discharge (ESD) Mat
+
+o   ESD personnel grounding cable
 
 ## Collaborators
 
