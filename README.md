@@ -12,7 +12,7 @@
 
 ## Keywords
 
-Section #, as well as any words that quickly give your peers insights into the application like programming language, development platform, type of application, etc.
+Distributed Sensor Networks, Arduino, Raspberry Pi, Urban Agriculture, Community Gardens
 
 ## Project Abstract
 
@@ -65,17 +65,24 @@ o   ESD personnel grounding cable
 <table>
 <tr>
     <td align="center">
-        <a href="https://github.com/ApplebaumIan">
-            <img src="https://avatars.githubusercontent.com/u/9451941?v=4" width="100;" alt="ApplebaumIan"/>
+        <a href="https://github.com/ak74ub">
+            <img src="https://avatars.githubusercontent.com/u/76227413?v=4" width="100;" alt="ak74ub"/>
             <br />
-            <sub><b>Ian Tyler Applebaum</b></sub>
+            <sub><b>Alexander Korsunsky</b></sub>
         </a>
     </td>
     <td align="center">
-        <a href="https://github.com/leighflagg">
-            <img src="https://avatars.githubusercontent.com/u/77810293?v=4" width="100;" alt="leighflagg"/>
+        <a href="https://github.com/tuj91536">
+            <img src="https://avatars.githubusercontent.com/u/74029318?v=4" width="100;" alt="Sam GL"/>
             <br />
-            <sub><b>Null</b></sub>
+            <sub><b>Sam GL</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/noise404">
+            <img src="https://github.com/noise404" width="100;" alt="noise404"/>
+            <br />
+            <sub><b>Jimson Whiskeyman</b></sub>
         </a>
     </td></tr>
 </table>
