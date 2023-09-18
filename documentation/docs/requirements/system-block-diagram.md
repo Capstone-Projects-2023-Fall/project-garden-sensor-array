@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # System Block Diagram
 
-![system_block_diagram](/documentation/static/img/Garden_Sensor_Array_Sys_Block_Diag.drawio.png)
+![system_block_diagram](/img/Garden_Sensor_Array_Sys_Block_Diag.drawio.png)
 
 ## Figure 1 High Level Design for Garden Sensor Array
 
