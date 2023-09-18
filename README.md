@@ -12,7 +12,7 @@
 
 ## Keywords
 
-Section #, as well as any words that quickly give your peers insights into the application like programming language, development platform, type of application, etc.
+Distributed Sensor Networks, Arduino, Raspberry Pi, Urban Agriculture, Community Gardens
 
 ## Project Abstract
 
@@ -63,21 +63,48 @@ o   ESD personnel grounding cable
 
 [//]: # ( readme: collaborators -start )
 <table>
-<tr>
-    <td align="center">
-        <a href="https://github.com/ApplebaumIan">
-            <img src="https://avatars.githubusercontent.com/u/9451941?v=4" width="100;" alt="ApplebaumIan"/>
+<td align="center">
+        <a href="https://github.com/ak74ub">
+            <img src="https://github.com/ak74ub.png" width="100;" alt="ak74ub"/>
             <br />
-            <sub><b>Ian Tyler Applebaum</b></sub>
+            <sub><b>Alexander Korsunsky</b></sub>
         </a>
     </td>
-    <td align="center">
-        <a href="https://github.com/leighflagg">
-            <img src="https://avatars.githubusercontent.com/u/77810293?v=4" width="100;" alt="leighflagg"/>
+<td align="center">
+        <a href="https://github.com/tuj91536">
+            <img src="https://github.com/tuj91536.png" width="100;" alt="Sam GL"/>
             <br />
-            <sub><b>Null</b></sub>
+            <sub><b>Sam GL</b></sub>
         </a>
-    </td></tr>
+    </td>
+<td align="center">
+        <a href="https://github.com/roda33">
+            <img src="https://github.com/roda33.png" width="100;" alt="Regina Oda"/>
+            <br />
+            <sub><b>Regina Oda</b></sub>
+        </a>
+    </td>
+<td align="center">
+        <a href="https://github.com/giotata">
+            <img src="https://github.com/giotata.png" width="100;" alt="Giorgio Tatarelli"/>
+            <br />
+            <sub><b>Giorgio Tatarelli</b></sub>
+        </a>
+    </td>
+<td align="center">
+        <a href="https://github.com/gistaana">
+            <img src="https://github.com/gistaana.png" width="100;" alt="Gabriel Sta Ana"/>
+            <br />
+            <sub><b>Gabriel Sta Ana</b></sub>
+        </a>
+    </td>
+<td align="center">
+        <a href="https://github.com/noise404">
+            <img src="https://github.com/noise404.png" width="100;" alt="noise404"/>
+            <br />
+            <sub><b>Jimson Whiskeyman</b></sub>
+        </a>
+    </td>
 </table>
 
 [//]: # ( readme: collaborators -end )
