@@ -1,3 +1,7 @@
+---
+sidebar_position: 5
+---
+
 # Use-case Descriptions
 
 *User Case 1: Beginner Gardener
