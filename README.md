@@ -63,8 +63,7 @@ o   ESD personnel grounding cable
 
 [//]: # ( readme: collaborators -start )
 <table>
-<tr>
-    <td align="center">
+<td align="center">
         <a href="https://github.com/ak74ub">
             <img src="https://avatars.githubusercontent.com/u/76227413?v=4" width="100;" alt="ak74ub"/>
             <br />
@@ -79,8 +78,22 @@ o   ESD personnel grounding cable
         </a>
     </td>
     <td align="center">
+        <a href="https://github.com/roda33">
+            <img src="https://avatars.githubusercontent.com/u/112010522?v=4" width="100;" alt="Regina Oda"/>
+            <br />
+            <sub><b>Regina Oda</b></sub>
+        </a>
+    </td>
+    <td align="center">
+        <a href="https://github.com/giotata">
+            <img src="https://avatars.githubusercontent.com/u/74078503?v=4" width="100;" alt="Giorgio Tatarelli"/>
+            <br />
+            <sub><b>Giorgio Tatarelli</b></sub>
+        </a>
+    </td>
+    <td align="center">
         <a href="https://github.com/noise404">
-            <img src="https://github.com/noise404" width="100;" alt="noise404"/>
+            <img src=" https://github.com/noise404.png" width="100;" alt="noise404"/>
             <br />
             <sub><b>Jimson Whiskeyman</b></sub>
         </a>
