@@ -104,7 +104,7 @@ o   ESD personnel grounding cable
             <br />
             <sub><b>Jimson Whiskeyman</b></sub>
         </a>
-    </td></tr>
+    </td>
 </table>
 
 [//]: # ( readme: collaborators -end )
