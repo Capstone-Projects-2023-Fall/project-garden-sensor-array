@@ -65,35 +65,42 @@ o   ESD personnel grounding cable
 <table>
 <td align="center">
         <a href="https://github.com/ak74ub">
-            <img src="https://avatars.githubusercontent.com/u/76227413?v=4" width="100;" alt="ak74ub"/>
+            <img src="https://github.com/ak74ub.png" width="100;" alt="ak74ub"/>
             <br />
             <sub><b>Alexander Korsunsky</b></sub>
         </a>
     </td>
-    <td align="center">
+<td align="center">
         <a href="https://github.com/tuj91536">
-            <img src="https://avatars.githubusercontent.com/u/74029318?v=4" width="100;" alt="Sam GL"/>
+            <img src="https://github.com/tuj91536.png" width="100;" alt="Sam GL"/>
             <br />
             <sub><b>Sam GL</b></sub>
         </a>
     </td>
-    <td align="center">
+<td align="center">
         <a href="https://github.com/roda33">
-            <img src="https://avatars.githubusercontent.com/u/112010522?v=4" width="100;" alt="Regina Oda"/>
+            <img src="https://github.com/roda33.png" width="100;" alt="Regina Oda"/>
             <br />
             <sub><b>Regina Oda</b></sub>
         </a>
     </td>
-    <td align="center">
+<td align="center">
         <a href="https://github.com/giotata">
-            <img src="https://avatars.githubusercontent.com/u/74078503?v=4" width="100;" alt="Giorgio Tatarelli"/>
+            <img src="https://github.com/giotata.png" width="100;" alt="Giorgio Tatarelli"/>
             <br />
             <sub><b>Giorgio Tatarelli</b></sub>
         </a>
     </td>
-    <td align="center">
+<td align="center">
+        <a href="https://github.com/gistaana">
+            <img src="https://github.com/gistaana.png" width="100;" alt="Gabriel Sta Ana"/>
+            <br />
+            <sub><b>Gabriel Sta Ana</b></sub>
+        </a>
+    </td>
+<td align="center">
         <a href="https://github.com/noise404">
-            <img src=" https://github.com/noise404.png" width="100;" alt="noise404"/>
+            <img src="https://github.com/noise404.png" width="100;" alt="noise404"/>
             <br />
             <sub><b>Jimson Whiskeyman</b></sub>
         </a>
