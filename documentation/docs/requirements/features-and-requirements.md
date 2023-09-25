@@ -31,15 +31,18 @@ sidebar_position: 4
 
 ## Non-functional Requirements 
 
-* On the user’s end there will be a very easy to understand and interactive data table to present the user’s plant history that has been collected so far.  
-  * The table will have clear markings and indications of what data it’s showcasing. There will be columns for everything that is being tracked by the sensors, so: sunlight, soil moisture, and ambient temperature.   
-  * The user will be able to filter the data entries to facilitate the search for specific information.  
-    * The data table will have options to show all of its collected data, data from the past 4 weeks, data from the past week, and data from the past 24 hours.  
-    * The data table will also allow the user to filter which columns it’s showing. This gives the user the option to see only what they want to see. If the user only wants to see data collected about soil moisture, then they can filter the data table to do so.  
-  * The user will not have to input any query language like SQL in order to filter out and find the specific data that they are looking for. Optimizing user experience is a key aspect of the website. The data table will provide drop down lists where the user can select what columns they want to see and the time frame they want it in.
+* The Garden Sensor and its website are highly available for use.
+  * The sensors that are connected must have about 99% uptime no matter the time of day. There is not a limited window of time where users can activate the sensors – nor is there a limit to the number of times they can activate the sensors. The sensors are ready for use at nearly anytime. 
+  * The sensors must function accurately in any weather condition as well. Achieving 5% or less in percentage error. The sensors are protected by cases, this allows for them to read the plant’s vitals properly, but without getting damaged from inclement weather.   
+  * The website is also available 24/7 for users to login into and use under any circumstance. Weather or timing should not affect the performance or usability of the site and its functions.   
 
-* The Garden Sensor Website will include a page titled: Plant Encyclopedia. This page will supply the users with basic information about native/local plants in the Philadelphia area.
-  * For each plant listed, there will be an accompanying picture, as well as basic instructions on how to take care of it.
-    * What type of soil it grows best/worst in, the best/worst temperature for the plant, common pests and vermin, and more.  
-  * The plants listed on the page will be organized by skill level. Garden Sensor encourages people of all experience levels to participate in gardening. This feature will list the plants in either: Amateur/Beginner, Moderate, and Expert.
-    * For example, the plants that are the easiest to take care of (the least amount of care needed) will be listed under the “Beginner” category.  
+* The Garden Sensor Website must have a very clear and easy to use interface.   
+  * Important aspects such as the settings page, the user’s monitored plant(s) page, and more must be clearly presented and easily accessible from all pages.   
+  * The website makes it easy for the user to add more monitored plants. The site is carefully organized to minimize confusion on which plant belongs to which garden.
+  * The data-table that showcases the plant’s recorded info on the user’s end is easy to use and operate – with clear markings of what the data means. There should be convenient and simple dropdown list buttons to control the preference options allowing the user to pick which data they want to be shown. This boosts the usability and experience for the user.
+  * Understandable descriptions and explanations must be supplied on all pages to help ensure the sensors and the website are straightforward.   
+
+* The Garden Sensors and the Website have to be connected to a scalable and secure database.  
+  * Rather than having the sensors send updates automatically multiple times per day, the sensors should only send the database data when prompted to/activated by the user. This allows for only necessary info to be held in the database – freeing up its capacity from irrelevant data and maintaining high performance and response time. 
+  * The database for our backend holds all the user information from the website as well. Doing so guarantees security. 
+
