@@ -67,7 +67,7 @@ sidebar_position: 5
     6. After added, the website will update and receive information from the sensors about the new plant that has been added
    
 * Use Case #8:
-      * The user is extremely new to technology but an absolute professional at gardening. They want to browse through the website and see the data of their plants
+  * The user is extremely new to technology but an absolute professional at gardening. They want to browse through the website and see the data of their plants
      1. The user will go into the website
      2. The website will be straightforward and prompt the user for their credentials
      3. Once done, the user will be taken to the main dashboard.
