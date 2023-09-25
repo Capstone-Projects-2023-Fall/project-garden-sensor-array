@@ -68,10 +68,10 @@ sidebar_position: 5
    
 * Use Case #8:
   * The user is extremely new to technology but an absolute professional at gardening. They want to browse through the website and see the data of their plants
-     1. The user will go into the website
-     2. The website will be straightforward and prompt the user for their credentials
-     3. Once done, the user will be taken to the main dashboard.
-     4. The user will then be able to look all the data of their plants via a drop down list
-     5. This drop down list ensures easy maneuvering through the website without any hassle
-     6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
+   1. The user will go into the website
+   2. The website will be straightforward and prompt the user for their credentials
+   3. Once done, the user will be taken to the main dashboard.
+    4. The user will then be able to look all the data of their plants via a drop down list
+   5. This drop down list ensures easy maneuvering through the website without any hassle
+   6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
  
