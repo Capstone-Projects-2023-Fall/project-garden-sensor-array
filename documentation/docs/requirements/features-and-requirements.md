@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Functional Requirements
 
-* Sensors must be able to track a plant’s sunlight exposure, temperature, and soil moisture
+* System must be able to track a plant’s sunlight exposure, temperature, and soil moisture
   *	Users must be able to track sunlight so that they can properly ensure the plant's UV intake.
   *	Users must be able to track temperature so that they can properly ensure the plant's ambient temperature is survivable.
   *	Users must be able to track soil moisture so that they can properly ensure the plant's water intake is sustainable.
@@ -15,9 +15,9 @@ sidebar_position: 4
   * Users must be able to provide login credentials to the system to connect it to the internet
   * Users must be able to view all relevant data (sun, moisture, temperature) from the sensors remotely
 
-* Sensors must be able to withstand harsh outdoor conditions
-  * Sensors must be waterproof, as well as be able to operate under a wide range of temperatures
-  * The sensors must also be secured in some way to prevent various critters from displacing it
+* System components must be able to withstand harsh outdoor conditions
+  * System must be waterproof, as well as be able to operate under a wide range of temperatures
+  * The system must also be secured in some way to prevent various critters from displacing it
 
 
 ## Non-functional Requirements 
