@@ -29,22 +29,22 @@ sidebar_position: 5
     11. User enters their username and their newly created password and are able to successfully login to the website.
 
 * Use Case #3:
-   * The user wants to learn how to garden. They want to be able to know if there’s enough water in the plants.
-  1. The user will open the website
-  2. The user will then check the moisture information that is sent by the local unit via wifi/cellular data
-  3. If soil moisture is low, user will water the plants. Else, user will monitor soil moisture at another time
+    * The user wants to learn how to garden. They want to be able to know if there’s enough water in the plants.
+    1. The user will open the website
+    2. The user will then check the moisture information that is sent by the local unit via wifi/cellular data
+    3. If soil moisture is low, user will water the plants. Else, user will monitor soil moisture at another time
 
 
 * Use Case #4:
-   * The user views gardening as a hobby and does everything in their back lawn. The user also is quite busy with another job, so they do not have time to switch from their back lawn to their laptop/device.
-  1. The user will go to their garden
-  2. The user will check the LED for soil moisture level
-  3. If the LED is red, water is needed since moisture level is low
-  4. If the LED is green, water is not needed
-  5. The user will do what is needed depending on the LED indicator
+    * The user views gardening as a hobby and does everything in their back lawn. The user also is quite busy with another job, so they do not have time to switch from their back lawn to their laptop/device.
+    1. The user will go to their garden
+    2. The user will check the LED for soil moisture level
+    3. If the LED is red, water is needed since moisture level is low
+    4. If the LED is green, water is not needed
+    5. The user will do what is needed depending on the LED indicator
 
  * Use Case #5:
-    *  The user is worried about their plant's sunlight intake, as the weather has been changing sporadically. They believe that the plants are not getting enough sunlight
+   *  The user is worried about their plant's sunlight intake, as the weather has been changing sporadically. They believe that the plants are not getting enough sunlight
    1. The user will log into the website with their credentials
    2. The user will select the specific plant that they want to monitor
    3. The system that outputs the plant's UV intake through tracking sunlight
@@ -58,20 +58,20 @@ sidebar_position: 5
    4. Given information, the user will adjust the temperature if it's not within the range of plant survivability
 
 * Use Case #7:
-     * The user recently got an additional plant that they want to monitor with the Garden Sensor Array. For this to work, the user aims to register the plant in the website.
-    1. The user will go into the website and log in with their credentials
-    2. The user will then be taken to the main dashboard of GSA (Garden Sensor Array)
-    3. The user will go into settings and into My Plants
-    4. The user will then press on the Add New Plant feature
-    5. The New Plant Feature will have all the instructions of adding the new plant, such as hardware and software components
-    6. After added, the website will update and receive information from the sensors about the new plant that has been added
+   * The user recently got an additional plant that they want to monitor with the Garden Sensor Array. For this to work, the user aims to register the plant in the website.
+   1. The user will go into the website and log in with their credentials
+   2. The user will then be taken to the main dashboard of GSA (Garden Sensor Array)
+   3. The user will go into settings and into My Plants
+   4. The user will then press on the Add New Plant feature
+   5. The New Plant Feature will have all the instructions of adding the new plant, such as hardware and software components
+   6. After added, the website will update and receive information from the sensors about the new plant that has been added
    
 * Use Case #8:
-  * The user is extremely new to technology but an absolute professional at gardening. They want to browse through the website and see the data of their plants
+   * The user is extremely new to technology but an absolute professional at gardening. They want to browse through the website and see the data of their plants
    1. The user will go into the website
    2. The website will be straightforward and prompt the user for their credentials
    3. Once done, the user will be taken to the main dashboard.
-    4. The user will then be able to look all the data of their plants via a drop down list
+   4. The user will then be able to look all the data of their plants via a drop down list
    5. This drop down list ensures easy maneuvering through the website without any hassle
    6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
  
