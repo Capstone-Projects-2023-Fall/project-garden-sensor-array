@@ -28,30 +28,50 @@ sidebar_position: 5
     10. User is sent back to original login page and asked to enter login info  
     11. User enters their username and their newly created password and are able to successfully login to the website.
 
+* Use Case #3:
+    * The user wants to learn how to garden. They want to be able to know if there’s enough water in the plants.
+    1. The user will open the website
+    2. The user will then check the moisture information that is sent by the local unit via wifi/cellular data
+    3. If soil moisture is low, user will water the plants. Else, user will monitor soil moisture at another time
 
-* Use Case #3: 
-    * A user wants to get a second plant and wants suggestions on other native plants that thrive in the area.  
-    1. User goes to website and logs into account  
-    2. User is currently on homepage then clicks the “Plant Encyclopedia” tab located on the Navigation bar at the top of the screen  
-    3. User is then taken to the Plant Encyclopedia page where one can find brief information on native plants of the Philadelphia area  
-    4. User scrolls through the page and lastly clicks the picture of the local plant she wants to know more about.
 
 * Use Case #4:
-   * The user wants to learn how to garden. They want to be able to know if there’s enough water in the plants.
-  1. The user will open the website
-  2. The user will then check the moisture information that is sent by the local unit via wifi/cellular data
-  3. If soil moisture is low, user will water the plants. Else, user will monitor soil moisture at another time
+    * The user views gardening as a hobby and does everything in their back lawn. The user also is quite busy with another job, so they do not have time to switch from their back lawn to their laptop/device.
+    1. The user will go to their garden
+    2. The user will check the LED for soil moisture level
+    3. If the LED is red, water is needed since moisture level is low
+    4. If the LED is green, water is not needed
+    5. The user will do what is needed depending on the LED indicator
 
-* Use Case #5:
-   * The user possesses great knowledge with gardening and has years of experience to back it up. They want to plant different types of plants that uses different soils (pH)
-  1. The user will open the website
-  2. The user will then check the pH level of the soils to see which one will accommodate the desired plant
-  3. The user lastly then plants the plant in the appropriate soil.
+ * Use Case #5:
+   *  The user is worried about their plant's sunlight intake, as the weather has been changing sporadically. They believe that the plants are not getting enough sunlight
+    1. The user will log into the website with their credentials
+    2. The user will select the specific plant that they want to monitor
+    3. The system that outputs the plant's UV intake through tracking sunlight
+    4. Given information, the user will adjust if the plant is taking enough sunlight of not.
 
 * Use Case #6:
-   * The user views gardening as a hobby and does everything in their back lawn. The user also is quite busy with another job, so they do not have time to switch from their back lawn to their laptop/device.
-  1. The user will go to their garden
-  2. The user will check the LED for soil moisture level
-  3. If the LED is red, water is needed since moisture level is low
-  4. If the LED is green, water is not needed
-  5. The user will do what is needed depending on the LED indicator
+    * The user wants to check the ambient temperature of their plants to ensure that it is at a reasonable range for survivability
+    1. The user will log into the website with their credentials
+    2. The user will then select the specific plant that they want to monitor
+    3. The system that outputs the current/real-time ambient temperature of the plants
+    4. Given information, the user will adjust the temperature if it's not within the range of plant survivability
+
+* Use Case #7:
+    * The user recently got an additional plant pot/bed that they want to monitor with the Garden Sensor Array. For this to work, the user aims to register the sensor for the plant in the website.
+    1. The user will go into the website and log in with their credentials
+    2. The user will then be taken to the main dashboard of GSA (Garden Sensor Array)
+    3. The user will go into settings and into My Plants
+    4. The user will then press on the Add New Sensor feature
+    5. The New Sensor Feature will have all the instructions of adding the new sensors to the additional plant pot/bed(distinguishable by name), such as hardware and software components
+    6. After added, the website will update and receive information from the sensors about the new plant pot/bed
+   
+* Use Case #8:
+    * The user is extremely new to technology but an absolute unit at gardening. They want to browse through the website and see the data of their plants
+    1. The user will go into the website
+    2. The website will be straightforward and prompt the user for their credentials
+    3. Once done, the user will be taken to the main dashboard.
+    4. The user will then be able to look all the data of their plants via a drop down list
+    5. This drop down list ensures easy maneuvering through the website without any hassle
+    6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
+ 
