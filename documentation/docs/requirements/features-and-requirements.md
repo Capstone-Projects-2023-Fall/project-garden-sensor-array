@@ -22,18 +22,31 @@ sidebar_position: 4
 
 ## Non-functional Requirements 
 
-* The Garden Sensor and its website are highly available for use.
-  * The sensors that are connected must have about 99% uptime no matter the time of day. There is not a limited window of time where users can activate the sensors – nor is there a limit to the number of times they can activate the sensors. The sensors are ready for use at nearly anytime. 
-  * The sensors must function accurately in any weather condition as well. Achieving 5% or less in percentage error. The sensors are protected by cases, this allows for them to read the plant’s vitals properly, but without getting damaged from inclement weather.   
-  * The website is also available 24/7 for users to login into and use under any circumstance. Weather or timing should not affect the performance or usability of the site and its functions.   
+* Availability: 
+  * High Uptime: The sensors that are connected should be available for use at nearly any time of the day.  
+  * Weather Resistant: The sensors will be protected by cases, that will allow them to still read the plant’s vitals properly, but without getting damaged from inclement weather. 
+  * Website Availability: The website is also available 24/7 for users to login into and use under any circumstance.  
 
-* The Garden Sensor Website must have a very clear and easy to use interface.   
-  * Important aspects such as the settings page, the user’s monitored plant(s) page, and more must be clearly presented and easily accessible from all pages.   
-  * The website makes it easy for the user to add more monitored plants. The site is carefully organized to minimize confusion on which plant belongs to which garden.
-  * The data-table that showcases the plant’s recorded info on the user’s end is easy to use and operate – with clear markings of what the data means. There should be convenient and simple dropdown list buttons to control the preference options allowing the user to pick which data they want to be shown. This boosts the usability and experience for the user.
-  * Understandable descriptions and explanations must be supplied on all pages to help ensure the sensors and the website are straightforward.   
+* Performance: 
+  * Real-time Response: Sensor immediately transfers requested data to database –which is then reported directly to user on website.  
 
-* The Garden Sensors and the Website have to be connected to a scalable and secure database.  
-  * Rather than having the sensors send updates automatically multiple times per day, the sensors should only send the database data when prompted to/activated by the user. This allows for only necessary info to be held in the database – freeing up its capacity from irrelevant data and maintaining high performance and response time. 
-  * The database for our backend holds all the user information from the website as well. Doing so guarantees security. 
+* Accessibility: 
+  * Setup is Simple: The Garden Sensors should be easy to connect to the hub when setting up the device.  
+  * LED Visual Aid: LED light attachments on sensors to visibly show hydration and sunlight levels.  
+
+* Usability:
+  * Instructions Given: Understandable descriptions and explanations must be supplied to help ensure the sensors and the website are straightforward. 
+  * Clear Interface: The Garden Sensor Website will have a very clear and easy to use interface. With useful elements like preference options and clearly defined data which makes the website easier to operate. 
+
+* Accuracy:
+  * Low Percentage Error: The Garden Sensors must achieve 5% or less in percentage error. 
+  * Only Keeps Necessary Info: The sensors should only send the database data when prompted to/activated by the user. Only important data is recorded, freeing up its capacity from irrelevant data and maintaining high accuracy and response time. 
+
+* Scalability:  
+  * Easy Linking on Website: The website makes it easy for the user to connect additional monitored garden bed.  The site is carefully organized to minimize confusion on which plant bed is which. 
+
+* Security:  
+  * Mandatory Login: To access plant data from personal sensors on the website, the system must require successful user login.  
+  * User Authentication: System prompts user to answer security questions and recreate login credentials if forgotten.  
+  * Wi-Fi Authentication: Required to authenticate network connection to ensure user safety.  
 
