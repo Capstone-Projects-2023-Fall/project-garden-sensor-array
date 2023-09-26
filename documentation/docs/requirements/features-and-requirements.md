@@ -6,7 +6,7 @@ sidebar_position: 4
 
 ## Functional Requirements
 
-* Systen must be able to track a plant’s sunlight exposure, temperature, and soil moisture
+* System must be able to track a plant’s sunlight exposure, temperature, and soil moisture
   *	Users must be able to track sunlight so that they can properly ensure the plant's UV intake.
   *	Users must be able to track temperature so that they can properly ensure the plant's ambient temperature is survivable.
   *	Users must be able to track soil moisture so that they can properly ensure the plant's water intake is sustainable.
