@@ -45,33 +45,33 @@ sidebar_position: 5
 
  * Use Case #5:
    *  The user is worried about their plant's sunlight intake, as the weather has been changing sporadically. They believe that the plants are not getting enough sunlight
-   1. The user will log into the website with their credentials
-   2. The user will select the specific plant that they want to monitor
-   3. The system that outputs the plant's UV intake through tracking sunlight
-   4. Given information, the user will adjust if the plant is taking enough sunlight of not.
+    1. The user will log into the website with their credentials
+    2. The user will select the specific plant that they want to monitor
+    3. The system that outputs the plant's UV intake through tracking sunlight
+    4. Given information, the user will adjust if the plant is taking enough sunlight of not.
 
 * Use Case #6:
-   * The user wants to check the ambient temperature of their plants to ensure that it is at a reasonable range for survivability
-   1. The user will log into the website with their credentials
-   2. The user will then select the specific plant that they want to monitor
-   3. The system that outputs the current/real-time ambient temperature of the plants
-   4. Given information, the user will adjust the temperature if it's not within the range of plant survivability
+    * The user wants to check the ambient temperature of their plants to ensure that it is at a reasonable range for survivability
+    1. The user will log into the website with their credentials
+    2. The user will then select the specific plant that they want to monitor
+    3. The system that outputs the current/real-time ambient temperature of the plants
+    4. Given information, the user will adjust the temperature if it's not within the range of plant survivability
 
 * Use Case #7:
-   * The user recently got an additional plant that they want to monitor with the Garden Sensor Array. For this to work, the user aims to register the plant in the website.
-   1. The user will go into the website and log in with their credentials
-   2. The user will then be taken to the main dashboard of GSA (Garden Sensor Array)
-   3. The user will go into settings and into My Plants
-   4. The user will then press on the Add New Plant feature
-   5. The New Plant Feature will have all the instructions of adding the new plant, such as hardware and software components
-   6. After added, the website will update and receive information from the sensors about the new plant that has been added
+    * The user recently got an additional plant pot/bed that they want to monitor with the Garden Sensor Array. For this to work, the user aims to register the sensor for the plant in the website.
+    1. The user will go into the website and log in with their credentials
+    2. The user will then be taken to the main dashboard of GSA (Garden Sensor Array)
+    3. The user will go into settings and into My Plants
+    4. The user will then press on the Add New Sensor feature
+    5. The New Sensor Feature will have all the instructions of adding the new sensors to the additional plant pot/bed(distinguishable by name), such as hardware and software components
+    6. After added, the website will update and receive information from the sensors about the new plant pot/bed
    
 * Use Case #8:
-   * The user is extremely new to technology but an absolute professional at gardening. They want to browse through the website and see the data of their plants
-   1. The user will go into the website
-   2. The website will be straightforward and prompt the user for their credentials
-   3. Once done, the user will be taken to the main dashboard.
-   4. The user will then be able to look all the data of their plants via a drop down list
-   5. This drop down list ensures easy maneuvering through the website without any hassle
-   6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
+    * The user is extremely new to technology but an absolute unit at gardening. They want to browse through the website and see the data of their plants
+    1. The user will go into the website
+    2. The website will be straightforward and prompt the user for their credentials
+    3. Once done, the user will be taken to the main dashboard.
+    4. The user will then be able to look all the data of their plants via a drop down list
+    5. This drop down list ensures easy maneuvering through the website without any hassle
+    6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
  
