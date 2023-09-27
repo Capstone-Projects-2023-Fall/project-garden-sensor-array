@@ -1,7 +1,7 @@
 ---
 sidebar_position: 2
 ---
-
+# Sensor Control Unit Pairing
 ```mermaid
 sequenceDiagram
 
