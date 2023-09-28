@@ -4,7 +4,17 @@ sidebar_position: 5
 
 # Use-case descriptions
 
-### Use Case #1: Monitering Long Term Plant Growth
+### Use Case #1: Browsing Plant Data
+#### The user is extremely new to technology but an absolute unit at gardening. They want to browse through the website and see the data of their plants
+1. The user will go into the website
+2. The website will be straightforward and prompt the user for their credentials
+3. Once done, the user will be taken to the main dashboard.
+4. The user will then be able to look all the data of their plants via a drop down list
+5. This drop down list ensures easy maneuvering through the website without any hassle
+6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
+
+
+### Use Case #2: Monitering Long Term Plant Growth
 #### A user notices their plant’s growth has slowed over the past 7 weeks. They want to check the plant’s history to see if they can spot any changes that might be causing issues.
 1. User goes to website  
 2. User logs in with username and password  
@@ -13,18 +23,6 @@ sidebar_position: 5
 5. User clicks on “Show history” to see all the data that the sensors have collected on the plant  
 6. User looks for trends to try and spot where the plant’s growth started to slow
 
-
-### Use Case #2: Resetting Password
-#### A user wants to log on to check on their plants but has forgot their password.
-1. User the Garden Sensor website and clicks login button, which sends them to a page with prompts for account information 
-2. User selects the “Trouble Logging In?” button  
-3. User sent to the account recvery page and is asked to enter their email address and to answer security question  
-4. If the entered information is correct, the user is redirected to the "Change Password" page
-5. User is asked to create a password that is 8 characters long with at least one uppercase letter and one number.
-6. User retypes new password again, and clicks the “Done” button 
-7. A small popup appears letting the user know that their password has successfully been changed.  
-8. User is sent back to original login page and asked to enter their credentials.
-9. User enters their username and their newly created password and is able to successfully login.
 
 ### Use Case #3: Learning to Garden
 #### A user is new to gardening, and wants to know if their plants have been sufficiently watered.
@@ -35,14 +33,12 @@ sidebar_position: 5
 5. User is able to determine whether the soil moisture is low
 
 
-### Use Case #4: Accessing Garden Data from Multiple Devices
-#### A user maintains a garden in their back yard as a hobby. They are also quite busy, and don't always have ther laptop with them, so they would like to access their garden data from their mobile phone as well.
-<!-- 1. The user will go to their garden
-2. The user will check the LED for soil moisture level
-3. If the LED is red, water is needed since moisture level is low
-4. If the LED is green, water is not needed
-5. The user will do what is needed depending on the LED indicator -->
-0. Redacted
+### Use Case #4: Accessing Sensor Data in Person
+#### A user is watering their plants in their yard, and would like to know if they've recieved sufficient water without having to use another device.
+1. User waters plants
+2. User inspects the LED on the sensor array
+3. The LED shows either Green or Red, depending on the moisture level
+
 
 ### Use Case #5: Monitoring Light levels
 #### A user is worried about their plant's health, as the weather has been changing sporadically. They're worried that their plants are not getting enough sunlight
@@ -67,12 +63,14 @@ sidebar_position: 5
 5. The New Sensor Feature will have all the instructions of adding the new sensors to the additional plant pot/bed(distinguishable by name), such as hardware and software components
 6. After added, the website will update and receive information from the sensors about the new plant pot/bed
    
-### Use Case #8: Browsing Plant Data
-#### The user is extremely new to technology but an absolute unit at gardening. They want to browse through the website and see the data of their plants
-1. The user will go into the website
-2. The website will be straightforward and prompt the user for their credentials
-3. Once done, the user will be taken to the main dashboard.
-4. The user will then be able to look all the data of their plants via a drop down list
-5. This drop down list ensures easy maneuvering through the website without any hassle
-6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
- 
+### Use Case #8: Resetting Password
+#### A user wants to log on to check on their plants but has forgot their password.
+1. User the Garden Sensor website and clicks login button, which sends them to a page with prompts for account information 
+2. User selects the “Trouble Logging In?” button  
+3. User sent to the account recvery page and is asked to enter their email address and to answer security question  
+4. If the entered information is correct, the user is redirected to the "Change Password" page
+5. User is asked to create a password that is 8 characters long with at least one uppercase letter and one number.
+6. User retypes new password again, and clicks the “Done” button 
+7. A small popup appears letting the user know that their password has successfully been changed.  
+8. User is sent back to original login page and asked to enter their credentials.
+9. User enters their username and their newly created password and is able to successfully login.
