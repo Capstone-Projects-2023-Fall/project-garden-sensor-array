@@ -54,8 +54,8 @@ sidebar_position: 5
 3. The system that outputs the current/real-time ambient temperature of the plants
 4. Given information, the user will adjust the temperature if it's not within the range of plant survivability
 
-### Use Case #7: Adding additional Monitoring Points
-#### The user recently got an additional plant pot/bed that they want to monitor with the Garden Sensor Array. For this to work, the user aims to register the sensor for the plant in the website.
+### Use Case #7: Adding additional Sensor Clusters
+#### The user recently got an additional plant pot/bed that they want to monitor with their Garden Sensor Array. To do this, the user wants to register a new sensor for their plant on the website.
 1. The user will go into the website and log in with their credentials
 2. The user will then be taken to the main dashboard of GSA (Garden Sensor Array)
 3. The user will go into settings and into My Plants
