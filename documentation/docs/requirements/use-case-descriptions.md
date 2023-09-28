@@ -24,20 +24,20 @@ sidebar_position: 5
 6. User looks for trends to try and spot where the plant’s growth started to slow
 
 
-### Use Case #3: Learning to Garden
+### Use Case #3: Accessing Sensor Data in Person
+#### A user is watering their plants in their yard, and would like to know if they've recieved sufficient water without having to use another device.
+1. User waters plants
+2. User inspects the LED on the sensor array
+3. The LED shows either Green or Red, depending on the moisture level
+
+
+### Use Case #4: Monitoring Soil Moisture
 #### A user is new to gardening, and wants to know if their plants have been sufficiently watered.
 1. User navigates, and logs in, to the website
 2. User selects the “My Plants” tab to see the plants that they are monitoring  
 3. User clicks on the specific plant that they want more information on  
 4. The website displays the data that was logged by the local unit
 5. User is able to determine whether the soil moisture is low
-
-
-### Use Case #4: Accessing Sensor Data in Person
-#### A user is watering their plants in their yard, and would like to know if they've recieved sufficient water without having to use another device.
-1. User waters plants
-2. User inspects the LED on the sensor array
-3. The LED shows either Green or Red, depending on the moisture level
 
 
 ### Use Case #5: Monitoring Light levels
@@ -47,12 +47,14 @@ sidebar_position: 5
 3. The system that outputs the plant's UV intake through tracking sunlight
 4. Given information, the user will adjust if the plant is taking enough sunlight of not.
 
+
 ### Use Case #6: Monitoring Temperature
 #### The user wants to check the ambient temperature of their plants to ensure that it is at a reasonable range for survivability
 1. The user will log into the website with their credentials
 2. The user will then select the specific plant that they want to monitor
 3. The system that outputs the current/real-time ambient temperature of the plants
 4. Given information, the user will adjust the temperature if it's not within the range of plant survivability
+
 
 ### Use Case #7: Adding additional Sensor Clusters
 #### The user recently got an additional plant pot/bed that they want to monitor with their Garden Sensor Array. To do this, the user wants to register a new sensor for their plant on the website.
@@ -62,6 +64,7 @@ sidebar_position: 5
 4. The user will then press on the Add New Sensor feature
 5. The New Sensor Feature will have all the instructions of adding the new sensors to the additional plant pot/bed(distinguishable by name), such as hardware and software components
 6. After added, the website will update and receive information from the sensors about the new plant pot/bed
+
    
 ### Use Case #8: Resetting Password
 #### A user wants to log on to check on their plants but has forgot their password.
