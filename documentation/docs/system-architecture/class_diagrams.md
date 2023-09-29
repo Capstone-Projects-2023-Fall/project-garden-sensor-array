@@ -1,7 +1,9 @@
 ---
 sidebar_position: 3
 ---
-#Hub Class Diagram
+# Class Diagrams
+
+## Hub Class Diagram
 
 ![system_block_diagram](/img/hub.png)
 
