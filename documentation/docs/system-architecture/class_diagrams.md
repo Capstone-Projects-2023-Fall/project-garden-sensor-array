@@ -2,6 +2,7 @@
 sidebar_position: 3
 ---
 #Hub Class Diagram
+
 ![system_block_diagram](/img/hub.png)
 
 This sequence diagram describes the code package that will be run on the Garden Sensor Array's hub device. Here we have the Broker class that acts as the main class for the hub, 
