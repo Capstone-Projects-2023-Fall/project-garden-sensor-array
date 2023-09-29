@@ -1,7 +1,9 @@
 ---
 sidebar_position: 2
 ---
-# Sensor Control Unit Pairing
+# Use Case Diagrams
+
+## Use Case #7: Adding Additional Sensor Clusters
 ```mermaid
 sequenceDiagram
 
@@ -31,3 +33,45 @@ all nearby Bluetooth devices to ask for their names. After recieving a list of a
 list to the web app that will then prompt the user to select the sensor contol unit they wish to add. The web app then returns
 the users selection to the hub that will then initiate a connection with the respective sensor control unit. Upon successful 
 connection, the hub returns that the connection was sucessful and the web app will display "Sensor 1 Connected Successfully!"
+
+## Use Case #8: Resetting Password
+
+```mermaid
+
+sequenceDiagram
+
+    Actor User
+
+    User->>+Login Page: Navigates to GSA Login Page
+
+    activate Login Page
+
+    Login Page -->> User: Login Prompt
+    User ->> Login Page: Selects "Trouble Logging in?" button
+    Login Page -->>+ Account Recovery Page: Redirects to
+
+    Account Recovery Page ->> User: Prompts for Recovery Credentials
+    User -->> Account Recovery Page: Enters Credentials
+    Account Recovery Page ->>+ User Database: Relays Credentials
+
+    User Database -->> User Database: Validates Credentials
+    User Database -->> Account Recovery Page: Confirms Identity
+    Account Recovery Page -->>+ Password Change Page: Redirects to
+
+    deactivate Account Recovery Page
+
+    Password Change Page ->> User: Prompts for new Password
+    User -->> Password Change Page: Enters New Password
+    Password Change Page -->> User Database: Updates User Password
+    User Database --) Password Change Page: Confirms Update
+    deactivate User Database
+    Password Change Page -->> User: Confirmation Message
+
+    Password Change Page -->>- Login Page: Redirects to
+    Login Page -->> User: Login Prompt
+
+    User ->> Login Page: Enters Credentials
+    Login Page -->>- Account Page: Redirects to
+```
+
+If the user finds themselves in a position where they need to reset their password, they are able to do so by navigating to the login page, and selecting the "Trouble Loggin In?" button. This will redirect them to an account recovery page, which prompts them to enter their recovery credentials (Email and secret questioon). After the user enters their credentials, they will be checked against the information stored in the user database. Upon confirmation, the user will be redirected to a page which prompts for an updated password. Once the new password is entered, it is updated in the user database, and the user is again redirected to the login page. Here, the user is able to enter their newly reestablished credentials, and log in, taking them to the account page.
