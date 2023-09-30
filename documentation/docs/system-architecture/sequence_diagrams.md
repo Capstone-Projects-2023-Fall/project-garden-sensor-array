@@ -21,7 +21,7 @@ sequenceDiagram
     
 ```
 
-In an event where the user wants to browse through their Plant data, they can do so by using Garden Sensor Array's dedicated website. In the GSA Website, the user will be given the option to press the "Plant Data" button. By selecting this button, the GSA Website will requests for the current Plant information stored within the Plant Databse. The Plant Database, upon receiving the request, will send out the current information back to the GSA Website. The website will then take this information and update the Plant Data Dropdown list with its corresponding datas. Once the update has been completed, the newly updated Plant Data Dropdown list will be shown to the user for viewing within the GSA Website.
+In an event where the user wants to browse through their Plant data, they can do so by using Garden Sensor Array's dedicated website. In the GSA Website, the user will be given the option to press the "Plant Data" button. By selecting this button, the GSA Website will then request for the current Plant information stored within the Plant Databse. The Plant Database, upon receiving the request, will send out the current Plant information collected from the sensors to the GSA Website. The website will then take this information and update the Plant Data Dropdown list with its corresponding data field. Once the update has been completed, the newly updated Plant Data Dropdown list will be shown to the user for viewing within the GSA Website.
 
 ## Use Case #7: Adding Additional Sensor Clusters
 ```mermaid
