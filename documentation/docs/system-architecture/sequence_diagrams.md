@@ -8,12 +8,14 @@ sidebar_position: 2
 sequenceDiagram
     Actor User
 
-    User --)+ Dashboard: clicks "Plant Data" dropdown list
-    Dashboard->>+Plant Database: requests for Plant Information
-    Plant Database-->>-Dashboard: sends Plant Information
-    Dashboard->>+Plant Data (Dropdown List): Updates Plant Information according to Database
+    User --)+ GSA Website: clicks "Plant Data" dropdown list
+    GSA Website->>+Plant Database: requests for Plant Information
+    Plant Database-->>-GSA Website: sends Plant Information
+    GSA Website->>+Plant Data (Dropdown List): Updates Plant Information according to Database
     Plant Data (Dropdown List)--)-User:  Displays Plant Data list for User to view
 ```
+
+In an event where the user wants to browse through their Plant data, they can do so by using Garden Sensor Array's dedicated website. In the GSA Website, the user will be given the option to press the "Plant Data" button. By selecting this button, the GSA Website will requests for the current Plant information stored within the Plant Databse. The Plant Database, upon receiving the request, will send out the current information back to the GSA Website. The website will then take this information and update the Plant Data Dropdown list with its corresponding datas. Once the update has been completed, the Plant Data Dropdown list will be shown to the user for viewing.
 
 ## Use Case #7: Adding Additional Sensor Clusters
 ```mermaid
