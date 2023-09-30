@@ -23,6 +23,44 @@ sequenceDiagram
 
 In an event where the user wants to browse through their Plant data, they can do so by using Garden Sensor Array's dedicated website. In the GSA Website, the user will be given the option to press the "Plant Data" button. By selecting this button, the GSA Website will then request for the current Plant information stored within the Plant Databse. The Plant Database, upon receiving the request, will send out the current Plant information collected from the sensors to the GSA Website. The website will then take this information and update the Plant Data Dropdown list with its corresponding data field. Once the update has been completed, the newly updated Plant Data Dropdown list will be shown to the user for viewing within the GSA Website.
 
+## Use Case #4: Monitoring Garden Conditions
+```mermaid
+sequenceDiagram
+    title Reading Sensor Data From GSA Website
+
+    actor user
+    participant GSA Website
+    participant GSA Database
+
+    activate user
+    user->>GSA Website: Enter Credentials
+    activate GSA Website
+
+    GSA Website-->>user: Log in Status
+
+    alt Log in Sucess
+        
+        GSA Website->>GSA Database: Fetch User Garden Information
+        activate GSA Database
+        GSA Database-->>GSA Website: User Plant Data
+        deactivate GSA Database
+
+        GSA Website->>user: Redirect to User Garden Information Page
+        user->>GSA Website: Get Sensor Data from Specified Sensor Module
+        GSA Website-->>user: Display Sensor Data for Plants Around Specified Sensor Module
+
+        user->>user: Know What to do for Plants
+        
+    else Bad Credentials Supplied
+        GSA Website->>user: Log in Failure
+    end
+
+    deactivate user
+    deactivate GSA Website
+
+```
+If the user is unable to physically access their garden (maybe they are at work of on vacation) they will want to check the conditions in their garden so they can know what they need to do when they get home or what to tell the person caring for their garden. First, the user will log into the GSA website with their user credentials. If the log in succeeds, the website will fetch the relevant data from a database so that it is ready to be displayed for the user, then redirect them to the page where they can access their garden information. If the log in fails, the user will simply be met with a log in failure message. Assuming the log in succeeded, The user will select the sensor module(s) that they want to read data from and it will be displayed on the webpage. From this, the user will know the conditions of the plants located around each sensor module and can figure out what steps they would like to take to care for their garden.
+
 ## Use Case #7: Adding Additional Sensor Clusters
 ```mermaid
 sequenceDiagram
