@@ -3,6 +3,18 @@ sidebar_position: 2
 ---
 # Use Case Diagrams
 
+## Use Case #1: Browsing Plant Data
+```mermaid
+sequenceDiagram
+    Actor User
+
+    User --)+ Dashboard: clicks "Plant Data" dropdown list
+    Dashboard->>+Plant Database: requests for Plant Information
+    Plant Database-->>-Dashboard: sends Plant Information
+    Dashboard->>+Plant Data (Dropdown List): Updates Plant Information according to Database
+    Plant Data (Dropdown List)--)-User:  Displays Plant Data list for User to view
+```
+
 ## Use Case #7: Adding Additional Sensor Clusters
 ```mermaid
 sequenceDiagram
