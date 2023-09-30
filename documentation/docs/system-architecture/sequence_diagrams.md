@@ -3,6 +3,44 @@ sidebar_position: 2
 ---
 # Use Case Diagrams
 
+## Use Case #4 Monitoring Garden Conditions
+```mermaid
+sequenceDiagram
+    title Reading Sensor Data From GSA Website
+
+    actor user
+    participant GSA Website
+    participant GSA Database
+
+    activate user
+    user->>GSA Website: Enter Credentials
+    activate GSA Website
+
+    GSA Website-->>user: Log in Status
+
+    alt Log in Sucess
+        
+        GSA Website->>GSA Database: Fetch User Garden Information
+        activate GSA Database
+        GSA Database-->>GSA Website: User Plant Data
+        deactivate GSA Database
+
+        GSA Website->>user: Redirect to User Garden Information Page
+        user->>GSA Website: Get Sensor Data from Specified Sensor Module
+        GSA Website-->>user: Display Sensor Data for Plants Around Specified Sensor Module
+
+        user->>user: Know What to do for Plants
+        
+    else Bad Credentials Supplied
+        GSA Website->>user: Log in Failure
+    end
+
+    deactivate user
+    deactivate GSA Website
+
+```
+If the user is unable to physically access their garden (maybe they are at work of on vacation) they will want to check the conditions in their garden so they can know what they need to do when they get home or what to tell the person caring for their garden. First, the user will log into the GSA website using their user credentials, which will then redirect them to the page that displays information from each sensor module. The user will select the sensor module(s) that they want to read data from and it will be displayed on the webpage. From this, the user will know the conditions of the plants located around each sensor module and can figure out what steps they would like to take to care for their garden.
+
 ## Use Case #7: Adding Additional Sensor Clusters
 ```mermaid
 sequenceDiagram
