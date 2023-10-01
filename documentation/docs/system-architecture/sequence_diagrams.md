@@ -23,6 +23,49 @@ sequenceDiagram
 
 In an event where the user wants to browse through their Plant data, they can do so by using Garden Sensor Array's dedicated website. In the GSA Website, the user will be given the option to press the "Plant Data" button. By selecting this button, the GSA Website will then request for the current Plant information stored within the Plant Databse. The Plant Database, upon receiving the request, will send out the current Plant information collected from the sensors to the GSA Website. The website will then take this information and update the Plant Data Dropdown list with its corresponding data field. Once the update has been completed, the newly updated Plant Data Dropdown list will be shown to the user for viewing within the GSA Website.
 
+
+## Use Case #2: Monitoring Long Term Plant Growth
+```mermaid
+sequenceDiagram
+    Actor User
+    participant GSA Home Page
+    participant Login Page
+    participant Database 
+    participant My Plants Page 
+    participant Specific Plant Page
+
+    User->>+GSA Home Page: Accesses Website 
+    activate GSA Home Page
+    GSA Home Page->>+Login Page: Clicks login button
+    Login Page-->>User: Login prompt
+    User->>Login Page: Enters login info 
+    Login Page->>+Database: Sends info entered 
+    deactivate Login Page 
+    Database-->>Database: Verifies login info
+    Database-->>GSA Home Page: Succesfully logged in
+    GSA Home Page-->>User: Return
+    deactivate GSA Home Page
+    User->>+My Plants Page: Clicks My Plants Tab
+    My Plants Page-->>User: Prompts to choose specific plant
+
+    deactivate My Plants Page
+    User->>+Specific Plant Page: Chooses plant they want to know about
+    Specific Plant Page-->>User: Return
+    User->>Specific Plant Page: Clicks "Show History"
+    Specific Plant Page-->>Database: Requests all recorded data 
+    Database->>Specific Plant Page: Sends data
+    deactivate Database 
+    Specific Plant Page-->>User: Return
+
+    deactivate Specific Plant Page
+    User-->>User: Looking for trends in plant history
+
+```
+
+Not only does the Garden Sensor Array allow for users to get real-time information about thier plant, but it also allows for users to check previously recorded data as well. This becomes useful in events where the user wants to find trends or patterns in their plant's history, epspecially if the plant in question is growing much slower than expected. The User can go to the GSA website and login. Once the credentials that were entered in by the user are verifed with the database, the user will be succesfully logged in. Now, they can select the "My Plants Tab" located at the top of the page. At this point the user will be presented with all the plants(sensor units) they have monitored and can pick the one they specifically want to know more about. When the specifc plant is chosen, the user will be redirected to that specific plant's page. Here, the user will have the option to view all the plant's recorded data by clicking "Show History". This button requests all the appropriate data from the database; and once returned, the page will be able to show the full recorded history of the plant. The user will be able to check for any trends to solve the growth problem.
+
+
+
 ## Use Case #4: Monitoring Garden Conditions
 ```mermaid
 sequenceDiagram
