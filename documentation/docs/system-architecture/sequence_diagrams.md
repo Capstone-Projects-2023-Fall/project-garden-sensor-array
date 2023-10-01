@@ -64,7 +64,47 @@ sequenceDiagram
 
 Not only does the Garden Sensor Array allow for users to get real-time information about thier plant, but it also allows for users to check previously recorded data as well. This becomes useful in events where the user wants to find trends or patterns in their plant's history, epspecially if the plant in question is growing much slower than expected. The User can go to the GSA website and login. Once the credentials that were entered in by the user are verifed with the database, the user will be succesfully logged in. Now, they can select the "My Plants Tab" located at the top of the page. At this point the user will be presented with all the plants(sensor units) they have monitored and can pick the one they specifically want to know more about. When the specifc plant is chosen, the user will be redirected to that specific plant's page. Here, the user will have the option to view all the plant's recorded data by clicking "Show History". This button requests all the appropriate data from the database; and once returned, the page will be able to show the full recorded history of the plant. The user will be able to check for any trends to solve the growth problem.
 
+## Use Case #4,5,6 : Monitoring Soil Moisture, Light Levels, Temperature
 
+```mermaid
+sequenceDiagram
+    Actor User
+    participant GSA Home Page
+    participant Login Page
+    participant Database 
+    participant My Sensors Page 
+    participant Specific Sensor Page
+
+    User->>+GSA Home Page: Accesses Website 
+    activate GSA Home Page
+    GSA Home Page->>+Login Page: Clicks login button
+    Login Page-->>User: Login prompt
+    User->>Login Page: Enters login info 
+    Login Page->>+Database: Sends info entered 
+    deactivate Login Page 
+    Database-->>Database: Verifies login info
+    Database-->>GSA Home Page: Succesfully logged in
+    GSA Home Page-->>User: Return
+    deactivate GSA Home Page
+    activate My Sensors Page
+    User->>+My Sensors Page: Clicks My Sensors Tab
+    My Sensors Page-->>User: Prompts to choose specific sensor
+
+    deactivate My Sensors Page
+    User->>+Specific Sensor Page: Chooses sensor they want to know about
+    Specific Sensor Page-->>User: Return
+    User->>Specific Sensor Page: Clicks "Show Daily Recap or Show Weekly Recap"
+    Specific Sensor Page-->>Database: Requests last hours/ last weeks data 
+    Database->>Specific Sensor Page: Sends data
+    deactivate Database 
+    Specific Sensor Page-->>User: Return
+
+    deactivate Specific Sensor Page
+    User-->>User: Looking for current light levels, soil moisture, and temperature. 
+
+```
+
+The gardener seeks for their daily or weekly data on their sensors page. The database mantains three averages. The weekly, daily, or hourly average of their sensor's readings of light levels, soil moisture, or temperature. Once the gardener reaches the site's page on their sensors, the home page of that sensor will display one of the requested averages from the user in a drop down menu underneath that sensors readings. On default the home page of the sensor will display the daily monitoring. If the user wishes to be able to see the levels locally at the sensor, the sensor will display on their metric otherwise a green or red LED on the sensors status. The threshold of whether its red or green can be set by the user under sensor settings page. 
 
 ## Use Case #4: Monitoring Garden Conditions
 ```mermaid
