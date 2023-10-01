@@ -3,7 +3,7 @@ sidebar_position: 4
 ---
 # Circuit Diagram
 
-![circuit_diagram](/img/Garden Sensor_schem.png)
+![circuit_diagram](/img/Garden_Sensor_schem.png)
 
 ### Parts included
 
