@@ -35,12 +35,16 @@ sequenceDiagram
     participant Specific Plant Page
 
     User->>+GSA Home Page: Accesses Website 
+    activate GSA Home Page
     GSA Home Page->>+Login Page: Clicks login button
     Login Page-->>User: Login prompt
     User->>Login Page: Enters login info 
     Login Page->>+Database: Sends info entered 
+    deactivate Login Page 
     Database-->>Database: Verifies login info
-    Database-->>User: Logged in & returning back
+    Database-->>GSA Home Page: Succesfully logged in
+    GSA Home Page-->>User: Return
+    deactivate GSA Home Page
     User->>+My Plants Page: Clicks My Plants Tab
     My Plants Page-->>User: Prompts to choose specific plant
     User->>+Specific Plant Page: Chooses plant they want to know about
@@ -48,6 +52,7 @@ sequenceDiagram
     User->>Specific Plant Page: Clicks "Show History"
     Specific Plant Page-->>Database: Requests all recorded data 
     Database->>Specific Plant Page: Sends data
+    deactivate Database 
     Specific Plant Page-->>User: Return
     User-->>User: Looking for trends in plant history
 
