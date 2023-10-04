@@ -15,11 +15,11 @@ sidebar_position: 5
 
 
 ### Use Case #2: Monitering Long Term Plant Growth
-#### A user notices their plant’s growth has slowed over the past 7 weeks. They want to check the plant’s history to see if they can spot any changes that might be causing issues.
+#### A user notices their plant’s growth has slowed over the past 7 weeks. They want to check the sensor's history to see if they can spot any changes that might be causing issues.
 1. User goes to website  
 2. User logs in with username and password  
-3. User selects the “My Plants” tab to see the plants that they are monitoring  
-4. User clicks on the specific plant that they want more information on  
+3. User selects the “My Sensors” tab to see the sensors that they are monitoring  
+4. User clicks on the specific sensor that they want more information on  
 5. User clicks on “Show history” to see all the data that the sensors have collected on the plant  
 6. User looks for trends to try and spot where the plant’s growth started to slow
 
