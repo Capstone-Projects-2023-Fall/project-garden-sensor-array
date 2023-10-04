@@ -31,8 +31,8 @@ sequenceDiagram
     participant GSA Home Page
     participant Login Page
     participant Database 
-    participant My Plants Page 
-    participant Specific Plant Page
+    participant My Sensors Page 
+    participant Specific Sensor Page
 
     User->>+GSA Home Page: Accesses Website 
     activate GSA Home Page
@@ -45,24 +45,24 @@ sequenceDiagram
     Database-->>GSA Home Page: Succesfully logged in
     GSA Home Page-->>User: Return
     deactivate GSA Home Page
-    User->>+My Plants Page: Clicks My Plants Tab
-    My Plants Page-->>User: Prompts to choose specific plant
+    User->>+My Sensors Page: Clicks My Sensors Tab
+    My Sensors Page-->>User: Prompts to choose specific sensor
 
-    deactivate My Plants Page
-    User->>+Specific Plant Page: Chooses plant they want to know about
-    Specific Plant Page-->>User: Return
-    User->>Specific Plant Page: Clicks "Show History"
-    Specific Plant Page-->>Database: Requests all recorded data 
-    Database->>Specific Plant Page: Sends data
+    deactivate My Sensors Page
+    User->>+Specific Sensor Page: Chooses sensor they want to know about
+    Specific Sensor Page-->>User: Return
+    User->>Specific Sensor Page: Clicks "Show History"
+    Specific Sensor Page-->>Database: Requests all recorded data 
+    Database->>Specific Sensor Page: Sends data
     deactivate Database 
-    Specific Plant Page-->>User: Return
+    Specific Sensor Page-->>User: Return
 
-    deactivate Specific Plant Page
-    User-->>User: Looking for trends in plant history
+    deactivate Specific Sensor Page
+    User-->>User: Looking for trends in plant/sensor history
 
 ```
 
-Not only does the Garden Sensor Array allow for users to get real-time information about thier plant, but it also allows for users to check previously recorded data as well. This becomes useful in events where the user wants to find trends or patterns in their plant's history, epspecially if the plant in question is growing much slower than expected. The User can go to the GSA website and login. Once the credentials that were entered in by the user are verifed with the database, the user will be succesfully logged in. Now, they can select the "My Plants Tab" located at the top of the page. At this point the user will be presented with all the plants(sensor units) they have monitored and can pick the one they specifically want to know more about. When the specifc plant is chosen, the user will be redirected to that specific plant's page. Here, the user will have the option to view all the plant's recorded data by clicking "Show History". This button requests all the appropriate data from the database; and once returned, the page will be able to show the full recorded history of the plant. The user will be able to check for any trends to solve the growth problem.
+Not only does the Garden Sensor Array allow for users to get real-time information about thier plant, but it also allows for users to check previously recorded data as well. This becomes useful in events where the user wants to find trends or patterns in their plant's history, epspecially if the plant in question is growing much slower than expected. The User can go to the GSA website and login. Once the credentials that were entered in by the user are verifed with the database, the user will be succesfully logged in. Now, they can select the "My Sensors Tab" located at the top of the page. At this point the user will be presented with all the sensor units they have connected and can pick the one they specifically want to know more about. When the specifc sensor is chosen, the user will be redirected to that specific sensor's page. Here, the user will have the option to view all the sensor's recorded data by clicking "Show History". This button requests all the appropriate data from the database; and once returned, the page will be able to show the full recorded history that the sensor took of the plant. The user will be able to check for any trends to solve the growth problem.
 
 ## Use Case #4,5,6 : Monitoring Soil Moisture, Light Levels, Temperature
 
