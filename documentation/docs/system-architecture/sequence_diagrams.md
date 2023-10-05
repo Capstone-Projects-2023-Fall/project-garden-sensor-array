@@ -64,6 +64,42 @@ sequenceDiagram
 
 Not only does the Garden Sensor Array allow for users to get real-time information about thier plant, but it also allows for users to check previously recorded data as well. This becomes useful in events where the user wants to find trends or patterns in their plant's history, epspecially if the plant in question is growing much slower than expected. The User can go to the GSA website and login. Once the credentials that were entered in by the user are verifed with the database, the user will be succesfully logged in. Now, they can select the "My Plants Tab" located at the top of the page. At this point the user will be presented with all the plants(sensor units) they have monitored and can pick the one they specifically want to know more about. When the specifc plant is chosen, the user will be redirected to that specific plant's page. Here, the user will have the option to view all the plant's recorded data by clicking "Show History". This button requests all the appropriate data from the database; and once returned, the page will be able to show the full recorded history of the plant. The user will be able to check for any trends to solve the growth problem.
 
+## Use Case #3: Accessing Sensor Data in Person
+```mermaid
+sequenceDiagram
+
+    title Accessing Sensor Data
+
+    actor user
+    participant plant
+    participant SCU
+    participant GSA Database
+    participant GSA Website
+
+activate plant
+
+
+user --> plant: Waters
+
+plant -->+ SCU: Reads condition
+
+SCU --> SCU: Toggles LED on/off
+
+SCU --)+ GSA Database: Writes Data
+deactivate SCU
+
+user --> SCU: Observes
+
+GSA Database --)+ GSA Website: Updates
+deactivate GSA Database
+
+deactivate plant
+
+```
+
+It isn't always convinient for a user to access their devices while in their garden so, for convenience, the sensor cluster unit is equipped with a LED that changes state based on measured data. When sensor data is read, the unit will decide whether or not to update the LED, and the user need only to look upon its visage to determine whether sufficient gardening has been done. 
+
+
 ## Use Case #4,5,6 : Monitoring Soil Moisture, Light Levels, Temperature
 
 ```mermaid
@@ -106,43 +142,6 @@ sequenceDiagram
 
 The gardener seeks for their daily or weekly data on their sensors page. The database mantains three averages. The weekly, daily, or hourly average of their sensor's readings of light levels, soil moisture, or temperature. Once the gardener reaches the site's page on their sensors, the home page of that sensor will display one of the requested averages from the user in a drop down menu underneath that sensors readings. On default the home page of the sensor will display the daily monitoring. If the user wishes to be able to see the levels locally at the sensor, the sensor will display on their metric otherwise a green or red LED on the sensors status. The threshold of whether its red or green can be set by the user under sensor settings page. 
 
-## Use Case #4: Monitoring Garden Conditions
-```mermaid
-sequenceDiagram
-    title Reading Sensor Data From GSA Website
-
-    actor user
-    participant GSA Website
-    participant GSA Database
-
-    activate user
-    user->>GSA Website: Enter Credentials
-    activate GSA Website
-
-    GSA Website-->>user: Log in Status
-
-    alt Log in Sucess
-        
-        GSA Website->>GSA Database: Fetch User Garden Information
-        activate GSA Database
-        GSA Database-->>GSA Website: User Plant Data
-        deactivate GSA Database
-
-        GSA Website->>user: Redirect to User Garden Information Page
-        user->>GSA Website: Get Sensor Data from Specified Sensor Module
-        GSA Website-->>user: Display Sensor Data for Plants Around Specified Sensor Module
-
-        user->>user: Know What to do for Plants
-        
-    else Bad Credentials Supplied
-        GSA Website->>user: Log in Failure
-    end
-
-    deactivate user
-    deactivate GSA Website
-
-```
-If the user is unable to physically access their garden (maybe they are at work of on vacation) they will want to check the conditions in their garden so they can know what they need to do when they get home or what to tell the person caring for their garden. First, the user will log into the GSA website with their user credentials. If the log in succeeds, the website will fetch the relevant data from a database so that it is ready to be displayed for the user, then redirect them to the page where they can access their garden information. If the log in fails, the user will simply be met with a log in failure message. Assuming the log in succeeded, The user will select the sensor module(s) that they want to read data from and it will be displayed on the webpage. From this, the user will know the conditions of the plants located around each sensor module and can figure out what steps they would like to take to care for their garden.
 
 ## Use Case #7: Adding Additional Sensor Clusters
 ```mermaid
