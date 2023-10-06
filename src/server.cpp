@@ -78,10 +78,12 @@ void setup() {
 }
 
 void loop() {
+    // sensor data
     uint16_t soil_moisture;
     float soil_tempC;
     float lux;
 
+    // only bother with sensors if we're connected to a client. 
     if(read_sensors){
         soil_moisture = soil_sensor.touchRead(0);
         soil_tempC = soil_sensor.getTemp();
