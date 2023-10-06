@@ -14,8 +14,31 @@
 #define UUIDCHAR2       "0308e66e-8096-4b60-b077-892bc738e8f1"
 #define UUIDCHAR3       "497b9303-3658-45f7-85ac-e1caadb066fa"
 
+// characteristics for our sensors
+// need to be defined globally
+BLECharacteristic *soil_moisture_char;
+BLECharacteristic *soil_temp_char;
+BLECharacteristic *lux_char;
+
+// sensor types
 Adafruit_seesaw     soil_sensor;
 hp_BH1750           light_sensor;
+
+// tells us if there's a connection
+bool read_sensors = false;
+
+// this is a class for overriding the onConnect() function found in BLEServerCallbacks
+class MyServerCallback: public BLEServerCallbacks{
+    // we don't want to read sensors unless there is a connection
+    void onConnect(BLEServer *pserver){
+        read_sensors = true;
+    }
+
+    // something went wrong
+    void onDisconnect(BLEServer *pserver){
+        read_sensors = false;
+    }
+};
 
 void setup() {
     Serial.begin(115200);
@@ -23,16 +46,17 @@ void setup() {
     // start with bluetooth set up
     BLEDevice::init("Garden_Server");
     BLEServer *server = BLEDevice::createServer();
+    server->setCallbacks(new MyServerCallback());
 
     // service -- handles characteristics
     BLEService *service = server->createService(UUIDSERVICE);
     
     // characteristics
-    BLECharacteristic *soil_moisture_char = service->createCharacteristic(UUIDCHAR1, ESP_GATT_CHAR_PROP_BIT_READ | ESP_GATT_CHAR_PROP_BIT_NOTIFY);
-    BLECharacteristic *soil_temp_char = service->createCharacteristic(UUIDCHAR2, ESP_GATT_CHAR_PROP_BIT_READ | ESP_GATT_CHAR_PROP_BIT_NOTIFY);
-    BLECharacteristic *lux_char = service->createCharacteristic(UUIDCHAR3, ESP_GATT_CHAR_PROP_BIT_READ | ESP_GATT_CHAR_PROP_BIT_NOTIFY);
+    soil_moisture_char = service->createCharacteristic(UUIDCHAR1, ESP_GATT_CHAR_PROP_BIT_READ | ESP_GATT_CHAR_PROP_BIT_NOTIFY);
+    soil_temp_char = service->createCharacteristic(UUIDCHAR2, ESP_GATT_CHAR_PROP_BIT_READ | ESP_GATT_CHAR_PROP_BIT_NOTIFY);
+    lux_char = service->createCharacteristic(UUIDCHAR3, ESP_GATT_CHAR_PROP_BIT_READ | ESP_GATT_CHAR_PROP_BIT_NOTIFY);
 
-    // 
+    // nothing to see here
     soil_moisture_char->setValue(0);
     soil_temp_char->setValue(0);
     lux_char->setValue(0);
@@ -54,5 +78,24 @@ void setup() {
 }
 
 void loop() {
-    // put your main code here, to run repeatedly:
+    uint16_t soil_moisture;
+    float soil_tempC;
+    float lux;
+
+    if(read_sensors){
+        soil_moisture = soil_sensor.touchRead(0);
+        soil_tempC = soil_sensor.getTemp();
+        lux = light_sensor.getLux();
+
+        soil_moisture_char->setValue(soil_moisture);
+        soil_temp_char->setValue(soil_tempC);
+        lux_char->setValue(lux);
+
+        soil_moisture_char->notify();
+        soil_temp_char->notify();
+        lux_char->notify();
+    }
+
+    // do it again
+    sleep(10);
 }
