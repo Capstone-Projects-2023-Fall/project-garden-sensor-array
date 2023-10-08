@@ -1,5 +1,5 @@
 /**
- * @file SCU_Main.ino
+ * @file server.cpp
  *
  * @mainpage SCU Main
  *
@@ -98,8 +98,7 @@ char sensor_str[SENSOR_STR_LEN];
 char lux_str[LUX_STR_LEN];
 char temp_str[TEMP_STR_LEN];
 
-//class
-/// this is a class for overriding the onConnect() function found in BLEServerCallbacks
+
 class ConnectionCallback: public BLEServerCallbacks{
     //// we don't want to read sensors unless there is a connection
     void onConnect(BLEServer *pserver){
