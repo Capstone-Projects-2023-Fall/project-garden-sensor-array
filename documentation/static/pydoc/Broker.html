@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Broker</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>Broker</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cgtatarelli%5Conedrive%5Cdocuments%5Cschool%5Cfirebase%20stuff%5Cbroker.py">c:\users\gtatarelli\onedrive\documents\school\firebase stuff\broker.py</a></font></td></tr></table>
+    <p><tt>This&nbsp;module&nbsp;is&nbsp;the&nbsp;main&nbsp;loop&nbsp;of&nbsp;the&nbsp;hub&nbsp;that&nbsp;facilitates&nbsp;transfer&nbsp;of&nbsp;data&nbsp;from&nbsp;SCUs&nbsp;to&nbsp;the&nbsp;database&nbsp;<br>
+&nbsp;<br>
+Attributes:&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;HUB_ID&nbsp;(int):&nbsp;Unique&nbsp;number&nbsp;representing&nbsp;the&nbsp;physical&nbsp;hub&nbsp;device<br>
+&nbsp;&nbsp;&nbsp;&nbsp;SENSORS&nbsp;(sensor[]):&nbsp;Array&nbsp;with&nbsp;the&nbsp;Bluetooth&nbsp;id&nbsp;of&nbsp;every&nbsp;connected&nbsp;sensor</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-connect_wifi"><strong>connect_wifi</strong></a>(name, password)</dt><dd><tt>This&nbsp;function&nbsp;edits&nbsp;the&nbsp;hub's&nbsp;config&nbsp;file&nbsp;to&nbsp;pass&nbsp;the&nbsp;user's&nbsp;wifi&nbsp;credentials&nbsp;to&nbsp;it&nbsp;and&nbsp;grant&nbsp;the&nbsp;hub&nbsp;internet&nbsp;access<br>
+&nbsp;<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Boolean:&nbsp;True&nbsp;if&nbsp;connection&nbsp;successful,&nbsp;False&nbsp;if&nbsp;not</tt></dd></dl>
+ <dl><dt><a name="-search_devices"><strong>search_devices</strong></a>()</dt><dd><tt>This&nbsp;function&nbsp;searches&nbsp;for&nbsp;nearby&nbsp;bluetooth&nbsp;devices,&nbsp;gets&nbsp;their&nbsp;names,&nbsp;and&nbsp;determines&nbsp;which&nbsp;are&nbsp;SCUs.<br>
+It&nbsp;then&nbsp;returns&nbsp;a&nbsp;list&nbsp;of&nbsp;available&nbsp;SCUs.<br>
+&nbsp;<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;sensor[]:&nbsp;an&nbsp;array&nbsp;of&nbsp;all&nbsp;nearby&nbsp;available&nbsp;SCU&nbsp;devices</tt></dd></dl>
+</td></tr></table>
+</body></html>
