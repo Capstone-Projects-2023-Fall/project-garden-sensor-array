@@ -118,6 +118,11 @@ void loop() {
     sleep(10);
 }
 
+/// @brief Takes data read by theuse sensors and formats it into a string
+/// which will be used to update the value of the sensor_data characteristic
+/// @param soil_moisture 
+/// @param soil_tempC 
+/// @param lux 
 void format_sensor_data(uint16_t *soil_moisture, float *soil_tempC, float *lux) {
     dtostrf(*soil_tempC, 4, 2, temp_str);
     dtostrf(*lux, 4, 2, lux_str);
@@ -125,6 +130,9 @@ void format_sensor_data(uint16_t *soil_moisture, float *soil_tempC, float *lux) 
     snprintf(sensor_str, 25, "%d, %s, %s", *soil_moisture, temp_str, lux_str);
 }
 
+/// @brief Reads soil moisture from sensor and checks to ensure the return value is
+/// within the expected range
+/// @param soil_moisture Reference to an int for storing the soil moisture
 void getASSMsoilmoisture(uint16_t *soil_moisture) {
     *soil_moisture = soil_sensor.touchRead(0);
     if(*soil_moisture < 200 || *soil_moisture > 2000) {
@@ -133,6 +141,9 @@ void getASSMsoilmoisture(uint16_t *soil_moisture) {
     }
 }
 
+/// @brief Reads the temperature in degreees celsius from the soil sensor
+/// and checks to make sure the reading is within the expected range
+/// @param soil_tempC Reference to a float for storing the temperature in degrees celsius
 void getASSMtempC(float *soil_tempC) {
     *soil_tempC = soil_sensor.getTemp();
     if(*soil_tempC < 0) {
@@ -142,7 +153,11 @@ void getASSMtempC(float *soil_tempC) {
 
 }
 
+/// @brief Reads lux from the BH1750 sensor and checks to make sure
+/// the reading is within the expected range
+/// @param lux Reference to a float for storing the lux
 void getBH1750lux(float *lux) {
+    light_sensor.start();
     *lux = light_sensor.getLux();
     if(*lux < 0 || *lux > 65000) {
         Serial.println("BH1750 Error!");
@@ -150,6 +165,11 @@ void getBH1750lux(float *lux) {
     }
 }
 
+/// @brief Wrapper for the three above functions used to get sensor data
+/// mostly for readability 
+/// @param soil_moisture 
+/// @param soil_tempC 
+/// @param lux 
 void getSensorData(uint16_t *soil_moisture, float *soil_tempC, float *lux) {
     getASSMsoilmoisture(soil_moisture);
     getASSMtempC(soil_tempC);
