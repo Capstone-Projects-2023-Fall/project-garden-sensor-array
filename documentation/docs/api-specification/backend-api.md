@@ -92,7 +92,7 @@ account_id: int)`
 
   - *Pre condition:* Valid Email
 
-  - *Parameters*
+  - *Parameters:*
     - *username: String()*   --  log in username
     - *password: String()*   --  log in password
     - *name: String()*    --  name of user
@@ -183,12 +183,12 @@ account_id: int)`
 
 **Data Fields:**
 
-- *sensor_id: int*    -   a unique id for every sensor available
-- *garden_name: String()*  -  a name for the sensor
-- *account_id: int*   -  a unique id for every account
-- *soil_moisture: int*    -   soil moisture level gathered by the sensors 
-- *temp: int*   -   ambient temperature gathered by the sensors
-- *light_level: int*  -  sunlight levels gathered by the sensors
+- *sensor_id: int*    --   a unique id for every sensor available
+- *garden_name: String()*  --  a name for the sensor
+- *account_id: int*   --  a unique id for every account
+- *soil_moisture: int*    --   soil moisture level gathered by the sensors 
+- *temp: int*   --   ambient temperature gathered by the sensors
+- *light_level: int*  --  sunlight levels gathered by the sensors
 
 **Methods:**
 
