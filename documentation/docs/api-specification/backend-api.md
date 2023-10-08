@@ -19,6 +19,7 @@ Backend API
 **Methods:**
 
 - `Constructor(name:String(), email:String())`
+  
   - *Method Purpose:* A constructor function added to the Gardener class to create more instances as more people will likely join GSA.
  
 ## Account Class
