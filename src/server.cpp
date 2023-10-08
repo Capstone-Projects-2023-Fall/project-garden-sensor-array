@@ -1,3 +1,60 @@
+/**
+ * @file SCU_Main.ino
+ *
+ * @mainpage SCU Main
+ *
+ * @section description Description
+ * This file describes how the ESP32 SCU is programmed. This program allows for the reading
+ * of the Adafruit Stemma Soil Moisture(ASSM) Sensor/Temperature sensor and the BH1750 Lux Sensor.
+ *
+ *
+ * @section circuit Circuit
+ * - Where we will connect the pins for the ESP 32
+ * - Green LED 1 GPIO Pin
+ * - Green LED 2 GPIO Pin
+ * - Green LED 3 GPIO Pin
+ * - Red LED 1 GPIO Pin
+ * - Red LED 2 GPIO Pin
+ * - Red LED 3 GPIO Pin
+ * - BH1750 SDA Pin 
+ * - BH1750 SCL Pin
+ * - ASSM Sensor SCL Pin
+ * - ASSM Sensor SDA Pin
+ *
+ * @section libraries Libraries
+ * - Adafruit_seesaw.h
+ * -- Used in order to be able to utilize ASSM Sensor
+ * - BH1750.h
+ * -- This allows us to be able to utilize the BH1750 sensor
+ * - stdio.h
+ * -- This allows us to use char type data to string funcitons
+ * - Arduino.h
+ * -- This library will handle any specific arduino calls.
+ * - SPI.h
+ * -- This library allows for a dependency for the soil sensor bust IO library
+ * - BLEDevice.h
+ * -- This library allows for the device ESP32 to utilize the Bluetooth Low Energy (BLE)
+ * - BLEUtils.h
+ * -- This library allows for BLE to utilize bluetooths functions. 
+ * - BLEServer.h
+ * -- This library allows for BLE to create client and server functions. 
+ * - BLEDescriptor.h
+ * -- This library allows for BLE to define their bluetooth charecteristics to function. 
+ * @section notes Notes
+ * - Comments are Doxygen compatible.
+ *
+ * @section todo TODO
+ * - Don't use Doxygen style formatting inside the body of a function.
+ *
+ * @section author Author
+ * - Created by John Woolsey on 03/12/2020.
+ * - Modified by John Woolsey on 03/16/2020.
+ * - Modified by Alexander Korsunsky on 10/07/2023
+ *
+ * Copyright (c) 2020 Woolsey Workshop.  All rights reserved.
+ * 
+ */
+
 #include <Arduino.h>  
 #include <stdio.h>
 #include <SPI.h>
@@ -20,18 +77,19 @@
 // #define UUIDCHAR2       "0308e66e-8096-4b60-b077-892bc738e8f1"
 // #define UUIDCHAR3       "497b9303-3658-45f7-85ac-e1caadb066fa"
 
-// characteristics for our sensors
-// need to be defined globally
+// Global Variables
+/// characteristics for our sensors
+/// need to be defined globally
 BLECharacteristic *sensor_data;
 
-// sensor types
+/// sensor types
 Adafruit_seesaw     soil_sensor;
 hp_BH1750           light_sensor;
 
-// tells us if there's a connection
+/// tells us if there's a connection
 bool read_sensors = false;
 
-// strings for formatting sensor data
+/// strings for formatting sensor data
 #define SENSOR_STR_LEN  25
 #define LUX_STR_LEN     10
 #define TEMP_STR_LEN    10
@@ -40,9 +98,10 @@ char sensor_str[SENSOR_STR_LEN];
 char lux_str[LUX_STR_LEN];
 char temp_str[TEMP_STR_LEN];
 
-// this is a class for overriding the onConnect() function found in BLEServerCallbacks
+//class
+/// this is a class for overriding the onConnect() function found in BLEServerCallbacks
 class ConnectionCallback: public BLEServerCallbacks{
-    // we don't want to read sensors unless there is a connection
+    //// we don't want to read sensors unless there is a connection
     void onConnect(BLEServer *pserver){
         read_sensors = true;
     }
@@ -53,12 +112,18 @@ class ConnectionCallback: public BLEServerCallbacks{
     }
 };
 
+
+//prototypes
 void format_sensor_data(uint16_t *soil_moisture, float *soil_tempC, float *lux);
 void getASSMsoilmoisture(uint16_t *soil_moisture);
 void getASSMtempC(float *soil_tempC);
 void getBH1750lux(float *lux);
 void getSensorData(uint16_t *soil_moisture, float *soil_tempC, float *lux); 
 
+
+/**
+ * The standard Arduino setup function used for setup and configuration tasks.
+ */
 void setup() {
     Serial.begin(115200);
 
@@ -96,6 +161,9 @@ void setup() {
     Serial.println("Sensors initialized!");
 }
 
+/**
+ * The standard Arduino loop function used for repeating tasks.
+ */
 void loop() {
     uint16_t soil_moisture;
     float soil_tempC;
