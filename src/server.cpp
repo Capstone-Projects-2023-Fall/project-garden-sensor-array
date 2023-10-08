@@ -53,7 +53,11 @@ class ConnectionCallback: public BLEServerCallbacks{
     }
 };
 
-void format_sensor_data(uint16_t *soil_moisture, float *soil_tempC, float *lux); 
+void format_sensor_data(uint16_t *soil_moisture, float *soil_tempC, float *lux);
+void getASSMsoilmoisture(uint16_t *soil_moisture);
+void getASSMtempC(float *soil_tempC);
+void getBH1750lux(float *lux);
+void getSensorData(uint16_t *soil_moisture, float *soil_tempC, float *lux); 
 
 void setup() {
     Serial.begin(115200);
@@ -97,12 +101,12 @@ void loop() {
     float soil_tempC;
     float lux;
 
-    if(read_sensors){
-        soil_moisture = soil_sensor.touchRead(0);
-        soil_tempC = soil_sensor.getTemp();
-        lux = light_sensor.getLux();
+    if(read_sensors) {
+        // read data from sensors into variables declared above
+        // error handling for the sensors is handled internally
+        getSensorData(&soil_moisture, &soil_tempC, &lux);
 
-        // Merge sensor data into a neat string for output
+        // merge sensor data into a neat string for output
         format_sensor_data(&soil_moisture, &soil_tempC, &lux);
         sensor_data->setValue(sensor_str);
         
@@ -119,4 +123,35 @@ void format_sensor_data(uint16_t *soil_moisture, float *soil_tempC, float *lux) 
     dtostrf(*lux, 4, 2, lux_str);
     
     snprintf(sensor_str, 25, "%d, %s, %s", *soil_moisture, temp_str, lux_str);
+}
+
+void getASSMsoilmoisture(uint16_t *soil_moisture) {
+    *soil_moisture = soil_sensor.touchRead(0);
+    if(*soil_moisture < 200 || *soil_moisture > 2000) {
+        Serial.println("ASSM Error!");
+        while(1);
+    }
+}
+
+void getASSMtempC(float *soil_tempC) {
+    *soil_tempC = soil_sensor.getTemp();
+    if(*soil_tempC < 0) {
+        Serial.println("ASSM Temperature Error!");
+        while(1);
+    }
+
+}
+
+void getBH1750lux(float *lux) {
+    *lux = light_sensor.getLux();
+    if(*lux < 0 || *lux > 65000) {
+        Serial.println("BH1750 Error!");
+        while(1);
+    }
+}
+
+void getSensorData(uint16_t *soil_moisture, float *soil_tempC, float *lux) {
+    getASSMsoilmoisture(soil_moisture);
+    getASSMtempC(soil_tempC);
+    getBH1750lux(lux);
 }
