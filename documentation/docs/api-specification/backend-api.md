@@ -8,10 +8,10 @@ Backend API
 
 ## Gardener Class
 
-**Class Purpose**
-Represents the people that wish to register for Garden Sensor Array to monitor their plants through the website via sensors
+**Class Purpose:**
+- Represents the people that wish to register for Garden Sensor Array to monitor their plants through the website via sensors
 
-**Data Fields**
+**Data Fields:**
 
 - *username: String*   -- Username needed to log in
 - *email: String*  --  A valid email is needed to register
@@ -26,7 +26,7 @@ Represents the people that wish to register for Garden Sensor Array to monitor t
 **Class Purpose:**  
 - Holds all information about an account stored in the Database
 
-**Data Fields**
+**Data Fields:**
 
 - *username: String()*  --  username needed to log in
 - *password: String()*  --  password is needed to log in
