@@ -18,8 +18,8 @@ sidebar_position: 3
 - Figma
 -- These will be used in order to be able to provide a front end for the user on the website
 - JavaScript
-- MySQL
 - Node.js
-- SQL
+- Firebase
+- express.js
 --  These will be used to create a backend for storage and evaluation of data for the website. 
 
