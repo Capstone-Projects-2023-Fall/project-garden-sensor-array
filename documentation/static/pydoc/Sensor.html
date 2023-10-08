@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Sensor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>Sensor</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Cgtatarelli%5Conedrive%5Cdocuments%5Cschool%5Cfirebase%20stuff%5Csensor.py">c:\users\gtatarelli\onedrive\documents\school\firebase stuff\sensor.py</a></font></td></tr></table>
+    <p><tt>Identifies&nbsp;and&nbsp;handles&nbsp;communication&nbsp;with&nbsp;a&nbsp;Sensor&nbsp;Control&nbsp;Unit&nbsp;(SCU)</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="Sensor.html#sensor">sensor</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="sensor">class <strong>sensor</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#sensor">sensor</a>(name,&nbsp;id)<br>
+&nbsp;<br>
+The&nbsp;Sensor&nbsp;class&nbsp;will&nbsp;be&nbsp;used&nbsp;to&nbsp;represent&nbsp;any&nbsp;particular&nbsp;SCU,&nbsp;connect&nbsp;to&nbsp;it,&nbsp;and&nbsp;collect&nbsp;data&nbsp;from&nbsp;it<br>
+&nbsp;<br>
+Parameters:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;name&nbsp;(string):&nbsp;Human&nbsp;readable&nbsp;SCU&nbsp;name.&nbsp;"Sensor&nbsp;(number)"&nbsp;by&nbsp;default,&nbsp;overwritten&nbsp;by&nbsp;user&nbsp;given&nbsp;name.<br>
+&nbsp;&nbsp;&nbsp;&nbsp;id&nbsp;(int):&nbsp;Device's&nbsp;Bluetooth&nbsp;ID&nbsp;used&nbsp;to&nbsp;connect&nbsp;and&nbsp;listen&nbsp;to&nbsp;a&nbsp;particular&nbsp;<a href="#sensor">sensor</a><br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="sensor-__init__"><strong>__init__</strong></a>(self, name, id)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="sensor-connect"><strong>connect</strong></a>()</dt><dd><tt>This&nbsp;method&nbsp;connects&nbsp;to&nbsp;the&nbsp;<a href="#sensor">sensor</a>&nbsp;using&nbsp;it's&nbsp;id<br>
+&nbsp;<br>
+Returns:&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;boolean:&nbsp;True&nbsp;if&nbsp;connection&nbsp;was&nbsp;successful,&nbsp;False&nbsp;if&nbsp;not</tt></dd></dl>
+
+<dl><dt><a name="sensor-listen"><strong>listen</strong></a>()</dt><dd><tt>This&nbsp;method&nbsp;receives&nbsp;data&nbsp;from&nbsp;a&nbsp;<a href="#sensor">sensor</a>&nbsp;using&nbsp;it's&nbsp;id&nbsp;and&nbsp;stores&nbsp;it&nbsp;in&nbsp;an&nbsp;array<br>
+&nbsp;<br>
+Returns:&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int[]:&nbsp;an&nbsp;array&nbsp;of&nbsp;integers&nbsp;representing&nbsp;<a href="#sensor">sensor</a>&nbsp;data&nbsp;(sunlight,&nbsp;moisture,&nbsp;temp)</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>
