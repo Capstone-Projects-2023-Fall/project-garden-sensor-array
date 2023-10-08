@@ -18,31 +18,53 @@ credentials that will be used by the Database class' connect() to connect the de
 ## Sensor Array Class Diagram
 ```mermaid
 classDiagram
-    SensorMain --> BluetoothBLE
-    SensorMain o-- BLECharacteristic 
-    SensorMain o-- AdafruitSeesaw
-    SensorMain o-- BH1750
-    SensorMain --> Wire
+    SensorServer o-- BLEDevice
+    SensorServer o-- BLEServer
+    SensorServer o-- BLEService
+    SensorServer o-- BLECharacteristic
+    SensorServer o-- BLEAdvertising
+    SensorServer o-- AdafruitSeesaw
+    SensorServer o-- hp_BH1750
     
-    class SensorMain{
+    class SensorServer{
         -AdafruitSeesaw soilSensor
-        -BH1750 lightSensor
-        -BLECharacteristic soilCharacteristic
-        -BLECharacteristic lightCharacteristic
+        -hp_BH1750 lightSensor
+        -BLECharacteristic *sensor_data
+        -char *sensor_str
+        -char *lux_str
+        -char *temp_str
+        -bool read_sensors
         setup() void
         loop() void
+        format_sensor_data(uint16_t *soil_moisture, float *soil_tempC, float *lux) void
+        getASSMsoilmoisture(uint16_t *soil_moisture) void
+        getASSMtempC(float *soil_tempC) void
+        getBH1750lux(float *lux) void
+        getSensorData(uint16_t *soil_moisture, float *soil_tempC, float *lux)
     }
 
-    class BluetoothBLE{
-        +begin() bool
-        +end() void
-        +advertise() bool
-        +stopAdvertise() void
-        +setEventHandler(eventType, callback) void
+    class BLEServer{
+        +setCallbacks(BLEServerCallbacks *pCallBacks)
+        +createService(const char *uuid) *BLEService
+        +getAdvertising() *BLEAdvertising
+    }
+
+    class BLEDevice{
+        +init(string deviceName)
+        +createServer() *BLEServer
+    }
+
+    class BLEService{
+        +createCharacteristic(const char *uuid, uint32_t properties) BLECharacteristic
     }
 
     class BLECharacteristic{
-        +BLECharacteristic(uuid, properties, value, valueSize) BLECharacteristic
+        +setValue(string value)
+        +notify()
+    }
+
+    class BLEAdvertising{
+        start() void
     }
 
     class AdafruitSeesaw{
@@ -51,16 +73,13 @@ classDiagram
         +touchRead() uint16_t
     }
 
-    class BH1750{
+    class hp_BH1750{
         +begin(address) bool
+        +start() void
         +readLightLevel() float
     }
-
-    class Wire{
-        +begin() void
-    }
 ```
-This Diagram outlines the basic architecture of the sensor units. SensorMain is the program ran by the sensor units, and it has relationships to several important classes: Adafruit_Seesaw (the soil moisture and temperature sensor), BH1750 (the ambient light sensor), BluetoothBLE (the library for finding and connecting to other Bluetooth BLE devices), and BLECharacteristic (the library for managing BLECharacteristics and how they change). Importantly, SensorMain contains objects of type Adafruit_Seesaw, for representing the soil sensor; BH1750, for representing the light sensor; and BLECharacteristic, which will track the data recorded by the sensors and send data to the hub when there is new information to report. SensorMain does not directly contain any objects of type BluetoothBLE, but it will access functions from that library to initiate the BLE connection.
+This Diagram outlines the basic architecture of the sensor units. SensorServer is the main program ran by the sensor units, and it has relationships to several important classes: Adafruit_Seesaw (the soil moisture and temperature sensor), BH1750 (the ambient light sensor), BLEDevice (initatizing the device as a BLE device and starting the server), and BLECharacteristic (the library for managing BLECharacteristics and how they change). Importantly, SensorServer contains objects of type Adafruit_Seesaw, for representing the soil sensor; hp_BH1750, for representing the light sensor; and BLECharacteristic, which will track the data recorded by the sensors and allow the hub to read data from the sensors.
 
 ## Web API Class Diagram
 
