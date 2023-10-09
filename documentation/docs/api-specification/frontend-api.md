@@ -8,7 +8,8 @@ Frontend API
 
 ## App
 
-**Description** 
+**Description:**  
+
 The App file is what holds all of the react components of this application. 
 
 **Data Fields** 
@@ -28,7 +29,8 @@ The App file is what holds all of the react components of this application.
 
 ## NavBar 
 
-**Description** 
+**Description:**  
+
 The NavBar class represents the navigation bar that will be located at the top of the website (once logged in) and will allow for the user to navigate between differnt pages. 
 
 **Data Fields** 
@@ -43,7 +45,8 @@ The NavBar class represents the navigation bar that will be located at the top o
 
 ## Tabs 
 
-**Description** 
+**Description:** 
+
 The tabs will be buttons on the navigation bar. There will be a tab for each page, this includes: home page, my sensors page, account page, and the help page. 
 
 **Data Fields** 
@@ -58,7 +61,8 @@ The tabs will be buttons on the navigation bar. There will be a tab for each pag
 
 ## Main_Content 
 
-**Description** 
+**Description:** 
+
 The main content class will focus on what is displayed in the screen underneath the navigaton bar (header) and above the footer. 
 
 **Data Fields** 
@@ -91,7 +95,8 @@ The main content class will focus on what is displayed in the screen underneath 
 
 ## HomePage 
 
-**Description** 
+**Description:** 
+
 The home page will be the page that the user is immedieately taken to once they have logged in or completed registration. It will show the current weather status and some general tips on plant care. 
 
 **Data Fields**  
@@ -113,7 +118,8 @@ The home page will be the page that the user is immedieately taken to once they 
 
 ## WeatherCard
 
-**Description** 
+**Descriptio:** 
+
 The weather card component will be the weather portion mentioned on the HomePage. The card will constantly be updating, as the weather will reflect the current condions occuring. 
 
 **Data Fields**  
@@ -130,7 +136,8 @@ The weather card component will be the weather portion mentioned on the HomePage
 
 ## Weather 
 
-**Description** 
+**Description:** 
+
 This component works with the weather card, and specifically aims at providing the weather api for the card. 
 
 **Data Fields**   
@@ -147,7 +154,8 @@ This component works with the weather card, and specifically aims at providing t
 
 ## MySensorsPage 
 
-**Description** 
+**Description:** 
+
 This will the page that users will click on in order to get information about their connected sensors. The page will consits of cards - one for each sensor. 
 
 **Data Fields**  
@@ -173,7 +181,8 @@ This will the page that users will click on in order to get information about th
 
 ## SensorSelection_Card 
 
-**Description** 
+**Description:** 
+
 Each card located on the MySensorsPage will have brief info for identification purposes (like sensor id, sensor name, etc). The cards will be clickable and once they are clicked, they lead to their specifc sensor page. 
 
 **Data Fields**   
@@ -196,7 +205,8 @@ Each card located on the MySensorsPage will have brief info for identification p
 
 ## SpecificSensorPage 
 
-**Description** 
+**Description:** 
+
 SpecifcSensorPage component will be the page where the users will see detailed information about the specifc sensor they have selected. The page is broken into 3 sections. The top half will show the last updated stats for water and sunlgiht levels, as well as a button to activate the sensors and get current/realtime statistics. The bottom left will a "show history" button that opens up a datatable. Lastly, the bottom right will have a helpful figure to aid in understanding the data prodcued by the sensors. 
 
 **Data Fields**  
@@ -237,8 +247,9 @@ SpecifcSensorPage component will be the page where the users will see detailed i
 
 ## DataTable 
 
-**Description** 
-Triggerd by the "Show History" Button, this datatable will provide the user with all recorded data from the sensor. The table will be easy to understand and will have content prefrences features to facilitate the process for the user. 
+**Description:** 
+
+Activated by the "Show History" Button, this datatable will provide the user with all recorded data from the sensor. The table will be easy to understand and will have content prefrences features to facilitate the process for the user. 
 
 **Data Fields**   
 - account_id: int
@@ -272,7 +283,8 @@ Triggerd by the "Show History" Button, this datatable will provide the user with
 ## PlantFigure
 
 **Description:** 
-This coponent will provide a figure paired with a small explanation. The figure will show a diagram that helps explain what the data for water and sunlgiht levels mean, and how they would look when applied to an average plant. The purpose of this figure is to help the user understand what the data we are giving them means. 
+
+This component will provide a figure paired with a small explanation. The figure will show a diagram that helps explain what the data for water and sunlgiht levels mean, and how they would look when applied to an average plant. The purpose of this figure is to help the user understand what the data we are giving them means. 
 
 **Data Fields:** 
 - plant_description: string() 
@@ -283,7 +295,8 @@ This coponent will provide a figure paired with a small explanation. The figure 
 
 ## AccountPage 
 
-**Description** 
+**Description:** 
+
 The AccountPage is another page that can be accessed through the navigation bar. It will display the user's account information. The page will also have a section where the user can add or delete sensors. 
 
 **Data Fields** 
@@ -314,7 +327,8 @@ The AccountPage is another page that can be accessed through the navigation bar.
 
 ## AddorDelSensor 
 
-**Description** 
+**Description:** 
+
 This component will allow for the user to add or delete another sensor to their account. The component will make sure that the user will always have at least one sensor linked to the account at all times. As of right now, there is a max of 3 sensors per account. 
 
 **Data Fields** 
@@ -337,7 +351,8 @@ This component will allow for the user to add or delete another sensor to their 
 
 ## Footer
 
-**Description** 
+**Description:** 
+
 The footer that will be located at the very bottom of the page. Does not serve a function but will be on every page. 
 
 **Data Fields** 
