@@ -59,6 +59,20 @@ o   Electric Static Discharge (ESD) Mat
 
 o   ESD personnel grounding cable
 
+## [Garden Sensor Array](https://capstone-projects-2023-fall.github.io/project-garden-sensor-array/) GitHub Stats
+
+### Number of opened pull requests made by each team member
+
+![Garden Sensor Array pull requests](https://courses.ianapplebaum.com/api/pull-requests/Capstone-Projects-2023-Fall/project-garden-sensor-array)
+
+### Number of code reviews made by each team member
+
+![Garden Sensor Array reviews](https://courses.ianapplebaum.com/api/reviews/Capstone-Projects-2023-Fall/project-garden-sensor-array)
+
+### Number of commits made by each team member
+
+![Garden Sensor Array commits](https://courses.ianapplebaum.com/api/commits/Capstone-Projects-2023-Fall/project-garden-sensor-array)
+
 ## Collaborators
 
 [//]: # ( readme: collaborators -start )
