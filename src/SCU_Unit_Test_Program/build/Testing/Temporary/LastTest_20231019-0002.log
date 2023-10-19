@@ -1,0 +1,19 @@
+Start testing: Oct 19 14:47 Eastern Daylight Time
+----------------------------------------------------------
+5/5 Testing: testformat_sensor_data
+5/5 Test: testformat_sensor_data
+Command: "C:/Users/Ak74u/Documents/Garden Sensor Array/C_test/build/CommonCxxTests.exe" "testformat_sensor_data"
+Directory: C:/Users/Ak74u/Documents/Garden Sensor Array/C_test/build
+"testformat_sensor_data" start time: Oct 19 14:47 Eastern Daylight Time
+Output:
+----------------------------------------------------------
+I'm in sensor data
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"testformat_sensor_data" end time: Oct 19 14:47 Eastern Daylight Time
+"testformat_sensor_data" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Oct 19 14:47 Eastern Daylight Time
