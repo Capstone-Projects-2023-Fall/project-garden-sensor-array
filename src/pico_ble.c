@@ -7,6 +7,10 @@
 #include "pico/stdlib.h"
 #include "garden_sensor.h"
 
+// for random number generation -- can be removed once sensors are working
+#include "hardware/regs/rosc.h"
+#include "hardware/regs/addressmap.h"
+
 
 // server will "beat" every second
 #define HEARTBEAT_MS 1000
@@ -19,11 +23,11 @@ static btstack_timer_source_t heartbeat;
 static btstack_packet_callback_registration_t hci_event_callback_registration;
 static hci_con_handle_t con_handle;
 
+// standard btstack stuff, this is taken from their examples and the pico example
 static void packet_handler (uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
 static uint16_t att_read_callback(hci_con_handle_t con_handle, uint16_t att_handle, uint16_t offset, uint8_t * buffer, uint16_t buffer_size);
 static int att_write_callback(hci_con_handle_t con_handle, uint16_t att_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
 static void  heartbeat_handler(struct btstack_timer_source *ts);
-static void beat(void);
 
 static uint8_t gatt_service_buffer[70];
 
@@ -69,6 +73,7 @@ static void le_setup() {
     bd_addr_t null_addr;
     memset(null_addr, 0, 6);
     gap_advertisements_set_params(adv_int_min, adv_int_max, adv_type, 0, null_addr, 0x07, 0x00);
+    assert(adv_data_len <= 31); // this is to ensure the advertisement isn't larger than allowed by ble
     gap_advertisements_set_data(adv_data_len, (uint8_t*) adv_data);
     gap_advertisements_enable(1);
 
@@ -83,14 +88,42 @@ static void le_setup() {
     heartbeat.process = &heartbeat_handler;
     btstack_run_loop_set_timer(&heartbeat, HEARTBEAT_MS);
     btstack_run_loop_add_timer(&heartbeat);
+}
 
-    // beat once
-    beat();
+// function for generating random numbers
+// just for testing
+uint32_t rnd(void){
+    int k, random=0;
+    volatile uint32_t *rnd_reg=(uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
+    
+    for(k=0;k<32;k++){
+    
+    random = random << 1;
+    random=random + (0x00000001 & (*rnd_reg));
+
+    }
+    return random;
+}
+
+// at some point this will need to actually read from the sensor
+// right now it just spits out a random number to simulate reading the sensor 
+void getASSMsoilmoisture(uint16_t *soil_moisture) {
+    *soil_moisture = (uint16_t)rnd();
+}
+
+// same deal as above
+getASSMtempC(float *tempC) {
+    *tempC = (float)rnd() / rnd();
+}
+
+// okay i get it
+void getBH1750lux(float *lux) {
+    *lux = (float)rnd() / rnd(); 
 }
 
 int main() {
     stdio_init_all();
-    
+    le_setup();
     while(1) {
         puts("Hello, world!");
         sleep_ms(1000);
