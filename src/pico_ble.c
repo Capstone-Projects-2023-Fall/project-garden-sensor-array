@@ -26,11 +26,12 @@ static hci_con_handle_t con_handle;
 // standard btstack stuff, this is taken from their examples and the pico example
 static void packet_handler (uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
 static uint16_t att_read_callback(hci_con_handle_t con_handle, uint16_t att_handle, uint16_t offset, uint8_t * buffer, uint16_t buffer_size);
-static int att_write_callback(hci_con_handle_t con_handle, uint16_t att_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
 static void  heartbeat_handler(struct btstack_timer_source *ts);
 
 static uint8_t gatt_service_buffer[70];
 
+#define LEN_SENSOR_DATA 20
+char sensor_data[LEN_SENSOR_DATA];
 
 const uint8_t adv_data[] = {
     // Flags general discoverable
@@ -55,7 +56,9 @@ static void heartbeat_handler(struct btstack_timer_source *ts) {
     }
 }
 
-// this function looks like it has a lot going on, u
+// this function looks like it has a lot going on, but it is just handling a lot of 
+// annoying ble semantics. this is all taken from the pico-examples repository, which
+// appears to have taken it directly from btstack
 static void le_setup() {
     l2cap_init();
 
@@ -90,8 +93,13 @@ static void le_setup() {
     btstack_run_loop_add_timer(&heartbeat);
 }
 
+static uint16_t att_read_callback(hci_con_handle_t con_handle, uint16_t att_handle, uint16_t offset, uint8_t * buffer, uint16_t buffer_size) {
+
+}
+
 // function for generating random numbers
 // just for testing
+// raspberry pi is gonna sue me
 uint32_t rnd(void){
     int k, random=0;
     volatile uint32_t *rnd_reg=(uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
@@ -121,13 +129,24 @@ void getBH1750lux(float *lux) {
     *lux = (float)rnd() / rnd(); 
 }
 
+void write_sensor_data(uint16_t *soil_moisture, float *tempC, float *lux) {
+    getASSMsoilmoisture(soil_moisture);
+    getASSMtempC(tempC);
+    getBH1750lux(lux);
+
+    // write sensor data to a string -- this is what will be read by the client
+    snprintf(sensor_data, LEN_SENSOR_DATA, "%u,%f,%f", *soil_moisture, *tempC, *lux);
+}
+
+/* way is tao */
 int main() {
     stdio_init_all();
+
+    // get this party started
     le_setup();
-    while(1) {
-        puts("Hello, world!");
-        sleep_ms(1000);
-    }
+    
+    // bluetooth is on!
+    hci_power_control(HCI_POWER_ON);
     
 
     return 0;
