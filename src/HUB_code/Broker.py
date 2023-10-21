@@ -59,7 +59,7 @@ if __name__ == "__main__":
     doc_ref = db.collection("HUBS_ONLINE").document(HUB_ID)
     
     doc_ref.set(
-        HUB(1, 2, 3, 4, 5, 0).to_fb()
+        HUB(1, 2, 3, 4, 5, SERVER_TIMESTAMP).to_fb()
     )
     
     while(True):
