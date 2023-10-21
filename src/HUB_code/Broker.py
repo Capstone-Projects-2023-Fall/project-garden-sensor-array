@@ -10,6 +10,7 @@ import requests
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin.firestore import SERVER_TIMESTAMP
+from HUB_Class import HUB
 
 HUB_ID = 'HUB_1'
 
@@ -56,13 +57,16 @@ if __name__ == "__main__":
     db = firestore.client()
 
     doc_ref = db.collection("HUBS_ONLINE").document(HUB_ID)
-    doc_ref.set({"time" : SERVER_TIMESTAMP})
+    
+    doc_ref.set(
+        HUB(1, 2, 3, 4, 5, SERVER_TIMESTAMP).to_fb()
+    )
     
     while(True):
         while(not check_connection()):
             print('hub offline')
             time.sleep(5)
             
-        doc_ref.update({"time" : SERVER_TIMESTAMP})
+        doc_ref.update({"Time" : SERVER_TIMESTAMP})
         print("updating...")
         time.sleep(15)
