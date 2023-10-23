@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "gardensensortest",
+  "private_key_id": "bf4aea18524fcf1a4b62a0f58f76855263ae7e5e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCvL5g7qs2vsqgD\n2rxbAUpb1eGSoYSGw9aGuTug9/nZXMNSGqVWlklvTTmyfneoGH7rlvNiu8Bmw74U\nctiISxETL1bTTS1QX5niOKvChi8YhMt6vlV8AVGh8k5qQ6v8+0tAUuopUer9rGzS\nsnz2zNJD+CqAvaEavRhcJ/3vi48qovpRh/fORz2mEgxsxh4xYEGM+nJY6G9MGSs6\nrC1S3/jHduDlMtY7sT3ECLJE08YhnAFN4TyMxlJqEFaXYRc7xP8nHKzrODzsBsyU\nPYa1g+jXtBC5lp9b7GFBuHw+07Wd8h+kNjFMhCetkB0D6I0DLMxSkugAyHV4+ATS\nJ+qvf73rAgMBAAECggEAG3MPh+iLTRM8d0olRvSB+bd0Hl0iM67o5M2OYHpVKEVR\nh4JhqMUTTEDN9cASMKu8lgkzfqN2PMPr+y6ZlhV+X0KveJwNqcZ+Xq923kaB3PYl\nyfLxLbp+givCNK1WJrrF/5YJActyUNLdGaXaUHN8eND1m/GFQPgjIoF+V7PxjVef\nIbNB/M2rthTidNvFuhwNBm3C1lOwfW8pxOQ4BOV9yz3uOeNpPOF8/gNdoQFwwfSX\nLyVlCqNqwIoLdHa5zjcNJXeIjsMnTt0hzB6HXNrkjda8ONWRVCjWpj3ffA1HfMtI\nr/m+VzRR7ZpWMKcCCxiXTYNK2Lie1ScKUe7o/1BtiQKBgQDovYNHp+bI6iRL3mlt\n+ALMXlc0LdLTJsIBt0XuhSqYXaaMDy9Wohe6wV5z6u8I/ActvwHL0AouSS1BmTk8\nDJwFhZSMq4hmFiFsGGF5V3HrACzUEDjDctyLRy23WDCaJsQWnNS/5rZNOvSkesoY\nOYmH7v+XKfPhz6dYVD5uKPl8AwKBgQDAsZibyf7VrPfsLm0tZCmhJXol0niD4+Zr\nnQCquugyB59GRN+CVcKQ5XJY7wWZG/VEnO5m4o8CKaaZKX7s1PNzO+SBxEzDIusK\nTbTVfG2sViGXrKZwJloNb+tZkUmbukFIEvEErhrXb+/3nqYz0Wd5vHTFn1zFaQp8\nD+yhGri1+QKBgAOLT0J6FhOdLSxSmLxp+HDwRteukvVQM8ge6Fu3f2yOkIi1en0R\nPtdDNpMBUt6KJ/nUXMyjwGPwDVZgZPS7JG0ZGagCvLMBR0UEIgfdAwkXGZepH5Qq\nXZ1pWhLeru7KBFZr0PmTI9eNPEh87jLsPWHqi83bf7FCnkPEFKdMzG/NAoGATmRx\n9384A2n4+sbwd7T2Eq8SgGydxtpilYksCkk7yY68R3Qhkf6dxyDxYijrmBx9rcpC\nWuz0zSZwtoLhNix0Vn8ZOYnIyOJdyLVQSkHyxFfOFsyQcbPIkwrjLm8jCQ2/HTlH\ngGXsWZUahRyv9QjOFgKLZxKsRUu0jkBUPj6GwtECgYEAgCgXFv3kmX0AfGHTl45v\nKFnAcHu4kK1P8ImaW6V0tDYQWxvoVqrF3n1ikePcKfru5UpgvIJQH6GmlDcB9neZ\nQtHo+qL2Mb26sJTey/JFh7P+0b/1IGumc4IvJh+tcPsD4byPRW8gqm0c51FIw5nu\nkCay2mJ8sI9WDEH+taHsnBs=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-qcot3@gardensensortest.iam.gserviceaccount.com",
+  "client_id": "108396064641101458092",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-qcot3%40gardensensortest.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
