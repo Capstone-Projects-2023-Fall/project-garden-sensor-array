@@ -1,5 +1,4 @@
 # Generated Cmake Pico project file
-
 cmake_minimum_required(VERSION 3.13)
 
 set(CMAKE_C_STANDARD 11)
@@ -8,7 +7,6 @@ set(CMAKE_CXX_STANDARD 17)
 # Initialise pico_sdk from installed location
 # (note this can come from environment, CMake cache etc)
 set(PICO_SDK_PATH "/home/hops/pico/pico-sdk")
-
 set(PICO_BOARD pico_w CACHE STRING "Board type")
 
 # Pull in Raspberry Pi Pico SDK (must be before project)
@@ -23,6 +21,11 @@ project(pico_ble C CXX ASM)
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
+set(BTSTACK_ROOT ${PICO_SDK_PATH}/lib/btstack)
+set(BTSTACK_EXAMPLE_PATH ${BTSTACK_ROOT}/example)
+set(BTSTACK_3RD_PARTY_PATH ${BTSTACK_ROOT}/3rd-party)
+set(BT_EXAMPLE_COMMON_DIR "${CMAKE_CURRENT_LIST_DIR}")
+
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(pico_ble pico_ble.c )
@@ -35,18 +38,18 @@ pico_enable_stdio_usb(pico_ble 1)
 
 # Add the standard library to the build
 target_link_libraries(pico_ble
-        pico_stdlib
-        pico_btstack_ble 
-        pico_btstack_sdp_server
-        pico_btstack_cyw43 
-        pico_cyw43_arch_none
-        hardware_adc)
+    pico_stdlib
+    pico_btstack_ble
+    pico_btstack_cyw43
+    pico_cyw43_arch_none
+    hardware_adc)
 
 # Add the standard include files to the build
 target_include_directories(pico_ble PRIVATE
   ${CMAKE_CURRENT_LIST_DIR}
-  ${CMAKE_CURRENT_LIST_DIR}/.. # for our common lwipopts or any other standard includes, if required
 )
+
+pico_btstack_make_gatt_header(pico_ble PRIVATE "${CMAKE_CURRENT_LIST_DIR}/SCU.gatt")
 
 # Add any user requested libraries
 target_link_libraries(pico_ble 
