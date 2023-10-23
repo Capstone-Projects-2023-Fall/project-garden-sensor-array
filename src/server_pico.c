@@ -49,10 +49,12 @@ static uint8_t adv_data[] = {
     0x17, BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME, 'S', 'C', 'U',
     0x03, BLUETOOTH_DATA_TYPE_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS, 0x1a, 0x18,
 };
-//79747de3-3462-4ad7-90fb-dbf468a3c1e6
 
 const uint8_t adv_data_len = sizeof(adv_data);
 
+// this function is called repeatedly on the interval defined by HEARTBEAT_MS
+// aka in this case it is called every second. 
+// ts is a pointer to the globally defined heartbeat variable
 static void heartbeat_handler(struct btstack_timer_source *ts) {
     // static because we want its value to persist through function calls
     static uint32_t counter = 0;
@@ -71,7 +73,12 @@ static void heartbeat_handler(struct btstack_timer_source *ts) {
     led_on = !led_on;
     cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_on);
 
-    // Restart timer
+    // Restarts timer
+    // so the function will be called again
+    // in HEARTBEAT_MS milliseconds (1000 for now)
+    // im not to sure why the timer is set with ts
+    // instead of heartbeat, but this is the convention
+    // used by btstack...dont think it makes a difference though
     btstack_run_loop_set_timer(ts, HEARTBEAT_MS);
     btstack_run_loop_add_timer(ts);
 }
@@ -109,6 +116,10 @@ static void le_setup() {
     att_server_register_packet_handler(packet_handler);
 
     // set one-shot timer
+    // this is another one of those confusing btstack things
+    // but this will tell btstack to call the heartbeat_handler
+    // after the amount of time defined by HEARTBEAT_MS has elapsed
+    // heartbeat will be passed as an argument to heartbeat_handler on each call
     heartbeat.process = &heartbeat_handler;
     btstack_run_loop_set_timer(&heartbeat, HEARTBEAT_MS);
     btstack_run_loop_add_timer(&heartbeat);
