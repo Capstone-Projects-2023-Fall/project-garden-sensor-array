@@ -86,7 +86,8 @@ static void le_setup() {
     sm_init();
 
     // define the server profile and the function call back for when a client reads the a characteristic.
-    // the write callback is left NULL because there is no case where our hub should be writing data to the SCUs
+    // the write callback is just for allowing the client to sign up for notifications.
+    // aka no writes can be made to the sensor data characteristic
     att_server_init(profile_data, att_read_callback, att_write_callback);    
 
     // setup advertisements
@@ -134,6 +135,7 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
             break;
         case HCI_EVENT_DISCONNECTION_COMPLETE:
             read_sensors = 0;
+            le_notify = 0;
             break;
         case ATT_EVENT_CAN_SEND_NOW:
             printf("sending\n");
