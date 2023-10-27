@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+    <head>
+        <title>Register Page</title>
+        <link rel = "stylesheet" href ="style.css">
+    </head>
+    <body>
+        <h1>Registration</h1>
+        <div class = "box">
+            <div class = "form">
+                <form>
+                    <div class = "inputbox">
+                        <span>Username:</span>
+                        <input type="text" value="" id="Username" required>
+                    </div>
+                    <div class = "inputbox">
+                        <span>Email Address:</span>
+                        <input type="text" value="" id="Email" required>
+                    </div>
+                    <div class = "inputbox">
+                        <span>Password:</span>
+                        <input type="text" value="" id="Password" required>
+                    </div>
+                    <input type = "submit" value = "Submit" class = "sub" id = "submit">
+                </form>
+            </div>
+        </div>
+        <script type = "module">
+
+            // Import functions
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+            import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
+            import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+            // FB config
+            const firebaseConfig = {
+                apiKey: "AIzaSyA3M16JuWNWWy8t5pfKN86mg-LtgRWKh4g",
+                authDomain: "gardensensortest.firebaseapp.com",
+                databaseURL: "https://gardensensortest-default-rtdb.firebaseio.com",
+                projectId: "gardensensortest",
+                storageBucket: "gardensensortest.appspot.com",
+                messagingSenderId: "778109626399",
+                appId: "1:778109626399:web:bf79e4c162bf17538b4d2a",
+                measurementId: "G-W1QFYR82FY"
+            };
+
+            // Initialize Auth, App, and Firebase
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app)
+            const db = getDatabase(app)
+
+            document.getElementById("submit").addEventListener("click", function(e) {   // Listens for on-click events when the Submit button is pressed
+            
+                e.preventDefault();
+
+                var username = document.getElementById("Username").value;   // Get values from input boxes
+                var email = document.getElementById("Email").value;
+                var password = document.getElementById("Password").value;
+
+                createUserWithEmailAndPassword(auth, email, password)  // creates user with email and address and stores it in Authentication
+                .then((userCredential) => { 
+                    const user = userCredential.user;
+                    set(ref(db, 'Users/' + user.uid),   // stores user credentials in realtime database under Users, which the users will be identified by their unique user ID
+                    {
+                        username: username,
+                        email: email,
+                    });
+                    
+                    alert("Registration Completed");
+    
+                })
+                .catch((error) => {   // appears if there's an error in email submission, password submission, existing email already in Authentication
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+
+                    alert(errorMessage)  // spills out cause of error ex. auth/create-email Email already exists
+                    
+                });
+            })
+        </script>
+        <script src = "index.html"></script>
+    </body>
+</html>
