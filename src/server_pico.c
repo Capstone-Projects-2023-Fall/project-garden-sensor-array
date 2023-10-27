@@ -5,21 +5,16 @@
 #include "pico/cyw43_arch.h"
 #include "SCU.h"
 
-// for random number generation -- can be removed once sensors are working
-#include "hardware/regs/rosc.h"
-#include "hardware/regs/addressmap.h"
-
-
-// server will "beat" every second
-#define HEARTBEAT_MS 1000
-
-// btstack magic, it enables ble
-#define APP_AD_FLAGS 0x06
+// sensor libraries
+// SPI.h is a dependency of the seesaw library
+#include <SPI.h>
+#include "Adafruit_seesaw.h"
+#include "hp_BH1750.h"
 
 static int  read_sensors = 0;   // set to 1 when there's a connection, 0 if not
 static int  le_notify;   // same deal
-static btstack_timer_source_t heartbeat;
-static hci_con_handle_t con_handle;
+static btstack_timer_source_t   heartbeat;
+static hci_con_handle_t         con_handle;
 static btstack_packet_callback_registration_t hci_event_callback_registration;
 
 // standard btstack function declarations, this is taken from their examples and the pico example
@@ -29,29 +24,41 @@ static uint16_t att_read_callback(hci_con_handle_t con_handle, uint16_t att_hand
 static int att_write_callback(hci_con_handle_t connection_handle, uint16_t att_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
 
 // declarations for our sensor functions
-void getASSMsoilmoisture(uint16_t *soil_moisture);
-void getASSMtempC(float *tempC);
-void getBH1750lux(float *lux);
-void write_sensor_data(uint16_t *soil_moisture, float *tempC, float *lux);
+void getASSMsoilmoisture();
+void getASSMtempC();
+void getBH1750lux();
+void write_sensor_data();
 
-#define LEN_SENSOR_DATA 20
-char sensor_data[LEN_SENSOR_DATA]; // the infamous "characteristic"
+// max length for our characteristic string. it could be made longer if necessary
+#define LEN_SENSOR_DATA_MAX 30
+
+char    sensor_data[LEN_SENSOR_DATA_MAX]; // the infamous "characteristic"
 uint8_t sensor_data_length = 0;
 
+
+Adafruit_seesaw soil_sensor;
+hp_BH1750       light_sensor;
+
 uint16_t soil_moisture  = 0;
-float tempC             = 0;
-float lux               = 0;
+float   tempC           = 0;
+float   lux             = 0;
+
+
+// btstack magic, it enables ble
+#define APP_AD_FLAGS 0x06
 
 static uint8_t adv_data[] = {
     // Flags general discoverable
     0x02, BLUETOOTH_DATA_TYPE_FLAGS, APP_AD_FLAGS,
     // Name
-    0x17, BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME, 'S', 'C', 'U',
+    0x17, BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME, 'P', 'i', 'c', 'o', ' ', '0', '0', ':', '0', '0', ':', '0', '0', ':', '0', '0', ':', '0', '0', ':', '0', '0',
     0x03, BLUETOOTH_DATA_TYPE_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS, 0x1a, 0x18,
 };
 
 const uint8_t adv_data_len = sizeof(adv_data);
 
+
+#define HEARTBEAT_MS 1000
 // this function is called repeatedly on the interval defined by HEARTBEAT_MS
 // aka in this case it is called every second. 
 // ts is a pointer to the globally defined heartbeat variable
@@ -61,7 +68,7 @@ static void heartbeat_handler(struct btstack_timer_source *ts) {
     counter++;
     if(counter % 10 == 0 && read_sensors) {
         // get sensor data and notify client
-        write_sensor_data(&soil_moisture, &tempC, &lux);
+        write_sensor_data();
         printf("Data Written: %s\n", sensor_data);
         att_server_request_can_send_now_event(con_handle); // the packet handler sends its regards
     }
@@ -71,7 +78,7 @@ static void heartbeat_handler(struct btstack_timer_source *ts) {
     // to be able to see that the pico is doing something
     static int led_on = true;
     led_on = !led_on;
-    cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_on);
+    cyw43_arch_gpio_put(0, led_on);
 
     // Restarts timer
     // so the function will be called again
@@ -131,7 +138,6 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
 
     if (packet_type != HCI_EVENT_PACKET) return;
 
-    bd_addr_t local_addr;
     switch (hci_event_packet_get_type(packet)) {
         case HCI_EVENT_LE_META:  // literally what the fuck is going on
             switch (hci_event_le_meta_get_subevent_code(packet)) {
@@ -184,59 +190,57 @@ int att_write_callback(hci_con_handle_t connection_handle, uint16_t att_handle, 
     return 0;
 }
 
-
-// function for generating random numbers
-// just for testing
-// raspberry pi is gonna sue me
-uint32_t rnd(void){
-    int k, random=0;
-    volatile uint32_t *rnd_reg=(uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
-    
-    for(k=0;k<32;k++){
-    
-    random = random << 1;
-    random=random + (0x00000001 & (*rnd_reg));
-
-    }
-    return random;
-}
-
 // at some point this will need to actually read from the sensor
 // right now it just spits out a random number to simulate reading the sensor 
-void getASSMsoilmoisture(uint16_t *soil_moisture) {
-    *soil_moisture = (uint16_t)rnd();
+void getASSMsoilmoisture(void) {
+    soil_moisture = soil_sensor.touchRead(0);
+    if(soil_moisture < 200 || soil_moisture > 2000) {
+        printf("moisture read error!\n");
+        // what to do next?
+        // exit(-1); maybe
+    }
 }
 
 // same deal as above
-void getASSMtempC(float *tempC) {
-    *tempC = (float)rnd() / rnd();
+void getASSMtempC(void) {
+    tempC = soil_sensor.getTemp();
+    if(tempC < 0) {
+        printf("bad temp read!\n");
+        // keep going?
+    }
 }
 
 // okay i get it
-void getBH1750lux(float *lux) {
-    *lux = (float)rnd() / rnd(); 
+void getBH1750lux(void) {
+    light_sensor.start();
+    lux = light_sensor.getLux();
+    if(lux < 0 || lux > 65000) {
+        printf("bad lux read!\n");
+        // stop the program?
+    } 
 }
 
-void write_sensor_data(uint16_t *soil_moisture, float *tempC, float *lux) {
-    getASSMsoilmoisture(soil_moisture);
-    getASSMtempC(tempC);
-    getBH1750lux(lux);
+void write_sensor_data(void) {
+    getASSMsoilmoisture();
+    getASSMtempC();
+    getBH1750lux();
 
     // write sensor data to a string -- this is what will be read by the client!
-    sensor_data_length = snprintf(sensor_data, LEN_SENSOR_DATA, "%u,%f,%f", *soil_moisture, *tempC, *lux);
+    sensor_data_length = snprintf(sensor_data, LEN_SENSOR_DATA_MAX, "%u,%f,%f", soil_moisture, tempC, lux);
 }
 
 /* way is tao */
 int main() {
-    stdio_init_all();
-
     // initialize CYW43 driver architecture (will enable BT if/because CYW43_ENABLE_BLUETOOTH == 1)
     if (cyw43_arch_init()) {
         printf("failed to initialise cyw43_arch\n");
         return -1;
     }
-    printf("is anyone out there?\n");
     
+    if( !soil_sensor.begin(0x36) || !light_sensor.begin(BH1750_TO_GROUND) ) {
+        printf("sensor error!\n");
+    }
+
     // get everything initialized for the le server
     le_setup();
 
