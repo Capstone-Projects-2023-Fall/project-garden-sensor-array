@@ -57,10 +57,8 @@ if __name__ == "__main__":
     db = firestore.client()
 
     doc_ref = db.collection("HUBS_ONLINE").document(HUB_ID)
-    
-    doc_ref.set(
-        HUB(1, 2, 3, 4, 5, SERVER_TIMESTAMP).to_fb()
-    )
+
+    doc_ref.update({"Temperature": 0, "Moisture": 0, "Sunlight": 0, "SensorID": 0 })
     
     while(True):
         while(not check_connection()):

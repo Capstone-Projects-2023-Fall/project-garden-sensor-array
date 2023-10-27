@@ -30,6 +30,7 @@
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
             import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
             import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+            import { getFirestore, getDoc, setDoc, addDoc, doc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
 
             // FB config
             const firebaseConfig = {
@@ -47,6 +48,7 @@
             const app = initializeApp(firebaseConfig);
             const auth = getAuth(app)
             const db = getDatabase(app)
+            const fs = getFirestore(app)
 
             document.getElementById("submit").addEventListener("click", function(e) {   // Listens for on-click events when the Submit button is pressed
             
@@ -64,7 +66,11 @@
                         username: username,
                         email: email,
                     });
-                    
+
+                    setDoc(doc(fs, "HUBS_ONLINE", "HUB_1"), {
+                        AccountID: user.uid,
+                    });
+                                            
                     alert("Registration Completed");
     
                 })
