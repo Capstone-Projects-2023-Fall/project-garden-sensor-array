@@ -11,11 +11,11 @@
 #include "Adafruit_seesaw.h"
 #include "hp_BH1750.h"
 
-static int  read_sensors = 0;   // set to 1 when there's a connection, 0 if not
-static int  le_notify;   // same deal
-static btstack_timer_source_t   heartbeat;
-static hci_con_handle_t         con_handle;
-static btstack_packet_callback_registration_t hci_event_callback_registration;
+static int                                      read_sensors = 0;   // set to 1 when there's a connection, 0 if not
+static int                                      le_notify;   // same deal
+static btstack_timer_source_t                   heartbeat;
+static hci_con_handle_t                         con_handle;
+static btstack_packet_callback_registration_t   hci_event_callback_registration;
 
 // standard btstack function declarations, this is taken from their examples and the pico example
 static void  heartbeat_handler(struct btstack_timer_source *ts);
@@ -39,9 +39,9 @@ uint8_t sensor_data_length = 0;
 Adafruit_seesaw soil_sensor;
 hp_BH1750       light_sensor;
 
-uint16_t soil_moisture  = 0;
-float   tempC           = 0;
-float   lux             = 0;
+uint16_t soil_moisture   = 0;
+float    tempC           = 0;
+float    lux             = 0;
 
 
 // btstack magic, it enables ble
