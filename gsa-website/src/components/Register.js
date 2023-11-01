@@ -44,7 +44,7 @@ const Register = () => {
                 set(ref(database, 'Users/' + user.uid), {  // adds user information to realtime database
                     Username: displayName,
                     Email: email,
-                    HUB: [sensorName, "garden"]
+                    HUBs: [sensorName, "garden"]  // an "array" of HUBs to allow multiple HUBs attached to a singular account
                 })
 
                 await setDoc(doc(db, user.uid, sensorName), {   // creates a document containing HUB information
