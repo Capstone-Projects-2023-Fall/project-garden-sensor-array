@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import Authenticate from './Authenticate';
-//import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { getDatabase, ref, set } from "firebase/database";
 
 
@@ -41,10 +41,16 @@ const Register = () => {
             console.log(userCredential);// returns a promise to wait until resovled and get back user credentials
             const user = userCredential.user; 
             try {
-                set(ref(database, 'Users/' + user.uid), {
-                    username: displayName,
-                    email: email,
-                  });
+                set(ref(database, 'Users/' + user.uid), {  // adds user information to realtime database
+                    Username: displayName,
+                    Email: email,
+                    HUB: [sensorName, "garden"]
+                })
+
+                await setDoc(doc(db, user.uid, sensorName), {   // creates a document containing HUB information
+                    Sensor: sensorName,
+                    Username: displayName 
+                });
 
                 console.log("Successfully Added Account!");
 
