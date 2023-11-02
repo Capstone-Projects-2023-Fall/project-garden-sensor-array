@@ -5,6 +5,7 @@ import { Form, Alert } from "react-bootstrap";
 import { Button } from "react-bootstrap"; 
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getDatabase, ref, set } from "firebase/database";
 
 
 const Login = () => {
@@ -16,6 +17,8 @@ const Login = () => {
 
   let navigate = useNavigate();
 
+  const database = getDatabase();
+
 
   //Log into user account with firebase function
   const signIn = async (e) => { //e passes the event from the form 
@@ -25,6 +28,13 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => { 
         console.log(userCredential); // returns a promise to wait until resovled and get back user credentials 
+
+        const user = userCredential.user; 
+
+        set(ref(database, 'Users/' + 'Current User'), {  // adds user information to realtime database
+          UID: user.uid
+        })
+
         navigate("/MySensorsPage")//going to MySensorsPage
       }) 
       .catch((error) => {

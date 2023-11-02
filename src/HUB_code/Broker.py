@@ -11,6 +11,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin.firestore import SERVER_TIMESTAMP
 from HUB_Class import HUB
+from firebase_admin import db
 
 HUB_ID = 'HUB_1'
 
@@ -52,16 +53,22 @@ if __name__ == "__main__":
         print("hub offline")
         
     cred = credentials.Certificate('cred.json')
-    app = firebase_admin.initialize_app(cred)
+    app = firebase_admin.initialize_app(cred, {
+        'databaseURL': "https://gardensensortest-default-rtdb.firebaseio.com"
+    })
 
-    db = firestore.client()
+    fs = firestore.client()
 
-    doc_ref = db.collection("HUBS_ONLINE").document(HUB_ID)
+    ref = db.reference('Users/Current User/UID')
+    print(ref.get())
+    uid = ref.get()  # gets current user uid, use this for updating HUB field
+
+    doc_ref = fs.collection("HUBS_ONLINE").document(HUB_ID)
     
     doc_ref.set(
         HUB(1, 2, 3, 4, 5, SERVER_TIMESTAMP).to_fb()
     )
-    
+
     while(True):
         while(not check_connection()):
             print('hub offline')
