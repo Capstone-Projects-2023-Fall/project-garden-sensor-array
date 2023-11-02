@@ -4,17 +4,23 @@ import { signOut } from "firebase/auth";
 import { auth } from "./firebase"; //configuring website's authentication with auth const
 import Authenticate from './components/Authenticate';
 import { useNavigate } from "react-router-dom";
+import { getDatabase, ref, set } from "firebase/database";
 
 
 export default function MySensorsPage() {
 
     let navigate = useNavigate();
 
-
+    const database = getDatabase();
 
     const logOut = () => {
         signOut(auth)
           .then(() => {
+
+            set(ref(database, 'Users/' + 'Current User'), {  // adds user information to realtime database
+                UID: "-"
+            })
+
             console.log("Logged Out");
             navigate("/")//Logging out and going back to landing page
           })

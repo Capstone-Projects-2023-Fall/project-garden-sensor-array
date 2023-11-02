@@ -60,7 +60,7 @@ if __name__ == "__main__":
     fs = firestore.client()
 
     ref = db.reference('Users/Current User/UID')
-    print(ref.get())
+    print(ref.get())  # testing purposes
     uid = ref.get()  # gets current user uid, use this for updating HUB field
 
     doc_ref = fs.collection("HUBS_ONLINE").document(HUB_ID)
