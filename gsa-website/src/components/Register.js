@@ -6,7 +6,8 @@ import { Button } from "react-bootstrap";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import Authenticate from './Authenticate';
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, addDoc } from "firebase/firestore";
+import { getDatabase, ref, set } from "firebase/database";
 
 
 const Register = () => {
@@ -20,6 +21,8 @@ const Register = () => {
     const [sensorName, setSensorName] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false) //
+
+    const database = getDatabase();
 
     let navigate = useNavigate();//navigate to the next change after submission
     const { authUser } = Authenticate(); //to call on this specific user 
@@ -35,14 +38,28 @@ const Register = () => {
         setLoading(true)
         createUserWithEmailAndPassword(auth, email, password)
           .then( async (userCredential) => { 
-            console.log(userCredential);// returns a promise to wait until resovled and get back user credentials 
+            console.log(userCredential);// returns a promise to wait until resovled and get back user credentials
+            const user = userCredential.user; 
             try {
-                const docRef = await addDoc(collection(db, "User Information"), {
-                    email, displayName, sensorUnitID, sensorName
+                set(ref(database, 'Users/' + user.uid), {  // adds user information to realtime database
+                    Username: displayName,
+                    Email: email,
+                    HUB: [sensorName]  // an "array" of HUBs to allow multiple HUBs attached to a singular account
+                })
+
+                set(ref(database, 'Users/' + 'Current User'), {  // adds user information to realtime database
+                    UID: user.uid
+                })
+
+                await setDoc(doc(db, user.uid, sensorName), {   // creates a document containing HUB information
+                    Sensor: sensorName,
+                    Username: displayName 
                 });
-                console.log("Document written with ID: ", docRef.id);
+
+                console.log("Successfully Added Account!");
+
               } catch (e) {
-                console.error("Error adding document: ", e);
+                console.error("Error registering Account!: ", e);
               }
 
             navigate("/MySensorsPage")//going to MySensorsPage
