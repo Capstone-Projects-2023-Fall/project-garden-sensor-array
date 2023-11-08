@@ -7,40 +7,30 @@ import { useNavigate } from "react-router-dom";
 import Authenticate from './Authenticate';
 
 const AddNewSensor = () => {
+  // get all required fields
   const [sensorName, setSensorName] = useState("");
   const [hubName, setHubName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // initialize all databases
   const database = getDatabase();
   const firestore = getFirestore();
   const auth = getAuth();
   let navigate = useNavigate();
   const { authUser } = Authenticate();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        // Get the user's UID
-        const userUid = user.uid;
-        
-        // Handle userUid or store it in state if needed
-      }
-    });
-
-    return () => unsubscribe();
-  }, [auth]);
-
+  // Main Function
   const AddingSensor = async (e) => {
     e.preventDefault();
 
-    if (authUser) {
-      const userUid = authUser.uid;
+    if (authUser) {   
+      const userUid = authUser.uid;  // get user uid
 
-      const hubRef = ref(database, `Users/${userUid}/${hubName}`);
+      const hubRef = ref(database, `Users/${userUid}/${hubName}`);  // get reference to User
       
       // Fetch data to check if the hub exists
-      get(hubRef)
+      get(hubRef) 
         .then((snapshot) => {
           if (snapshot.exists()) {
             // Hub exists, proceed with the update
@@ -48,6 +38,7 @@ const AddNewSensor = () => {
               [sensorName]: { sensorName }
             })
 
+            // Sensor information added to SERIAL_MAP
             const serialMapDocRef = doc(collection(firestore, 'SERIAL_MAP'), sensorName);
               setDoc(serialMapDocRef, {
                 SerialNumber: "-",
@@ -63,7 +54,7 @@ const AddNewSensor = () => {
               setError("Error adding Sensor");
             });
           } else {
-            // Hub doesn't exist
+            // Returns if HUB does not exist
             setError("Hub doesn't exist");
           }
         })
