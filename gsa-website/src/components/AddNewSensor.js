@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, set, update } from "firebase/database";
+import { getDatabase, ref, set, update, get, child, exists } from "firebase/database";
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -31,35 +31,40 @@ const AddNewSensor = () => {
     return () => unsubscribe();
   }, [auth]);
 
-  const handleSensorNameChange = (e) => {
-    setSensorName(e.target.value);
-  };
-
-  const handleHubNameChange = (e) => {
-    setHubName(e.target.value);
-  };
-
   const AddingSensor = async (e) => {
     e.preventDefault();
 
     if (authUser) {
       const userUid = authUser.uid;
 
-      // Update Firestore with the sensor information
-      const sensorDocRef = doc(collection(firestore, 'SENSORS'), sensorName);
-      await setDoc(sensorDocRef, {
-        SensorName: sensorName,
-        HubName: hubName,
-        UserUid: userUid
-      })
-      .then(() => {
-        console.log("Sensor added successfully!");
-        navigate("/MySensorsPage");
-      })
-      .catch((error) => {
-        console.error("Error adding Sensor: ", error);
-        setError("Error adding Sensor");
-      });
+      const hubRef = ref(database, `Users/${userUid}/${hubName}`);
+      
+      // Fetch data to check if the hub exists
+      get(hubRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            // Hub exists, proceed with the update
+            update(ref(database, `Users/${userUid}/${hubName}`), {
+              [sensorName]: { sensorName }
+            })
+
+            .then(() => {
+              console.log("Sensor added successfully!");
+              navigate("/MySensorsPage");
+            })
+            .catch((error) => {
+              console.error("Error adding Sensor: ", error);
+              setError("Error adding Sensor");
+            });
+          } else {
+            // Hub doesn't exist
+            setError("Hub doesn't exist");
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking for Hub: ", error);
+          setError("Error checking for Hub");
+        });
     } else {
       setError("You must be logged in to add a sensor.");
     }
@@ -86,7 +91,7 @@ const AddNewSensor = () => {
             <Form.Control
               type="sensorName"
               placeholder="Sensor Name"
-              value={hubName}
+              value={sensorName}
               onChange={(e) => setSensorName(e.target.value)}
             />
           </Form.Group>
@@ -101,3 +106,4 @@ const AddNewSensor = () => {
 };
 
 export default AddNewSensor;
+
