@@ -1,11 +1,13 @@
 import asyncio
 import time
-import contextlib
+# import contextlib  --  might need later
 
 from bleak import BleakScanner, BleakClient
 
 SLEEP_INTERVAL_ADV  = 1
 SLEEP_INTERVAL_POLL = 10
+
+SENSOR_INFO_CHAR_UUID = '0000181b-0000-1000-8000-00805f9b34fb'
 
 async def main():
     async with BleakScanner() as scanner:
@@ -13,10 +15,10 @@ async def main():
         n = 5 # number of packets to reach each sleep interval
         async for bd, ad in scanner.advertisement_data():
             print(f"{bd!r} with {ad!r}")
-            if bd.name == 'SCU':
+            print(ad.local_name)
+            if ad.local_name == 'SCU':
                 client = BleakClient(bd)
-                client.connect()
-                await contextlib.AsyncExitStack.enter_async_context(client)
+                await client.connect()
                 print('connected!')
                 break
             n -= 1
@@ -26,8 +28,16 @@ async def main():
 
     characteristics = client.services.characteristics
     for char in characteristics:
-        print(characteristics[char])
-            
+        if characteristics[char].uuid == SENSOR_INFO_CHAR_UUID:
+            sensor_info_char = characteristics[char] 
+        # do some sort of checking here later to only connect to SCUs with a certain
+        # char uuid 
+    
+    while True:
+        sensor_data = await client.read_gatt_char(sensor_info_char)
+        print(sensor_data.decode())
+        time.sleep(SLEEP_INTERVAL_POLL)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
