@@ -29,11 +29,11 @@ export default function MySensorsPage() {
     };
 
     const navigateToAddHub = () => {
-        navigate("/add-new-hub");
+        navigate("/AddNewHub");
     };
 
     const navigateToAddSensor = () => {
-        navigate("/add-new-sensor");
+        navigate("/AddNewSensor");
     };
 
     const { authUser } = Authenticate();

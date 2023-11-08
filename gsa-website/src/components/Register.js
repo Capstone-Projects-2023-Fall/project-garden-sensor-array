@@ -124,24 +124,6 @@ const Register = () => {
                 />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicSensorUnit">
-                <Form.Control
-                    type="sensorUnit"
-                    placeholder="SensorUnitID"
-                    value = {sensorUnitID}
-                    onChange={(e) => setSensorUnitID(e.target.value)}
-                />
-                </Form.Group>
-
-
-                <Form.Group className="mb-3" controlId="formBasicSensorName">
-                <Form.Control
-                    type="sensorName"
-                    placeholder="SensorName"
-                    value = {sensorName} //curent value 
-                    onChange={(e) => setSensorName(e.target.value)}//sets to new target value entered by user
-                />
-                </Form.Group>
                 <div className="d-grid gap-2">
                 <Button disabled={loading} variant="primary" type="Submit">
                     Register
