@@ -12,6 +12,7 @@ const AddNewHub = () => {
   const [loading, setLoading] = useState(false);
 
   const database = getDatabase();
+  const firestore = getFirestore(); // Initialize Firestore
   const auth = getAuth();
   let navigate = useNavigate();
   const { authUser } = Authenticate();
@@ -39,6 +40,12 @@ const AddNewHub = () => {
       update(ref(database, `Users/${userUid}`), {
         [hubName]: { name: hubName }
       })
+
+      const serialMapDocRef = doc(collection(firestore, 'SERIAL_MAP'), hubName);
+        await setDoc(serialMapDocRef, {
+          SerialNumber: "-",
+          User: userUid
+        })
 
         .then(() => {
           console.log("Hub Name added successfully!");
