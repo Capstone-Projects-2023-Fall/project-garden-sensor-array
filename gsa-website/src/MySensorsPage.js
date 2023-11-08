@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Card } from "react-bootstrap"
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { signOut } from "firebase/auth"; 
 import { auth } from "./firebase"; //configuring website's authentication with auth const
 import Authenticate from './components/Authenticate';
@@ -27,6 +28,14 @@ export default function MySensorsPage() {
           .catch((error) => console.log(error));
     };
 
+    const navigateToAddHub = () => {
+        navigate("/add-new-hub");
+    };
+
+    const navigateToAddSensor = () => {
+        navigate("/add-new-sensor");
+    };
+
     const { authUser } = Authenticate();
 
 
@@ -39,6 +48,16 @@ export default function MySensorsPage() {
                     <Card.Text>
                         Sensor Status: 
                     </Card.Text>
+
+                      {/* Add new Hub button */}
+                      <button onClick={navigateToAddHub} style={{ marginRight: '10px' }}>
+                      Add New Hub
+                      </button>
+
+                      {/* Add new Sensor button */}
+                      <button onClick={navigateToAddSensor} style={{ marginRight: '10px' }}>
+                      Add New Sensor
+                      </button>
                 <Form>
                 </Form>
             </Card.Body>
