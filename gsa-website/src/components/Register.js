@@ -6,7 +6,7 @@ import { Button } from "react-bootstrap";
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import Authenticate from './Authenticate';
-import { collection, doc, setDoc, addDoc } from "firebase/firestore";
+// import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { getDatabase, ref, set } from "firebase/database";
 
 
@@ -17,8 +17,6 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [displayName, setDisplayName] = useState("");
     const [passwordConfirm, setConfirmPassword] = useState("");
-    const [sensorUnitID, setSensorUnitID] = useState("");
-    const [sensorName, setSensorName] = useState("");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false) //
 
@@ -44,17 +42,7 @@ const Register = () => {
                 set(ref(database, 'Users/' + user.uid), {  // adds user information to realtime database
                     Username: displayName,
                     Email: email,
-                    HUB: [sensorName]  // an "array" of HUBs to allow multiple HUBs attached to a singular account
                 })
-
-                set(ref(database, 'Users/' + 'Current User'), {  // adds user information to realtime database
-                    UID: user.uid
-                })
-
-                await setDoc(doc(db, user.uid, sensorName), {   // creates a document containing HUB information
-                    Sensor: sensorName,
-                    Username: displayName 
-                });
 
                 console.log("Successfully Added Account!");
 
@@ -124,24 +112,6 @@ const Register = () => {
                 />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formBasicSensorUnit">
-                <Form.Control
-                    type="sensorUnit"
-                    placeholder="SensorUnitID"
-                    value = {sensorUnitID}
-                    onChange={(e) => setSensorUnitID(e.target.value)}
-                />
-                </Form.Group>
-
-
-                <Form.Group className="mb-3" controlId="formBasicSensorName">
-                <Form.Control
-                    type="sensorName"
-                    placeholder="SensorName"
-                    value = {sensorName} //curent value 
-                    onChange={(e) => setSensorName(e.target.value)}//sets to new target value entered by user
-                />
-                </Form.Group>
                 <div className="d-grid gap-2">
                 <Button disabled={loading} variant="primary" type="Submit">
                     Register

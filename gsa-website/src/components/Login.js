@@ -29,11 +29,7 @@ const Login = () => {
       .then((userCredential) => { 
         console.log(userCredential); // returns a promise to wait until resovled and get back user credentials 
 
-        const user = userCredential.user; 
-
-        set(ref(database, 'Users/' + 'Current User'), {  // adds user information to realtime database
-          UID: user.uid
-        })
+        // const user = userCredential.user; 
 
         navigate("/MySensorsPage")//going to MySensorsPage
       }) 
