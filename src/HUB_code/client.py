@@ -1,14 +1,6 @@
-"""
-Scan/Discovery Async Iterator
---------------
-
-Example showing how to scan for BLE devices using async iterator instead of callback function
-
-Created on 2023-07-07 by bojanpotocnik <info@bojanpotocnik.com>
-
-"""
 import asyncio
 import time
+import contextlib
 
 from bleak import BleakScanner, BleakClient
 
@@ -24,14 +16,17 @@ async def main():
             if bd.name == 'SCU':
                 client = BleakClient(bd)
                 client.connect()
+                await contextlib.AsyncExitStack.enter_async_context(client)
+                print('connected!')
                 break
             n -= 1
             if n == 0:
                 n = 5
                 time.sleep(SLEEP_INTERVAL_ADV)
 
-    while True:
-        client.read_gatt_char()
+    characteristics = client.services.characteristics
+    for char in characteristics:
+        print(characteristics[char])
             
 
 if __name__ == "__main__":
