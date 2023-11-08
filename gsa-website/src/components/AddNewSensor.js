@@ -48,6 +48,12 @@ const AddNewSensor = () => {
               [sensorName]: { sensorName }
             })
 
+            const serialMapDocRef = doc(collection(firestore, 'SERIAL_MAP'), sensorName);
+              setDoc(serialMapDocRef, {
+                SerialNumber: "-",
+                User: userUid
+              })
+
             .then(() => {
               console.log("Sensor added successfully!");
               navigate("/MySensorsPage");
