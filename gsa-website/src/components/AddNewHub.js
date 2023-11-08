@@ -1,30 +1,80 @@
-// AddHubPage.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, set, update } from "firebase/database";
+import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
+import { Form, Button, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import Authenticate from './Authenticate';
 
-export default function AddNewHub() {
-  const [hubName, setHubName] = useState('');
+const AddNewHub = () => {
+  const [hubName, setHubName] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleHubNameChange = (e) => {
-    setHubName(e.target.value);
-  };
+  const database = getDatabase();
+  const auth = getAuth();
+  let navigate = useNavigate();
+  const { authUser } = Authenticate();
 
-  const handleHubNameSubmit = (e) => {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Get the user's UID
+        const userUid = user.uid;
+        
+        // Handle userUid or store it in state if needed
+      }
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  const AddingHub = async (e) => {
     e.preventDefault();
-    // Handle the submission, e.g., save the hub name to your database
-    console.log('Hub Name:', hubName);
-    // You can use Firebase, Axios, or other methods to store the hub name
+
+    if (authUser) {
+      // Get the user's UID from the authUser object
+      const userUid = authUser.uid;
+
+      update(ref(database, `Users/${userUid}`), {
+        [hubName]: { name: hubName }
+      })
+
+        .then(() => {
+          console.log("Hub Name added successfully!");
+          navigate("/MySensorsPage");
+        })
+        .catch((error) => {
+          console.error("Error adding Hub Name: ", error);
+        });
+    } else {
+      setError("You must be logged in to add a hub.");
+    }
   };
 
   return (
-    <div>
-      <h2>Add New Hub</h2>
-      <form onSubmit={handleHubNameSubmit}>
-        <label>
-          Hub Name:
-          <input type="text" value={hubName} onChange={handleHubNameChange} />
-        </label>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <>
+      <div className="p-4 box">
+        <h2 className="mb-3">Add New Hub</h2>
+        {error && <Alert variant="danger">{error}</Alert>}
+        <Form onSubmit={AddingHub}>
+
+          <Form.Group className="mb-3" controlId="formHubName">
+            <Form.Control
+              type="hubName"
+              placeholder="Hub Name"
+              value={hubName}
+              onChange={(e) => setHubName(e.target.value)}
+            />
+          </Form.Group>
+
+          <div className="d-grid gap-2">
+            <Button type="submit" disabled={loading}>Submit</Button>
+          </div>
+        </Form>
+      </div>
+    </>
   );
-}
+};
+
+export default AddNewHub;

@@ -18,10 +18,6 @@ export default function MySensorsPage() {
         signOut(auth)
           .then(() => {
 
-            set(ref(database, 'Users/' + 'Current User'), {  // adds user information to realtime database
-                UID: "-"
-            })
-
             console.log("Logged Out");
             navigate("/")//Logging out and going back to landing page
           })
