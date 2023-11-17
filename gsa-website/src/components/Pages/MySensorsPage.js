@@ -11,7 +11,8 @@ import { signOut } from "firebase/auth";
 import { auth } from '../../firebase';
 import Authenticate from '../Authenticate';
 import { useNavigate } from "react-router-dom";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, update } from "firebase/database";
+import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
 import {  Stack, Grid, Paper } from '@mui/material'
 
 import Button from '@mui/material/Button';
@@ -45,11 +46,16 @@ const MySensorsPage = () => {
     const [sensorHubName, setSensorHubName] = useState("");
     const [fileBase64, setFileBase64] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
+    const [error, setError] = useState("");
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
 
     const [userHubNames, setUserHubNames] = useState(["Hub_1"]);
     let addedHubName; 
+
+    const database = getDatabase();
+    const firestore = getFirestore();
+    const { authUser } = Authenticate();  
 
     const [hubCardAmount, setHubCardAmount] = useState(1);
     const [openHubModal, setOpenHubModal] = React.useState(false);
@@ -80,11 +86,43 @@ const MySensorsPage = () => {
   
   }; 
 
+  const AddingHub = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    if (authUser) {
+      // Get the user's UID from the authUser object
+      const userUid = authUser.uid;
+
+      update(ref(database, `Users/${userUid}`), {   // add HUB to UID folder in Users
+        [hubName]: { Serial: hubSerial }
+      })
+
+      const serialMapDocRef = doc(collection(firestore, 'SERIAL_MAP'), hubSerial);  // add HUB to SERIAL_MAP
+        await setDoc(serialMapDocRef, {
+          HubName: hubName,
+          User: userUid
+        })
+
+        .then(() => {
+          console.log("Hub Name added successfully!");
+          navigate("/MySensorsPage");
+        })
+        .catch((error) => {
+          console.error("Error adding Hub Name: ", error);
+        });
+    } else {
+      setError("You must be logged in to add a hub.");
+    }
+  };
+
   const handleAddingSensor = () => {
     const addedHubName = hubName || `Hub_${hubCardAmount}`;
     setUserHubNames([...userHubNames, addedHubName]);
     setHubCardAmount(hubCardAmount + 1);
     setHubName('');
+    
   
   };
 
@@ -203,7 +241,7 @@ const MySensorsPage = () => {
 
               <DialogActions>
                 <Button onClick={handleCloseHubModal}>Cancel</Button>
-                <Button onClick={() => { handleCloseHubModal(); handleAddHubCard(); }}>Add</Button>
+                <Button onClick={() => { handleCloseHubModal(); AddingHub(); handleAddHubCard(); }}>Add</Button>
               </DialogActions>
           </Dialog>
         </React.Fragment>
