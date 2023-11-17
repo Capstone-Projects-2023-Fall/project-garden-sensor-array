@@ -10,7 +10,6 @@ import Home from './components/Pages/Home';
 import HelpPage from './components/Pages/HelpPage';
 import MissionPage from './components/Pages/MissionPage';
 import AccountPage from './components/Pages/AccountPage';
-import Work from './components/Pages/Work';
 
 
 
@@ -36,7 +35,6 @@ function App() {
         <Route path="/HelpPage" element={<HelpPage />} /> 
         <Route path="/MissionPage" element={<MissionPage />} /> 
         <Route path="/AccountPage" element={<AccountPage />} /> 
-        <Route path="/Work" element={<Work />} />
    
 
       </Routes>

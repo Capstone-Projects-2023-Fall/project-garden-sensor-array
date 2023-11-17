@@ -11,7 +11,7 @@ import { signOut } from "firebase/auth";
 import { auth } from '../../firebase';
 import Authenticate from '../Authenticate';
 import { useNavigate } from "react-router-dom";
-import { getDatabase, ref, set, update } from "firebase/database";
+import { getDatabase, ref, set, get, update } from "firebase/database";
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
 import {  Stack, Grid, Paper } from '@mui/material'
 
@@ -77,6 +77,7 @@ const MySensorsPage = () => {
       setOpenSensorModal(false);
   };
 
+  /* Handles AddHUBCard and adds corresponding data to the Database */
   const handleAddHubCard = () => {
     const addedHubName = `Name: ${hubName} ${hubSerial} || Hub_${hubCardAmount}`;
     setUserHubNames([...userHubNames, addedHubName]);
@@ -117,13 +118,60 @@ const MySensorsPage = () => {
     }
   };
 
+  /* Handles AddSensorCard and adds corresponding data to the Database */
   const handleAddingSensor = () => {
-    const addedHubName = hubName || `Hub_${hubCardAmount}`;
-    setUserHubNames([...userHubNames, addedHubName]);
-    setHubCardAmount(hubCardAmount + 1);
     setHubName('');
-    
+    setSensorName('');
+    setSensorSerial('');
   
+  };
+
+  const AddingSensor = async (e) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    if (authUser) {   
+      const userUid = authUser.uid;  // get user uid
+
+      const hubRef = ref(database, `Users/${userUid}/${hubName}`);  // get reference to User
+      
+      // Fetch data to check if the hub exists
+      get(hubRef) 
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            // Hub exists, proceed with the update
+            update(ref(database, `Users/${userUid}/${hubName}`), {
+              [sensorName]: { sensorSerial }
+            })
+
+            // Sensor information added to SERIAL_MAP
+            const serialMapDocRef = doc(collection(firestore, 'SERIAL_MAP'), sensorSerial);
+              setDoc(serialMapDocRef, {
+                SensorName: sensorName,
+                User: userUid
+              })
+
+            .then(() => {
+              console.log("Sensor added successfully!");
+              navigate("/MySensorsPage");
+            })
+            .catch((error) => {
+              console.error("Error adding Sensor: ", error);
+              setError("Error adding Sensor");
+            });
+          } else {
+            // Returns if HUB does not exist
+            setError("Hub doesn't exist");
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking for Hub: ", error);
+          setError("Error checking for Hub");
+        });
+    } else {
+      setError("You must be logged in to add a sensor.");
+    }
   };
 
   function convertFile(files) {
@@ -266,7 +314,7 @@ const MySensorsPage = () => {
               
               <DialogActions>
                 <Button onClick={handleCloseSensorModal}>Cancel</Button>
-                <Button onClick={handleCloseSensorModal}>Add</Button>
+                <Button onClick={() => {handleCloseSensorModal(); AddingSensor(); handleAddingSensor(); }}>Add</Button>
               </DialogActions>
           </Dialog>
         </React.Fragment>
