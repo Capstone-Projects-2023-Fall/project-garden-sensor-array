@@ -40,6 +40,8 @@ const MySensorsPage = () => {
 
     const [hubName, setHubName] = useState("");
     const [sensorName, setSensorName] = useState("");
+    const [hubSerial, setHubSerial] = useState("");
+    const [sensorSerial, setSensorSerial] = useState("");
     const [sensorHubName, setSensorHubName] = useState("");
     const [fileBase64, setFileBase64] = useState('');
     const [selectedFile, setSelectedFile] = useState(null);
@@ -48,9 +50,6 @@ const MySensorsPage = () => {
 
     const [userHubNames, setUserHubNames] = useState(["Hub_1"]);
     let addedHubName; 
-
-  
-
 
     const [hubCardAmount, setHubCardAmount] = useState(1);
     const [openHubModal, setOpenHubModal] = React.useState(false);
@@ -73,10 +72,11 @@ const MySensorsPage = () => {
   };
 
   const handleAddHubCard = () => {
-    const addedHubName = hubName || `Hub_${hubCardAmount}`;
+    const addedHubName = `Name: ${hubName} ${hubSerial} || Hub_${hubCardAmount}`;
     setUserHubNames([...userHubNames, addedHubName]);
     setHubCardAmount(hubCardAmount + 1);
     setHubName('');
+    setHubSerial('');
   
   }; 
 
@@ -195,8 +195,10 @@ const MySensorsPage = () => {
               <DialogTitle>Add New Hub</DialogTitle>
 
               <DialogContent>
-              <DialogContentText>Add another hub to your account.</DialogContentText>
+              <DialogContentText>Add HUB to Account:</DialogContentText>
               <TextField autoFocus margin="dense" id="hubName" variant="outlined" label="Hub Name" type="hubName" fullWidth value={hubName} onChange={(e) => setHubName(e.target.value)}/>
+              <DialogContentText>Add HUB Serial:</DialogContentText>
+              <TextField autoFocus margin="dense" id="hubSerial" variant="outlined" label="Hub Serial" type="hubSerial" fullWidth value={hubSerial} onChange={(e) => setHubSerial(e.target.value)}/>
               </DialogContent>
 
               <DialogActions>
@@ -216,13 +218,14 @@ const MySensorsPage = () => {
 
 
               <DialogContent>
-                  <Stack spacing={2} margin={2}>
-                      <DialogContentText>Name of Hub to add Sensor to:</DialogContentText>
-                      <TextField autoFocus margin="dense" id="sensorHubName" variant="outlined" label="Hub Name" type="sensorHubName" fullWidth> value={sensorHubName} onChange={(e) => setSensorHubName(e.target.value)}</TextField>
-                      <DialogContentText>Name of New Sensor:</DialogContentText>
-                      <TextField autoFocus margin="dense" id="sensorName" variant="outlined" label="Sensor Name" type="sensorName" fullWidth> value={sensorName} onChange={(e) => setSensorName(e.target.value)}</TextField>
-                  </Stack>
+                <DialogContentText>Connect Sensor to Hub:</DialogContentText>
+                <TextField autoFocus margin="dense" id="hubName" variant="outlined" label="Hub Name" type="hubName" fullWidth value={hubName} onChange={(e) => setHubName(e.target.value)}/>
+                <DialogContentText>Sensor Name:</DialogContentText>
+                <TextField autoFocus margin="dense" id="sensorName" variant="outlined" label="Sensor Name" type="sensorName" fullWidth value={sensorName} onChange={(e) =>setSensorName(e.target.value)}/>
+                <DialogContentText>Sensor Serial:</DialogContentText>
+                <TextField autoFocus margin="dense" id="sensorSerial" variant="outlined" label="Sensor Serial" type="sensorSerial" fullWidth value={sensorSerial} onChange={(e) => setSensorSerial(e.target.value)}/>
               </DialogContent>
+              
               <DialogActions>
                 <Button onClick={handleCloseSensorModal}>Cancel</Button>
                 <Button onClick={handleCloseSensorModal}>Add</Button>
