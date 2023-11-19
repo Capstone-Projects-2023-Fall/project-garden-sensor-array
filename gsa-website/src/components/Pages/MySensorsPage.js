@@ -50,6 +50,8 @@ const MySensorsPage = () => {
     const fileInputRef = useRef(null);
     const navigate = useNavigate();
 
+    const [hubDialogTitle, setHubDialogTitle] = useState('Add New Sensor');
+
     const [userHubNames, setUserHubNames] = useState(["Hub_1"]);
     let addedHubName; 
 
@@ -74,6 +76,7 @@ const MySensorsPage = () => {
     };
   
     const handleCloseSensorModal = () => {
+      setHubDialogTitle("Add New Sensor")
       setOpenSensorModal(false);
   };
 
@@ -108,7 +111,7 @@ const MySensorsPage = () => {
 
         .then(() => {
           console.log("Hub Name added successfully!");
-          navigate("/MySensorsPage");
+          handleCloseHubModal();
         })
         .catch((error) => {
           console.error("Error adding Hub Name: ", error);
@@ -122,8 +125,7 @@ const MySensorsPage = () => {
   const handleAddingSensor = () => {
     setHubName('');
     setSensorName('');
-    setSensorSerial('');
-  
+    setSensorSerial('');  
   };
 
   const AddingSensor = async (e) => {
@@ -154,19 +156,19 @@ const MySensorsPage = () => {
 
             .then(() => {
               console.log("Sensor added successfully!");
-              navigate("/MySensorsPage");
+              handleCloseSensorModal();
             })
             .catch((error) => {
-              console.error("Error adding Sensor: ", error);
-              setError("Error adding Sensor");
+              console.log("Error checking for Hub: ", error);
+              setError("Hub doesn't exist: " + error.message);
             });
           } else {
-            // Returns if HUB does not exist
-            setError("Hub doesn't exist");
+            // Changes Title when Hub doesn't exist
+            setHubDialogTitle("Hub doesn't exist, try again.")
           }
         })
         .catch((error) => {
-          console.error("Error checking for Hub: ", error);
+          console.log("Error checking for Hub: ", error);
           setError("Error checking for Hub");
         });
     } else {
@@ -289,7 +291,7 @@ const MySensorsPage = () => {
 
               <DialogActions>
                 <Button onClick={handleCloseHubModal}>Cancel</Button>
-                <Button onClick={() => { handleCloseHubModal(); AddingHub(); handleAddHubCard(); }}>Add</Button>
+                <Button onClick={() => { AddingHub(); handleAddHubCard(); }}>Add</Button>
               </DialogActions>
           </Dialog>
         </React.Fragment>
@@ -300,7 +302,7 @@ const MySensorsPage = () => {
               Add Sensor
           </Button>
           <Dialog open={openSensorModal} onClose={handleCloseSensorModal} fullWidth>
-              <DialogTitle>Add New Sensor</DialogTitle>
+              <DialogTitle>{hubDialogTitle}</DialogTitle>
 
 
               <DialogContent>
@@ -314,7 +316,7 @@ const MySensorsPage = () => {
               
               <DialogActions>
                 <Button onClick={handleCloseSensorModal}>Cancel</Button>
-                <Button onClick={() => {handleCloseSensorModal(); AddingSensor(); handleAddingSensor(); }}>Add</Button>
+                <Button onClick={() => { AddingSensor(); handleAddingSensor(); }}>Add</Button>
               </DialogActions>
           </Dialog>
         </React.Fragment>
