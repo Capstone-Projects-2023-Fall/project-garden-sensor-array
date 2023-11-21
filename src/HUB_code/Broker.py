@@ -7,11 +7,15 @@ Attributes:
 import firebase_admin
 import time
 import requests
+import random
 from firebase_admin import credentials
 from firebase_admin import firestore
 from firebase_admin.firestore import SERVER_TIMESTAMP
 from HUB_Class import HUB
 from firebase_admin import db
+import asyncio
+import time
+from bleak import BleakScanner, BleakClient
 
 HUB_ID = 'HUB_1'
 
@@ -48,32 +52,59 @@ def check_connection():
     except requests.ConnectionError:
         return False 
 
-if __name__ == "__main__":
+async def main():
     while(not check_connection()):
         print("hub offline")
-        
-    cred = credentials.Certificate('cred.json')
-    app = firebase_admin.initialize_app(cred, {
-        'databaseURL': "https://gardensensortest-default-rtdb.firebaseio.com"
-    })
+        time.sleep(5)
+
+    cred = credentials.Certificate('/home/garden/hub_code/cred.json')
+    app = firebase_admin.initialize_app(cred)
 
     fs = firestore.client()
 
-    ref = db.reference('Users/Current User/UID')
-    print(ref.get())  # testing purposes
-    uid = ref.get()  # gets current user uid, use this for updating HUB field
-
     doc_ref = fs.collection("HUBS_ONLINE").document(HUB_ID)
-    
+
     doc_ref.set(
-        HUB(1, 2, 3, 4, 5, SERVER_TIMESTAMP).to_fb()
+        HUB(1, HUB_ID, 3, 4, 5, SERVER_TIMESTAMP).to_fb()
     )
+
+    SLEEP_INTERVAL_ADV  = 1
+    SLEEP_INTERVAL_POLL = 10
+
+    SENSOR_INFO_CHAR_UUID = '0000181b-0000-1000-8000-00805f9b34fb'
+
+    async with BleakScanner() as scanner:
+        async for bd, ad in scanner.advertisement_data():
+            if ad.local_name == 'SCU':
+                client = BleakClient(bd)
+                print('SCU')
+                await client.connect(timeout=100)
+                print('connected!')
+                break
+
+    characteristics = client.services.characteristics
+    for char in characteristics:
+        if characteristics[char].uuid == SENSOR_INFO_CHAR_UUID:
+            sensor_info_char = characteristics[char] 
 
     while(True):
         while(not check_connection()):
             print('hub offline')
             time.sleep(5)
-            
-        doc_ref.update({"Time" : SERVER_TIMESTAMP})
+
+        sensor_data = await client.read_gatt_char(sensor_info_char)
+        data = sensor_data.decode().split(',')
+        
+        temp = data[1] 
+        moist = data[0]
+        sun = data[2]
+        doc_ref.update(
+                HUB(1, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
+        )
+
         print("updating...")
-        time.sleep(15)
+        time.sleep(10)
+        
+if __name__ == "__main__":
+    asyncio.run(main())
+    

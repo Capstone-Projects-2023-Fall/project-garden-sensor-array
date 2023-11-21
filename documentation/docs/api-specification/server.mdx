@@ -1,3 +1,90 @@
-# SCU Main Doc
+---
+title: Data Structures
+sidebar_position: 2
+---
 
-<a target="_blank" href={"/doxygen/html/index.html"}> Click here for docs </a>
+# Packet Information
+
+## Hardware
+
+### SCU
+**Disc:**
+ - Information sent from the SCU to the HUB
+
+**Structure:**
+
+String 
+- formatted as *Soil, Temperature, Lux*
+
+
+    Soil: 16bit int
+    Teemperature: float
+    Lux: float
+
+
+    
+
+**Notes:**
+- Comma delimited 
+- Used to report data from individual SCU's to centralized HUB's
+- Sent every Δt
+
+### HUB
+**Disc:** 
+ - Information sent from the HUB to the Database
+
+**Structure:**
+JSON
+
+    sensorID: int
+    HUBID: int
+    Temperature: float
+    Moisture: int
+    Lux: float
+
+
+**Notes:**
+- Sent via function call *'to_fb()'* (Firebase library function)
+- *sensorID* and *HUBID* are unique per sensor/HUB 
+
+## Firebase
+
+**User**
+
+**Structure:**
+Struct
+
+    UID: String
+    Email: String
+    Username: String
+    HubName: String
+    - SensorName: String
+
+
+**Notes:**
+- Used to store user information
+
+**Structure:**
+Struct
+
+    HubName: String
+        - SerialNumber: String
+        - User: String
+    SensorName: String:
+        - SerialNumber: String
+        - User: String
+
+**Notes:**
+
+
+## pyDocs
+<a target="_blank" href={"/doxygen/html/index.html"}> SCU docs </a>
+<br></br>
+<br></br>
+<a target="_blank" href={"/pydoc/Broker.html"}> Broker.py docs </a>
+<br></br>
+<br></br>
+<a target="_blank" href={"/pydoc/Sensor.html"}> Sensor.py docs </a>
+<br></br>
+<br></br>
+<a target="_blank" href={"/pydoc/Database.html"}> Database.py docs</a>

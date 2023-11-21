@@ -47,11 +47,17 @@ float    lux             = 0;
 // btstack magic, it enables ble
 #define APP_AD_FLAGS 0x06
 
+// if you want to change the local name make sure you adjust the hex value before it!
+// right now it is 0x04 because it must be equal to the number of elements that follow it
+// aka if you add a letter to the name you would have to change the value to 0x05
+// similarly you would have to decrease it if you were shortening the name.
+// this is because the number at the beginning of each line tells the client
+// how many bytes of the advertisement to read
 static uint8_t adv_data[] = {
     // Flags general discoverable
     0x02, BLUETOOTH_DATA_TYPE_FLAGS, APP_AD_FLAGS,
     // Name
-    0x17, BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME, 'P', 'i', 'c', 'o', ' ', '0', '0', ':', '0', '0', ':', '0', '0', ':', '0', '0', ':', '0', '0', ':', '0', '0',
+    0x04, BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME, 'S', 'C', 'U',
     0x03, BLUETOOTH_DATA_TYPE_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS, 0x1a, 0x18,
 };
 
@@ -169,7 +175,7 @@ static uint16_t att_read_callback(hci_con_handle_t connection_handle, uint16_t a
     if (att_handle == ATT_CHARACTERISTIC_0000181b_0000_1000_8000_00805F9B34FB_01_VALUE_HANDLE) { // it's beautiful
         // a string is like a blob, right?
         printf("%s\n", sensor_data);
-        return att_read_callback_handle_blob((const uint8_t *)sensor_data, sensor_data_length, offset, buffer, buffer_size);
+        return att_read_callback_handle_blob((const uint8_t *)sensor_data, strlen(sensor_data), offset, buffer, buffer_size);
     }
 
     return 0;

@@ -1,4 +1,5 @@
 ---
+title: Frontend Functions
 sidebar_position: 1
 description: Descriptions of the frontend classes, data-fields, and methods.
 ---
