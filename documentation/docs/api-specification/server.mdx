@@ -58,20 +58,25 @@ Struct
     Email: String
     Username: String
     HubName: String
-    - SensorName: String
+    - HubSerial: String
+      - SensorName: String
+        - SensorSerial: String
 
 
 **Notes:**
 - Used to store user information
 
+
+**Serial Map**
+
 **Structure:**
 Struct
 
-    HubName: String
-        - SerialNumber: String
+    HubSerial: String
+        - HubName: String
         - User: String
-    SensorName: String:
-        - SerialNumber: String
+    SensorSerial: String:
+        - SensorName: String
         - User: String
 
 **Notes:**
