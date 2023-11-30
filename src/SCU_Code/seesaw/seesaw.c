@@ -58,7 +58,31 @@ bool seesaw_read(uint8_t reghigh, u_int8_t reglow, uint8_t *buffer, uint8_t num)
 }
 
 uint16_t seesaw_touch_read(uint8_t pin) {
-    return 1;
+    uint8_t buffer[2]; // where data read by the read function will be stored
+    uint8_t p = pin; // offset from the touch channel register...will be 0 for us
+    uint16_t ret = 65535; // something has gone wrong if this is the return value
+
+    // not sure this loop is necessary
+    for(uint8_t retry = 0; retry < 5; retry++) {
+        if( seesaw_read(SEESAW_TOUCH_BASE, SEESAW_TOUCH_CHANNEL_OFFSET + p, buffer, 2) ) {
+            // bit shift to get the bytes from buffer into ret in the correct orientation
+            // the high byte is stored at buffer[0] and the low byte at buffer[1]
+            // for example buffer[0] = 1101 0101 and buffer[1] = 0011 1100
+            // we want ret to = 1101 0101 0011 1100
+            // to do this we pad the high byte (buffer[0]) with an empty byte by shifting
+            // it to the left 8 bits. so buffer[0] = 1101 0101 0000 0000
+            // all that's left to do now is a logical or with buffer[1] to copy the rest of the bits
+            //      1101 0101 0000 0000
+            //     |          0011 1100
+            //     --------------------
+            //    = 1101 0101 0011 1100 = ret
+            // success!
+            ret = ((uint16_t)buffer[0] << 8) | buffer[1];
+            break;
+        }
+    }
+
+    return ret;
 }
 
 float seesaw_get_temp() {
