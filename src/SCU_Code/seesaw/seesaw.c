@@ -34,7 +34,27 @@ bool seesaw_hoptoit() {
 }
 
 bool seesaw_read(uint8_t reghigh, u_int8_t reglow, uint8_t *buffer, uint8_t num) {
-    return true;
+    // same as in the above function!
+    // this time we take the registers in as arguments
+    // so that we can use this function to read either 
+    // from the temperature registers or moisture (touch) register
+    uint8_t prefix[2];
+    prefix[0] = (uint8_t)reghigh;
+    prefix[1] = (uint8_t)reglow;
+    
+    // write the prefix to the seesaw. tell it what register we need to read from
+    if( i2c_write_blocking(i2c0, SEESAW_ADDR, prefix, 2, false) == PICO_ERROR_GENERIC ) {
+        return false; // couldn't write for some reason
+    }
+
+    sleep_ms(5); // im waiting...
+    
+    // read the data into buffer!
+    if( i2c_read_blocking(i2c0, SEESAW_ADDR, buffer, num, false) == PICO_ERROR_GENERIC ) {
+        return false; // read failed for some reason
+    }
+
+    return true; // now this is getting interesting 
 }
 
 uint16_t seesaw_touch_read(uint8_t pin) {
