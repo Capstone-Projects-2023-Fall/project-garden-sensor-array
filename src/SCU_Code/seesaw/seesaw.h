@@ -16,7 +16,7 @@
 #define SEESAW_TOUCH_CHANNEL_OFFSET 16
 #define SEESAW_HARDWARE_ID          0x55
 
-bool seesaw_reset();
+bool seesaw_hoptoit();
 // bool seesaw_read(uint8_t reghigh, u_int8_t reglow, uint8_t *buffer, uint8_t num);
 uint16_t seesaw_touch_read(uint8_t pin);
 float seesaw_get_temp();
