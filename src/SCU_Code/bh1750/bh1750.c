@@ -10,6 +10,14 @@
 
 #endif
 
+// like private variables or something
+uint8_t BH1750_MODE;
+uint8_t BH1750_MTREG;
+const float BH1750_CONV_FACTOR = 1.2;
+
+uint64_t last_read_timestamp;
+uint64_t start_time;
+
 // initialize the bh1750 sensor
 // has to be called before lux can be read
 bool bh1750_makeamove(uint8_t mode) {

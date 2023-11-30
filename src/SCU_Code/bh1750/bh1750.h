@@ -9,13 +9,6 @@
 #define BH1750_MTREG_MIN        31
 #define BH1750_MTREG_MAX        254
 
-uint8_t BH1750_MODE;
-uint8_t BH1750_MTREG;
-const float BH1750_CONV_FACTOR = 1.2;
-
-uint64_t last_read_timestamp;
-uint64_t start_time;
-
 // various modes for the bh1750
 // taken from another library but im keeping
 // the original comments since they're helpful 
