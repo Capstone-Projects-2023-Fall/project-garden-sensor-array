@@ -10,6 +10,8 @@
 
 #endif
 
+// initialize the bh1750 sensor
+// has to be called before lux can be read
 bool bh1750_makeamove(uint8_t mode) {
     uint8_t err; // check return value of i2c write
 
@@ -36,8 +38,8 @@ void bh1750_setMTreg(uint8_t MTreg) {
 
     // the following set of bit shifts and writes are just bh1750 hardware semantics
     // basically its specsheet stuff that i took from the reference library
-    // obtains a byte by doing a logical or on the MTreg value and a bit string
-    // then write it to the bh1750
+    // --obtains a byte by doing a logical or on the MTreg value and a bit string
+    // --then writes it to the bh1750
     uint8_t value = (0b01000 << 3) | (MTreg >> 5);
     i2c_write_blocking(I2C_PORT, BH1750_ADDR, &value, 1, false);
     
@@ -51,8 +53,29 @@ void bh1750_setMTreg(uint8_t MTreg) {
     BH1750_MTREG = MTreg; // need to keep track of this
 }
 
+// now that's what im talking about!
 float bh1750_read_lux() {
-    return 1.0;
+    uint8_t buffer[2]; // here we go again...
+    float level = -1.0; // this should be different when the function returns!
+
+    // read two bytes into the buffer
+    // don't need to set up any registers because setMTreg should have been called by this point
+    i2c_read_blocking(I2C_PORT, BH1750_ADDR, buffer, 2, false);
+    unsigned int tmp = 0;
+    tmp = (buffer[0] << 8) | buffer[1]; // -_-
+    level = tmp;
+
+    last_read_timestamp = us_to_ms(time_us_64()); // still not used but let's keep it around!
+
+    // some kind of conversion i guess
+    // only necessary if not using the default MTreg
+    // which i dont think should apply to us
+    if (BH1750_MTREG != BH1750_DEFAULT_MTREG) {
+        level *= (float)((uint8_t)BH1750_DEFAULT_MTREG / (float)BH1750_MTREG);
+    }
+
+    level /= BH1750_CONV_FACTOR; // simple conversion
+    return level; // there it is
 }
 
 int main()
