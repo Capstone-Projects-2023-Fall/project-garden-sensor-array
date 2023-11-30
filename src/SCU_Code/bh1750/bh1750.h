@@ -13,6 +13,12 @@ uint8_t BH1750_MODE;
 uint8_t BH1750_MTREG;
 const float BH1750_CONV_FACTOR = 1.2;
 
+uint64_t last_read_timestamp;
+uint64_t start_time;
+
+// various modes for the bh1750
+// taken from another library but im keeping
+// the original comments since they're helpful 
 enum Mode {
     // same as Power Down
     UNCONFIGURED = 0,
@@ -30,6 +36,6 @@ enum Mode {
     ONE_TIME_LOW_RES_MODE = 0x23
 };
 
-bool bh1750_starttheparty(uint8_t mode);
+bool bh1750_makeamove(uint8_t mode);
 void bh1750_setMTreg(uint8_t MTreg);
 float bh1750_read_lux();
