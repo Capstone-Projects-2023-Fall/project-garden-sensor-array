@@ -3,6 +3,7 @@
 // I2C defines
 #ifndef _I2C_
 
+#include "hardware/i2c.h"
 #define I2C_PORT i2c0
 #define I2C_SDA 8
 #define I2C_SCL 9
@@ -98,31 +99,4 @@ float seesaw_get_temp() {
     int32_t ret = ((uint32_t)buffer[0] << 24) | ((uint32_t)buffer[1] << 16) |
                 ((uint32_t)buffer[2] << 8) | (uint32_t)buffer[3];
     return (1.0 / (1UL << 16)) * ret; // floating point conversion
-}
-
-int main() {
-    stdio_init_all();
-
-    // I2C Initialisation. Using it at 400Khz.
-    i2c_init(I2C_PORT, 100*1000);
-    
-    gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
-    gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
-    gpio_pull_up(I2C_SDA);
-    gpio_pull_up(I2C_SCL);
-    seesaw_hoptoit();
-    sleep_ms(250);
-
-    uint16_t moisture = 0;
-    float tempC = 0;
-    while (1) {
-        moisture = seesaw_touch_read(0);
-        tempC = seesaw_get_temp();
-        printf("moisture = %u\ntemp = %f\n", moisture, tempC);
-
-        sleep_ms(1000);
-    }
-    
-
-    return 0;
 }
