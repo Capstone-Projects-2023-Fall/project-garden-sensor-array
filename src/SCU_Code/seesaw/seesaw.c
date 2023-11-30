@@ -1,9 +1,13 @@
 #include "seesaw.h"
 
 // I2C defines
+#ifndef _I2C_
+
 #define I2C_PORT i2c0
 #define I2C_SDA 8
 #define I2C_SCL 9
+
+#endif
 
 bool seesaw_hoptoit() {
     // tell the seesaw what register we want to write
@@ -86,7 +90,14 @@ uint16_t seesaw_touch_read(uint8_t pin) {
 }
 
 float seesaw_get_temp() {
-    return 1.0;
+    uint8_t buffer[4]; // same deal as above
+    seesaw_read(SEESAW_STAUS_BASE, SEESAW_STATUS_TEMP, buffer, 4); // looks familiar
+    // looks scary but its the same as in the above function!
+    // its just that there are four bytes this time so the highest
+    // byte needs to be padded with 3 zero bytes, and so on
+    int32_t ret = ((uint32_t)buffer[0] << 24) | ((uint32_t)buffer[1] << 16) |
+                ((uint32_t)buffer[2] << 8) | (uint32_t)buffer[3];
+    return (1.0 / (1UL << 16)) * ret; // floating point conversion
 }
 
 int main() {
@@ -99,9 +110,19 @@ int main() {
     gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
     gpio_pull_up(I2C_SDA);
     gpio_pull_up(I2C_SCL);
+    seesaw_hoptoit();
+    sleep_ms(250);
 
+    uint16_t moisture = 0;
+    float tempC = 0;
+    while (1) {
+        moisture = seesaw_touch_read(0);
+        tempC = seesaw_get_temp();
+        printf("moisture = %u\ntemp = %f\n", moisture, tempC);
 
-    puts("Hello, world!");
+        sleep_ms(1000);
+    }
+    
 
     return 0;
 }
