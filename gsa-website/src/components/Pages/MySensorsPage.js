@@ -4,7 +4,7 @@ import Layout from '../Format/Layout';
 import CardData from "../CardData";
 import CardData2 from '../CardData2';
 import { Box, Typography, Card, CardContent } from "@mui/material";
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 
 import { signOut } from "firebase/auth"; 
@@ -24,45 +24,43 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconBox1 from '../IconBox1';
 import IconBox2 from '../IconBox2';
-
-
-/* 
-For Milestone 2 
-    * Working Navigation Bar - clickable Links, no issues at all, and pretty (bonus for leaf plant overhead)
-        * glowing when you click on each tab - bonus for staying glowed on when active on it 
-    * Working Footer - simple, same color as navbar, provide icons and links to github, docusauras, and on the side, have logout button + who's currently signed in 
-    * Cards show real hub data - but when clicking on (add hub or add sensor buttons - you hard code fake data ) to add another and show hub 2's data 
-    * modals for the add new sensors 
-*/
+import HubPhoto from '../HubPhoto';
+import ParentData from '../ParentData';
 
 
 
-const MySensorsPage = () => {
 
+
+const MySensorsPage = () => { 
+
+  
+  //use state variables - entered by user and recorded through modals 
     const [hubName, setHubName] = useState("");
     const [sensorName, setSensorName] = useState("");
     const [hubSerial, setHubSerial] = useState("");
     const [sensorSerial, setSensorSerial] = useState("");
     const [sensorHubName, setSensorHubName] = useState("");
-    const [fileBase64, setFileBase64] = useState('');
-    const [selectedFile, setSelectedFile] = useState(null);
+
+    //constants for functionality 
     const [error, setError] = useState("");
-    const fileInputRef = useRef(null);
     const navigate = useNavigate();
-
-    const [hubDialogTitle, setHubDialogTitle] = useState('Add New Sensor');
-
-    const [userHubNames, setUserHubNames] = useState(["Hub_1"]);
-    let addedHubName; 
-
     const database = getDatabase();
     const firestore = getFirestore();
     const { authUser } = Authenticate();  
 
-    const [hubCardAmount, setHubCardAmount] = useState(1);
+    //use state variables for the cards shown on page
+    const [userHubNames, setUserHubNames] = useState([""]);
+    const [registeredHubs, setRegisteredHubs] = useState([""]);
+    const [hubCardAmount, setHubCardAmount] = useState('');
+
+    //Modal constants 
     const [openHubModal, setOpenHubModal] = React.useState(false);
-    const [openSensorModal, setOpenSensorModal] = React.useState(false);
+    const [openSensorModal, setOpenSensorModal] = React.useState(false); 
+    const [hubDialogTitle, setHubDialogTitle] = useState('Add New Sensor');
   
+
+
+    //Functionality for opening and closing modals 
     const handleClickOpenHub = () => {
         setOpenHubModal(true);
     };
@@ -80,9 +78,11 @@ const MySensorsPage = () => {
       setOpenSensorModal(false);
   };
 
+
+
   /* Handles AddHUBCard and adds corresponding data to the Database */
   const handleAddHubCard = () => {
-    const addedHubName = `Name: ${hubName} ${hubSerial} || Hub_${hubCardAmount}`;
+    const addedHubName = `Name: ${hubName} ${hubSerial}`;
     setUserHubNames([...userHubNames, addedHubName]);
     setHubCardAmount(hubCardAmount + 1);
     setHubName('');
@@ -176,27 +176,78 @@ const MySensorsPage = () => {
     }
   };
 
-  function convertFile(files) {
-    if (files) {
-      const fileRef = files[0] || "";
-      const fileType = fileRef.type || "";
-      console.log("This file upload is of type:", fileType);
-      const reader = new FileReader();
 
-      reader.onload = function (ev) {
-        // convert it to base64
-        setFileBase64("data:" + fileType + ";base64," + btoa(ev.target.result));
-        setSelectedFile(fileRef);
-      };
 
-      reader.readAsBinaryString(fileRef);
-    }
-  }
+  //Brings you to general Hub Page when clicking the middle section of HubCards
   const handleClickCard = (index) => {
     const hubPage = userHubNames[index];
     
-    navigate(`/Specific-Hub-Page/${hubPage}`);
-  };
+    navigate(`/HubPage`);
+  }; 
+
+
+
+  //Gets the name of the hubs for the specific user signed in, and uses the hub names to name each card 
+  const FetchHubs = useCallback(async() => { 
+    try {
+      if (authUser) {
+        const userUid = authUser.uid;
+        
+        // real-time database, get ref for information under user's account ID 
+        const userRef = ref(database, `Users/${userUid}`);
+        const snapshot = await get(userRef); //get a snapshot
+        if (snapshot.exists()) { //if there's data - proceed 
+          
+          const hubs = snapshot.val(); //data found saved as a const
+          console.log('Hubs:', hubs); //should print out a user's: email, username, and name of hubs 
+  
+          //two variables, one for an array of hubnames, the other for an array of just email + username
+          let nameOfHub, acctInfo; 
+          const acctUser = ['Email', 'Username'];
+            
+          nameOfHub = Object.keys(hubs); 
+          nameOfHub = nameOfHub.filter(el => !acctUser.includes(el)); //removes Username + Email, only hub names present 
+          console.log('Hub Names:', nameOfHub); 
+          setRegisteredHubs(nameOfHub); //setting in constant use-state variable
+
+          acctInfo = Object.keys(hubs); 
+          acctInfo = acctInfo.filter(el => acctUser.includes(el));//removes HubNames and gives back an array of only username and email 
+          console.log('User Info:', acctInfo);
+          return nameOfHub
+        } else {
+          console.log('No info found for this user.');
+        }
+      } else {
+        setError('You must be logged in to see hubs.');
+      }
+    } catch (error) {
+      
+    }
+    return [];
+  },[authUser, database, setError]);
+
+
+  //loads all the cards that the user would have - accurately shows what hubs they have registered on firebase, 
+  const LoadCards = async (nameOfHubs) => { 
+    if (nameOfHubs) {
+      setUserHubNames(nameOfHubs);
+      setHubCardAmount(nameOfHubs.length); 
+    }
+  }
+
+  useEffect(() => {
+    const fetchData = async () => {
+      <ParentData />
+      const nameOfHub = await FetchHubs();
+      //await FetchHubs();
+      //await LoadCards();
+      await LoadCards(nameOfHub);
+    };
+  
+    fetchData();
+  }, [FetchHubs]);
+
+
 
 
 
@@ -216,12 +267,14 @@ const MySensorsPage = () => {
                 </Typography>
             </Box>
         </Box>
-        <Box>
+        <Box> 
+
+          
             {Array.from({ length: hubCardAmount }, (_, index) => (
                 <div key={index}>
                     <Card style = {{marginBottom: '46px', marginTop: '46px', cursor: 'pointer' }} > 
-                    <Typography gutterBottom variant='h5' component='div' align="center"> {userHubNames[index]}</Typography>
-                    <Typography gutterBottom variant='h7' component='div' align="center">Sensor Count: </Typography>
+                    <Typography gutterBottom variant='h5' component='div' align="center"> {registeredHubs[index]}</Typography>
+                    <Typography gutterBottom variant='h7' component='div' align="center">Sensors: </Typography>
                         <CardContent style={{ display: 'flex', flexDirection: 'row' }}>
                        
                             <Grid container spacing={2}>
@@ -229,25 +282,7 @@ const MySensorsPage = () => {
                                     <Typography variant="h5" component="div" color="textSecondary" > 
                                         {/* Card {index + 1} Section 1 */}
                                         <div>
-                                        <input
-                                            type="file"
-                                            onChange={(e) => convertFile(e.target.files)}
-                                            style={{ display: 'none' }}
-                                            ref={fileInputRef} />
-                                        <Button
-                                            variant="outlined"
-                                            component="label"
-                                            htmlFor="fileInput"
-                                            style={{ marginRight: '8px' }}
-                                            onClick={() => fileInputRef.current.click()} 
-                                        >
-                                        Choose Photo
-                                        </Button>
-                                        <Box>
-                                            {selectedFile && (
-                                                <img src={fileBase64} alt="Uploaded File" style={{ maxWidth: '100px', maxHeight: '100px' }}/>
-                                            )}
-                                            </Box>
+                                            <HubPhoto /> 
                                         </div>
                                        
                                         

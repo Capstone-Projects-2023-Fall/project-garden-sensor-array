@@ -9,7 +9,8 @@ import AddNewSensor from './components/AddNewSensor';
 import Home from './components/Pages/Home';
 import HelpPage from './components/Pages/HelpPage';
 import MissionPage from './components/Pages/MissionPage';
-import AccountPage from './components/Pages/AccountPage';
+import AccountPage from './components/Pages/AccountPage'; 
+import HubPage from './components/Pages/HubPage';
 
 
 
@@ -34,7 +35,8 @@ function App() {
         <Route path="/Home" element={<Home />} /> 
         <Route path="/HelpPage" element={<HelpPage />} /> 
         <Route path="/MissionPage" element={<MissionPage />} /> 
-        <Route path="/AccountPage" element={<AccountPage />} /> 
+        <Route path="/AccountPage" element={<AccountPage />} />  
+        <Route path="/HubPage" element={<HubPage />} /> 
    
 
       </Routes>
