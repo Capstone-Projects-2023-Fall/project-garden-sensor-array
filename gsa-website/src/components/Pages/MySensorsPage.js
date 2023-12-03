@@ -182,7 +182,7 @@ const MySensorsPage = () => {
   const handleClickCard = (index) => {
     const hubPage = userHubNames[index];
     
-    navigate(`/hubPage`);
+    navigate(`/HubPage`);
   }; 
 
 

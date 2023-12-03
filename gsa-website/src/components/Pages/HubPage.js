@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../Format/Layout';
+import Layout from '../Format/Layout'; 
+import Footer from '../Format/Footer';
 import { useParams } from 'react-router-dom';
 import { get, ref } from 'firebase/database';
 import { getDatabase,  set,  update } from "firebase/database"; 
@@ -119,7 +120,8 @@ const HubPage = () => {
         </Box> 
 
       </Box>  
-    </Box> 
+    </Box>  
+    <Footer />
 
     </>
   );
