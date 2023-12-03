@@ -5,8 +5,8 @@
 
 #include "hardware/i2c.h"
 #define I2C_PORT i2c0
-#define I2C_SDA 8
-#define I2C_SCL 9
+#define I2C_SDA 4
+#define I2C_SCL 5
 
 #endif
 
@@ -22,7 +22,7 @@ bool seesaw_hoptoit() {
     i2c_write_blocking(i2c0, SEESAW_ADDR, prefix, 2, false);
     i2c_write_blocking(i2c0, SEESAW_ADDR, &value, 1, false);
 
-    sleep_ms(250);  // wait a bit to avoid a collision!
+    busy_wait_ms(250);  // wait a bit to avoid a collision!
 
     // Same deal as above, except this time we want to read 
     // from the hardware id register
@@ -31,6 +31,7 @@ bool seesaw_hoptoit() {
     
     // write the register info then read the hardware id
     i2c_write_blocking(i2c0, SEESAW_ADDR, prefix, 2, false);
+    busy_wait_ms(10); // please work
     i2c_read_blocking(i2c0, SEESAW_ADDR, &id, 1, false);
     
     if(id != SEESAW_HARDWARE_ID) return false; // this isn't a seesaw!
@@ -38,7 +39,7 @@ bool seesaw_hoptoit() {
     return true; // this is a seesaw!
 }
 
-bool seesaw_read(uint8_t reghigh, u_int8_t reglow, uint8_t *buffer, uint8_t num) {
+bool seesaw_read(uint8_t reghigh, u_int8_t reglow, uint8_t *buffer, uint8_t num, uint16_t delay) {
     // same as in the above function!
     // this time we take the registers in as arguments
     // so that we can use this function to read either 
@@ -51,8 +52,8 @@ bool seesaw_read(uint8_t reghigh, u_int8_t reglow, uint8_t *buffer, uint8_t num)
     if( i2c_write_blocking(i2c0, SEESAW_ADDR, prefix, 2, false) == PICO_ERROR_GENERIC ) {
         return false; // couldn't write for some reason
     }
-
-    sleep_ms(5); // im waiting...
+    
+    busy_wait_us(delay); // we CANNOT put this thread to sleep
     
     // read the data into buffer!
     if( i2c_read_blocking(i2c0, SEESAW_ADDR, buffer, num, false) == PICO_ERROR_GENERIC ) {
@@ -69,7 +70,7 @@ uint16_t seesaw_touch_read(uint8_t pin) {
 
     // not sure this loop is necessary
     for(uint8_t retry = 0; retry < 5; retry++) {
-        if( seesaw_read(SEESAW_TOUCH_BASE, SEESAW_TOUCH_CHANNEL_OFFSET + p, buffer, 2) ) {
+        if( seesaw_read(SEESAW_TOUCH_BASE, SEESAW_TOUCH_CHANNEL_OFFSET + p, buffer, 2, 3000 + retry * 1000) ) {
             // bit shift to get the bytes from buffer into ret in the correct orientation
             // the high byte is stored at buffer[0] and the low byte at buffer[1]
             // for example buffer[0] = 1101 0101 and buffer[1] = 0011 1100
@@ -92,7 +93,7 @@ uint16_t seesaw_touch_read(uint8_t pin) {
 
 float seesaw_get_temp() {
     uint8_t buffer[4]; // same deal as above
-    seesaw_read(SEESAW_STAUS_BASE, SEESAW_STATUS_TEMP, buffer, 4); // looks familiar
+    seesaw_read(SEESAW_STAUS_BASE, SEESAW_STATUS_TEMP, buffer, 4, 1000); // looks familiar
     // looks scary but its the same as in the above function!
     // its just that there are four bytes this time so the highest
     // byte needs to be padded with 3 zero bytes, and so on

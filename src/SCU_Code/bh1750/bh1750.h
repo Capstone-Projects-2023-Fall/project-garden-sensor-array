@@ -29,6 +29,26 @@ enum Mode {
     ONE_TIME_LOW_RES_MODE = 0x23
 };
 
+/*!
+ * \brief start the bh1750
+ * 
+ * \param mode the mode (resolution) to use for lux readings
+ * \return true if the bh1750 is properly initialized
+ * \return false otherwise
+ */
 bool bh1750_makeamove(uint8_t mode);
-void bh1750_setMTreg(uint8_t MTreg);
+
+/*!
+ * \brief set the MT register of the bh1750
+ * 
+ * \param MTreg value to set the MT register to.
+ *  This will affect the max lux value the sensor can red 
+ */
+bool bh1750_setMTreg(uint8_t MTreg); 
+
+/*!
+ * \brief read lux from bh1750 
+ * 
+ * \return float representing the lux detected. Max value is around 65k by default
+ */
 float bh1750_read_lux();
