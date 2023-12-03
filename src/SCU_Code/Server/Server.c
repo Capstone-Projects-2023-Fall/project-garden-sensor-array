@@ -15,7 +15,7 @@
 #define I2C_SCL 5
 
 // sensor stuff
-// kinda ugly to include them like this
+// a bit unusual to include them like this
 // but im not sure if there is a better way
 #include "../seesaw/seesaw.h"
 #include "../bh1750/bh1750.h"
@@ -31,8 +31,8 @@
 #define APP_AD_FLAGS 0x06
 
 static int  read_sensors = 0;   // set to 1 when there's a connection, 0 if not
-static int  sensors_connected = 0;
-static int  le_notify;   // same deal
+static int  le_notify = 0;   // same deal
+static int  sensors_connected = 0; // set to 1 if sensors are found
 static btstack_timer_source_t heartbeat;
 static hci_con_handle_t con_handle;
 static btstack_packet_callback_registration_t hci_event_callback_registration;
@@ -43,7 +43,7 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
 static uint16_t att_read_callback(hci_con_handle_t con_handle, uint16_t att_handle, uint16_t offset, uint8_t * buffer, uint16_t buffer_size);
 static int att_write_callback(hci_con_handle_t connection_handle, uint16_t att_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
 
-// declarations for our sensor functions
+// sensor function wrappers
 void getASSMsoilmoisture();
 void getASSMtempC();
 void getBH1750lux();
@@ -265,7 +265,7 @@ void write_sensor_data() {
     sensor_data_length = strlen(sensor_data);
 }
 
-// in theory we would use this to get our a unique id 
+// in theory we would use this to get a unique id for our pico 
 // but i like naming all of our SCUs after birds!
 void print_id(pico_unique_board_id_t *id) {
     printf("%x", id->id[0]);
@@ -306,8 +306,6 @@ int main() {
     hci_power_control(HCI_POWER_ON);
     printf("bluetooth running!\n");
 
-    
-    
     // in this state, btstack runs in threadsafe background, so we just have the main thread sleep
     // to prevent the program from exiting
     while(true) {
