@@ -181,6 +181,10 @@ const MySensorsPage = () => {
   //Brings you to general Hub Page when clicking the middle section of HubCards
   const handleClickCard = (index) => {
     const hubPage = userHubNames[index];
+
+    console.log(hubPage)
+    const dataToSend = hubPage;
+    localStorage.setItem('currHub', dataToSend);
     
     navigate(`/HubPage`);
   }; 
@@ -289,15 +293,15 @@ const MySensorsPage = () => {
                                     </Typography>
                                 </Grid>
 
-                                <Grid item xs={4} onClick={handleClickCard}>
+                                <Grid item xs={4} onClick={handleClickCard.bind(null, index)}>
                                     <Typography variant="h5" color="textSecondary" align = 'center'>
-                                        {index + 1 === 1 ? <CardData /> : <CardData2 />}
+                                      <CardData name = {userHubNames[index]}/>
                                     </Typography>
                                 </Grid>
 
                                 <Grid item xs={4}>
                                     <Typography variant="h5" color="textSecondary">
-                                    {index + 1 === 1 ? <IconBox1 /> : <IconBox2 />}
+                                      <IconBox1 />
                                     </Typography>
                                 </Grid>
                             </Grid>
