@@ -83,10 +83,10 @@ const IconBox1 = () => {
     //Temperature Icon
     function TempLogic() { 
         let icon, status;
-        if (hubTemperature === 1 || hubTemperature === 2) { 
+        if (hubTemperature < 0) { 
             icon =  <AcUnitTwoToneIcon  color="warning" sx={{ fontSize: 65 }} />
             status = "Low Temperature";
-        } else if (hubTemperature === 3 || hubTemperature ===  4 || hubTemperature === 5) {
+        } else if (hubTemperature > 0 && hubTemperature < 90) {
             icon = <WbSunnyTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Temperature";
         } else { 
@@ -102,10 +102,10 @@ const IconBox1 = () => {
     //Sunglight Logic
     function SunlightLogic() { 
         let icon, status;  
-        if (hubSunlight === 1 ) { 
+        if (hubSunlight < 100) { 
             icon = <BedtimeTwoToneIcon color="warning"  sx={{ fontSize: 65 }}/> 
             status = "Not Enough Sunlight"; 
-        } else if (hubSunlight === 2 || hubSunlight === 3 || hubSunlight === 4 || hubSunlight === 5) {
+        } else if (hubSunlight > 100 && hubSunlight < 1000) {
             icon = <EmojiObjectsTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Sunlight";
         } else { 
@@ -122,7 +122,7 @@ const IconBox1 = () => {
     function MoistureInfo() {
         let icon, status;
     
-        if (hubMoisture === 1 || hubMoisture === 2) {
+        if (hubMoisture < 100) {
             icon = <WaterDropTwoToneIcon  color="warning" sx={{ fontSize: 65 }}/>;
             status = "Low Moisture";
         } else {
