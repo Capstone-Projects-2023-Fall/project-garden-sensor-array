@@ -1,9 +1,11 @@
 import React from 'react';
 import {Box,Card,CardContent,Typography,Button} from '@mui/material'
 import { getFirestore, collection, doc, setDoc, onSnapshot } from "firebase/firestore";
-import { useState } from "react";
+import { useState, useRef, useEffect} from "react";
+
 import { auth } from '../firebase';
 import Authenticate from './Authenticate';
+import { getDatabase, ref, onValue } from "firebase/database";
 //Temperature
 import AcUnitTwoToneIcon from '@mui/icons-material/AcUnitTwoTone'; //Low Temp - snowflake 
 import WbSunnyTwoToneIcon from '@mui/icons-material/WbSunnyTwoTone'; // Good Temp - sun 
@@ -16,111 +18,119 @@ import BedtimeTwoToneIcon from '@mui/icons-material/BedtimeTwoTone'; // Low Sung
 import EmojiObjectsTwoToneIcon from '@mui/icons-material/EmojiObjectsTwoTone'; // Good Sunlight - lightbulb
 import LightModeTwoToneIcon from '@mui/icons-material/LightModeTwoTone'; // Too much  Sunlight - the sun 
 
+import { query, where, orderBy, getDocs } from "firebase/firestore";
 
-
-
-
-const CardData = () => {
+const CardData = (props) => {
     const [hubTime, setHubTime] = useState('');
     const [hubMoisture, setHubMoisture] = useState('');
     const [hubSunlight, setHubSunlight] = useState('');
     const [hubTemperature, setHubTemperature] = useState('');
+    const [openTemp, setOpenTemp] = useState(false);
+    const [openMoisture, setOpenMoisture] = useState(false);
+    const [openSunlight, setOpenSunlight] = useState(false);
 
+    const db = getFirestore();
 
-    const firestore = getFirestore();
+    const currentDate = new Date();
+    let currDate = new Date();
+    let prevDate = new Date();
+    currDate.setDate(currentDate.getDate());
+    currDate.setHours(23)
+    currDate.setMinutes(59)
+    currDate.setSeconds(59)
 
+    prevDate.setDate(currentDate.getDate() - 1)
+    prevDate.setHours(23)
+    prevDate.setMinutes(59)
+    prevDate.setSeconds(59)
 
-    const unsub = onSnapshot(doc(firestore, "HUBS_ONLINE", "HUB_1"), (doc) => {
-        const hubData = doc.data()
-        if (hubData) {
-            const t = hubData.Time.toDate();
-            const time = t.toLocaleString();
-            setHubTime(time);
+    const currentHub = props.name;
+    console.log(currentHub)
 
-            const s = hubData.Sunlight;
-            setHubSunlight(s);
-
-            const te = hubData.Temperature;
-            setHubTemperature(te);
-
-            const m = hubData.Moisture;
-            setHubMoisture(m);
-        }
-    });
-
-
-
-    //Temperature Icon
-    function TempLogic() { 
-        let icon, status;
-        if (hubTemperature === 1 || hubTemperature === 2) { 
-            icon =  <AcUnitTwoToneIcon />
-            status = "Low Temperature";
-        } else if (hubTemperature === 3 || hubTemperature ===  4 || hubTemperature === 5) {
-            icon = <WbSunnyTwoToneIcon />
-            status = "Good Temperature";
-        } else { 
-            icon =  <LocalFireDepartmentTwoToneIcon />
-            status = "Temperature is too High"; 
-        }
-        return {icon, status};
-    }
-    let { icon: readTempIcon, 
-        status: readTempStatus } = TempLogic();
+    const { authUser } = Authenticate();
+    var q
+     
+    if (authUser) {
+        // Get the user's UID from the authUser object
+        const userUid = authUser.uid;
     
 
-    //Sunglight Logic
-    function SunlightLogic() { 
-        let icon, status;  
-        if (hubSunlight === 1 ) { 
-            icon = <BedtimeTwoToneIcon /> 
-            status = "Not Enough Sunlight"; 
-        } else if (hubSunlight === 2 || hubSunlight === 3 || hubSunlight === 4 || hubSunlight === 5) {
-            icon = <EmojiObjectsTwoToneIcon />
-            status = "Good Sunlight";
-        } else { 
-            icon =  <LightModeTwoToneIcon />
-            status = "Too Much Sunlight"; 
-        }
-        return {icon, status};
+        const fs = getDatabase();
+        
+        const dbref = ref(fs, 'Users/' + userUid + '/' + currentHub);
+        var serial
+        onValue(dbref, (snapshot) => {
+            console.log("Check=====" + currentDate)
+            serial = snapshot.val().Serial
+            console.log("|" + serial + "|")
+        });
+            
+        q = query(collection(db, "DATA"), 
+                orderBy("Time", "asc"), 
+                where("Time", "<", currDate),
+                where("Time", ">", prevDate));
+                //where("AccountID", "==", serial)); this breaks everything for reasons beyond my comprehension
     }
-    let { icon: readSunlightIcon, 
-        status: readSunlightStatus } = SunlightLogic();
 
+    const [sun, setSun] = useState([]);
+    const [moi, setMoi] = useState([]);
+    const [tem, setTem] = useState([]);
+    const [dates, setDates] = useState([]);
 
+    const [avg, setAvg] = useState({ "Temperature": 0, "Moisture": 0, "Sunlight": 0 });
 
-    function MoistureInfo() {
-        let icon, status;
+    async function fillCard() {
+        try {
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+            console.log("|" + doc.data().Temperature + "|")
+            setAvg(prevAvg => ({              // total of all stats
+                ...prevAvg,
+                Temperature: prevAvg.Temperature + doc.data().Temperature,
+                Moisture: prevAvg.Moisture + doc.data().Moisture,
+                Sunlight: prevAvg.Sunlight + doc.data().Sunlight
+              }));
     
-        if (hubMoisture === 1 || hubMoisture === 2) {
-            icon = <WaterDropTwoToneIcon />;
-            status = "Low Moisture";
-        } else {
-            icon = <WavesTwoToneIcon />;
-            status = "Good Moisture";
+            setSun((prevSun) => [...prevSun, doc.data().Sunlight]);   // adding data 
+            setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
+            setTem((prevTem) => [...prevTem, doc.data().Temperature]);
+    
+            var date = doc.data().Time.toDate();
+            setDates((prevDates) => [
+              ...prevDates,
+              date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+            ]);
+          });
+          
+          setAvg(prevAvg => ({   // dividing averages via querySnapshot size instead of a count var
+            ...prevAvg,
+            Temperature: prevAvg.Temperature / querySnapshot.size,
+            Moisture: prevAvg.Moisture / querySnapshot.size,
+            Sunlight: prevAvg.Sunlight / querySnapshot.size
+          }));  
+        } catch (error) {
+          console.log("Error fetching data:", error);
         }
-        return {icon, status};
-    }
-    let { icon: readMoistureIcon, 
-        status: readMoistureStatus } = MoistureInfo();
-
-
-
+      }
+    
+      useEffect(() => { // useEffect ensures it only runs when mounted
+        fillCard();
+      }, []);
 
   return (
     <>
     <Box>
         <Typography>
-            Time: {hubTime}
+            Today's Averages
         </Typography>
         <Typography>
-            Temperature: {hubTemperature}
+            Temperature: {avg["Temperature"].toFixed(1)}
         </Typography>
         <Typography>
-            Moisture: {hubMoisture}
+            Moisture: {avg["Moisture"].toFixed(1)}
         </Typography>
         <Typography>
-            Sunlight: {hubSunlight}
+            Sunlight: {avg["Sunlight"].toFixed(1)}
         </Typography>
     </Box>
     
