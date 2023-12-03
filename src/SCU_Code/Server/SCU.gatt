@@ -1,4 +1,3 @@
-// SCU.h is auto generated from this file using the btstack .gatt compiler
 PRIMARY_SERVICE, GAP_SERVICE
 CHARACTERISTIC, GAP_DEVICE_NAME, READ, "SCU"
 
