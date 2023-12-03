@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../Format/Layout'; 
-import Footer from '../Format/Footer';
+import Layout from '../Format/Layout';
 import { useParams } from 'react-router-dom';
 import { get, ref } from 'firebase/database';
 import { getDatabase,  set,  update } from "firebase/database"; 
@@ -8,7 +7,6 @@ import { Box, Typography, Card, CardContent } from "@mui/material";
 import Authenticate from '../Authenticate';
 import { useNavigate } from "react-router-dom"; 
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore";
-
 
 const HubPage = () => {
   
@@ -18,9 +16,7 @@ const HubPage = () => {
   const firestore = getFirestore();
   const { authUser } = Authenticate();  
 
-
- 
-
+  const currentHub = localStorage.getItem('currHub');
 
   return (
     <>
@@ -41,7 +37,7 @@ const HubPage = () => {
 
         <Box sx={{ border: 1 }} gridColumn="span 6" gridRow="span 2"   p="30px">
           <Typography variant="h5" fontWeight="600">
-            Hub Info 
+            {currentHub} Info 
           </Typography>
           <Box height="250px" m="-20px 0 0 0" display="flex" flexDirection="column" alignItems="center" mt="25px"> 
             Stats 
@@ -120,8 +116,7 @@ const HubPage = () => {
         </Box> 
 
       </Box>  
-    </Box>  
-    <Footer />
+    </Box> 
 
     </>
   );
