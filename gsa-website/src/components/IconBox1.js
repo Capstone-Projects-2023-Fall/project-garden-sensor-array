@@ -81,14 +81,24 @@ const IconBox1 = () => {
                 where("Time", ">", prevDate));
         try {
 
+          console.log(avg["Temperature"] + "INIIALIZE")  // 0
+
           const querySnapshot = await getDocs(q);
           querySnapshot.forEach((doc) => {
+
+            var TempCount = 0;
+             
             setAvg(prevAvg => ({              // total of all stats
                 ...prevAvg,
-                Temperature: prevAvg.Temperature + doc.data().Temperature,
-                Moisture: prevAvg.Moisture + doc.data().Moisture,
-                Sunlight: prevAvg.Sunlight + doc.data().Sunlight
+                Temperature: (prevAvg.Temperature + doc.data().Temperature) / querySnapshot.size,
+                Moisture: (prevAvg.Moisture + doc.data().Moisture) / querySnapshot.size,
+                Sunlight: (prevAvg.Sunlight + doc.data().Sunlight) / querySnapshot.size
               }));
+
+            TempCount += doc.data().Temperature 
+            
+
+              console.log(avg["Temperature"] + "TEST")  // NaN
     
             setSun((prevSun) => [...prevSun, doc.data().Sunlight]);   // adding data 
             setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
@@ -99,14 +109,22 @@ const IconBox1 = () => {
               ...prevDates,
               date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
             ]));
+            
+            /*console.log(TempCount + "Total")
+            console.log(querySnapshot.size + "Size")
+            TempCount = TempCount / querySnapshot.size
+            console.log(TempCount + "Average")*/
+
           });
+
+
     
-          setAvg(prevAvg => ({   // dividing averages via querySnapshot size instead of a count var
+          /*setAvg(prevAvg => ({   // dividing averages via querySnapshot size instead of a count var
             ...prevAvg,
             Temperature: prevAvg.Temperature / querySnapshot.size,
             Moisture: prevAvg.Moisture / querySnapshot.size,
             Sunlight: prevAvg.Sunlight / querySnapshot.size
-          }));
+          }));*/
 
         } catch (error) {
           console.log("Error fetching data:", error);
@@ -148,13 +166,11 @@ const IconBox1 = () => {
             ticks: {
               display: true,
               autoSkip: true,
-              maxTicksLimit: 4
+              maxTicksLimit: 12
             }
           },
         },
       };
-
-      console.log("average: test", avg["Moisture"]);
     
       useEffect(() => { // useEffect ensures it only runs when mounted
         fillGraph();
@@ -212,10 +228,10 @@ const IconBox1 = () => {
     //Temperature Icon
     function TempLogic() { 
         let icon, status;
-        if (hubTemperature === 1 || hubTemperature === 2) { 
+        if (hubTemperature < 5) { 
             icon =  <AcUnitTwoToneIcon  color="warning" sx={{ fontSize: 65 }} />
             status = "Low Temperature";
-        } else if (hubTemperature === 3 || hubTemperature ===  4 || hubTemperature === 5) {
+        } else if (hubTemperature > 5 || hubTemperature <= 32) {
             icon = <WbSunnyTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Temperature";
         } else { 
@@ -231,10 +247,10 @@ const IconBox1 = () => {
     //Sunglight Logic
     function SunlightLogic() { 
         let icon, status;  
-        if (hubSunlight === 1 ) { 
+        if (hubSunlight < 50 ) { 
             icon = <BedtimeTwoToneIcon color="warning"  sx={{ fontSize: 65 }}/> 
             status = "Not Enough Sunlight"; 
-        } else if (hubSunlight === 2 || hubSunlight === 3 || hubSunlight === 4 || hubSunlight === 5) {
+        } else if (hubSunlight > 50 || hubSunlight <= 150) {
             icon = <EmojiObjectsTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Sunlight";
         } else { 
@@ -251,7 +267,7 @@ const IconBox1 = () => {
     function MoistureInfo() {
         let icon, status;
     
-        if (hubMoisture === 1 || hubMoisture === 2) {
+        if (hubMoisture < 300) {
             icon = <WaterDropTwoToneIcon  color="warning" sx={{ fontSize: 65 }}/>;
             status = "Low Moisture";
         } else {

@@ -63,6 +63,7 @@ const CardData = (props) => {
       var s
       var q
       var qry
+      var count = 0
 
       try {              
 
@@ -97,6 +98,7 @@ const CardData = (props) => {
               Moisture: prevAvg.Moisture + doc.data().Moisture,
               Sunlight: prevAvg.Sunlight + doc.data().Sunlight
             }));
+            count++;
           
   
           setSun((prevSun) => [...prevSun, doc.data().Sunlight]);   // adding data 
@@ -114,7 +116,7 @@ const CardData = (props) => {
           ...prevAvg,
           Temperature: prevAvg.Temperature / querySnapshot.size,
           Moisture: prevAvg.Moisture / querySnapshot.size,
-          Sunlight: prevAvg.Sunlight / querySnapshot.size
+          Sunlight: prevAvg.Sunlight / querySnapshot.size 
         }));  
       } catch (error) {
         console.log("Error fetching data:", error);
@@ -132,13 +134,13 @@ const CardData = (props) => {
             Today's Averages
         </Typography>
         <Typography>
-            Temperature: {avg["Temperature"].toFixed(1)}
+            Temperature: {avg["Temperature"]}
         </Typography>
         <Typography>
-            Moisture: {avg["Moisture"].toFixed(1)}
+            Moisture: {avg["Moisture"]}
         </Typography>
         <Typography>
-            Sunlight: {avg["Sunlight"].toFixed(1)}
+            Sunlight: {avg["Sunlight"]}
         </Typography>
     </Box>
     
