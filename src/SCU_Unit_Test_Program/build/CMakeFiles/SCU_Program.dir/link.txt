@@ -1,2 +1,0 @@
-C:\MinGW\bin\ar.exe qc libSCU_Program.a CMakeFiles/SCU_Program.dir/src/SCU_Test_Program.cpp.obj
-C:\MinGW\bin\ranlib.exe libSCU_Program.a
