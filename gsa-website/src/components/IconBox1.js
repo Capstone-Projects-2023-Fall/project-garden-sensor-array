@@ -56,6 +56,7 @@ const IconBox1 = () => {
     const currentDate = new Date();
     let currDate = new Date();
     let prevDate = new Date();
+
     currDate.setDate(currentDate.getDate());
     currDate.setHours(23)
     currDate.setMinutes(59)
@@ -65,11 +66,6 @@ const IconBox1 = () => {
     prevDate.setHours(23)
     prevDate.setMinutes(59)
     prevDate.setSeconds(59)
-            
-    let q = query(collection(firestore, "DATA"), 
-                orderBy("Time", "asc"), 
-                where("Time", "<", currDate),
-                where("Time", ">", prevDate));
 
     const [sun, setSun] = useState([]);
     const [moi, setMoi] = useState([]);
@@ -79,7 +75,12 @@ const IconBox1 = () => {
     const [avg, setAvg] = useState({ "Temperature": 0, "Moisture": 0, "Sunlight": 0 });
     
     async function fillGraph() {
+      const q = query(collection(firestore, "HUB_2"), 
+                orderBy("Time", "asc"), 
+                where("Time", "<", currDate),
+                where("Time", ">", prevDate));
         try {
+
           const querySnapshot = await getDocs(q);
           querySnapshot.forEach((doc) => {
             setAvg(prevAvg => ({              // total of all stats
@@ -94,10 +95,10 @@ const IconBox1 = () => {
             setTem((prevTem) => [...prevTem, doc.data().Temperature]);
     
             var date = doc.data().Time.toDate();
-            setDates((prevDates) => [
+            setDates(prevDates => ([
               ...prevDates,
               date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
-            ]);
+            ]));
           });
     
           setAvg(prevAvg => ({   // dividing averages via querySnapshot size instead of a count var
@@ -111,6 +112,7 @@ const IconBox1 = () => {
           console.log("Error fetching data:", error);
         }
       }
+
     
       const sun_data = {
         labels: dates,
@@ -146,11 +148,13 @@ const IconBox1 = () => {
             ticks: {
               display: true,
               autoSkip: true,
-              maxTicksLimit: 12
+              maxTicksLimit: 4
             }
           },
         },
       };
+
+      console.log("average: test", avg["Moisture"]);
     
       useEffect(() => { // useEffect ensures it only runs when mounted
         fillGraph();
@@ -273,7 +277,6 @@ const IconBox1 = () => {
             <DialogTitle>Moisture Status:</DialogTitle>
             <DialogContent>
                 <Line data={moi_data} options={options} />
-                <h6>Average Moisture = {avg["Moisture"]}</h6>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleCloseMoisture} color="primary">

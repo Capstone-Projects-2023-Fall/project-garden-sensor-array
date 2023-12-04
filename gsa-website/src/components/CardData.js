@@ -78,12 +78,12 @@ const CardData = (props) => {
             setSerial(s); // doesnt fucking work
             console.log("|" + s + "|") //fucking works
 
-            qry = query(collection(db, "DATA"), 
+            qry = query(collection(db, "HUB_2"), 
                 where("AccountID", "==", s));
         });
       }
 
-      q = query(collection(db, "DATA"), 
+      q = query(collection(db, "HUB_2"), 
                 orderBy("Time", "asc"), 
                 where("Time", "<", currDate),
                 where("Time", ">", prevDate));
