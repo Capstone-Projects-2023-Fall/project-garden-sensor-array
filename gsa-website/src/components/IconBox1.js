@@ -1,8 +1,7 @@
-
 import React from 'react';
 import {Box,Card,CardContent,Typography,Button, IconButton} from '@mui/material'
-import { getFirestore, collection, doc, setDoc, onSnapshot } from "firebase/firestore";
-import { useState } from "react";
+import { getFirestore, collection, doc, setDoc, onSnapshot, query, where, orderBy, getDocs, Timestamp } from "firebase/firestore";
+import { useState, useRef, useEffect } from "react";
 //Temperature
 import AcUnitTwoToneIcon from '@mui/icons-material/AcUnitTwoTone'; //Low Temp - snowflake 
 import WbSunnyTwoToneIcon from '@mui/icons-material/WbSunnyTwoTone'; // Good Temp - sun 
@@ -19,6 +18,28 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
+import { Line } from 'react-chartjs-2';
+
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+  
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
 
 const IconBox1 = () => {
 
@@ -28,11 +49,135 @@ const IconBox1 = () => {
     const [hubTemperature, setHubTemperature] = useState('');
     const [openTemp, setOpenTemp] = useState(false);
     const [openMoisture, setOpenMoisture] = useState(false);
-    const [openSunglight, setOpenSunlight] = useState(false);
-
+    const [openSunlight, setOpenSunlight] = useState(false);
 
     const firestore = getFirestore();
 
+    const currentDate = new Date();
+    let currDate = new Date();
+    let prevDate = new Date();
+
+    currDate.setDate(currentDate.getDate());
+    currDate.setHours(23)
+    currDate.setMinutes(59)
+    currDate.setSeconds(59)
+    
+    prevDate.setDate(currentDate.getDate() - 1)
+    prevDate.setHours(23)
+    prevDate.setMinutes(59)
+    prevDate.setSeconds(59)
+
+    const [sun, setSun] = useState([]);
+    const [moi, setMoi] = useState([]);
+    const [tem, setTem] = useState([]);
+    const [dates, setDates] = useState([]);
+
+    const [avg, setAvg] = useState({ "Temperature": 0, "Moisture": 0, "Sunlight": 0 });
+    
+    async function fillGraph() {
+      const q = query(collection(firestore, "HUB_2"), 
+                orderBy("Time", "asc"), 
+                where("Time", "<", currDate),
+                where("Time", ">", prevDate));
+        try {
+
+          console.log(avg["Temperature"] + "INIIALIZE")  // 0
+
+          const querySnapshot = await getDocs(q);
+          querySnapshot.forEach((doc) => {
+
+            var TempCount = 0;
+             
+            setAvg(prevAvg => ({              // total of all stats
+                ...prevAvg,
+                Temperature: (prevAvg.Temperature + doc.data().Temperature) / querySnapshot.size,
+                Moisture: (prevAvg.Moisture + doc.data().Moisture) / querySnapshot.size,
+                Sunlight: (prevAvg.Sunlight + doc.data().Sunlight) / querySnapshot.size
+              }));
+
+            TempCount += doc.data().Temperature 
+            
+
+              console.log(avg["Temperature"] + "TEST")  // NaN
+    
+            setSun((prevSun) => [...prevSun, doc.data().Sunlight]);   // adding data 
+            setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
+            setTem((prevTem) => [...prevTem, doc.data().Temperature]);
+    
+            var date = doc.data().Time.toDate();
+            setDates(prevDates => ([
+              ...prevDates,
+              date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+            ]));
+            
+            /*console.log(TempCount + "Total")
+            console.log(querySnapshot.size + "Size")
+            TempCount = TempCount / querySnapshot.size
+            console.log(TempCount + "Average")*/
+
+          });
+
+
+    
+          /*setAvg(prevAvg => ({   // dividing averages via querySnapshot size instead of a count var
+            ...prevAvg,
+            Temperature: prevAvg.Temperature / querySnapshot.size,
+            Moisture: prevAvg.Moisture / querySnapshot.size,
+            Sunlight: prevAvg.Sunlight / querySnapshot.size
+          }));*/
+
+        } catch (error) {
+          console.log("Error fetching data:", error);
+        }
+      }
+
+    
+      const sun_data = {
+        labels: dates,
+        datasets: [{
+          label: 'Sunlight',
+          data: sun,
+          borderColor: 'rgb(255, 100, 0)',
+        }]
+      };
+    
+      const moi_data = {
+        labels: dates,
+        datasets: [{
+          label: 'Moisture',
+          data: moi,
+          borderColor: 'rgb(0, 100, 255)',
+        }]
+      };
+    
+      const tem_data = {
+        labels: dates,
+        datasets: [{
+          label: 'Temperature',
+          data: tem,
+          borderColor: 'rgb(100, 255, 0)',
+        }]
+      };
+    
+      const options = {
+        responsive: true,
+        scales: {
+          x: {
+            ticks: {
+              display: true,
+              autoSkip: true,
+              maxTicksLimit: 12
+            }
+          },
+        },
+      };
+    
+      useEffect(() => { // useEffect ensures it only runs when mounted
+        fillGraph();
+      }, []);
+
+    console.log("moi_data:", moi_data);
+    console.log("average:", avg["Moisture"]);
 
     const unsub = onSnapshot(doc(firestore, "HUBS_ONLINE", "HUB_1"), (doc) => {
         const hubData = doc.data()
@@ -83,10 +228,10 @@ const IconBox1 = () => {
     //Temperature Icon
     function TempLogic() { 
         let icon, status;
-        if (hubTemperature === 1 || hubTemperature === 2) { 
+        if (hubTemperature < 5) { 
             icon =  <AcUnitTwoToneIcon  color="warning" sx={{ fontSize: 65 }} />
             status = "Low Temperature";
-        } else if (hubTemperature === 3 || hubTemperature ===  4 || hubTemperature === 5) {
+        } else if (hubTemperature > 5 || hubTemperature <= 32) {
             icon = <WbSunnyTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Temperature";
         } else { 
@@ -102,10 +247,10 @@ const IconBox1 = () => {
     //Sunglight Logic
     function SunlightLogic() { 
         let icon, status;  
-        if (hubSunlight === 1 ) { 
+        if (hubSunlight < 50 ) { 
             icon = <BedtimeTwoToneIcon color="warning"  sx={{ fontSize: 65 }}/> 
             status = "Not Enough Sunlight"; 
-        } else if (hubSunlight === 2 || hubSunlight === 3 || hubSunlight === 4 || hubSunlight === 5) {
+        } else if (hubSunlight > 50 || hubSunlight <= 150) {
             icon = <EmojiObjectsTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Sunlight";
         } else { 
@@ -122,7 +267,7 @@ const IconBox1 = () => {
     function MoistureInfo() {
         let icon, status;
     
-        if (hubMoisture === 1 || hubMoisture === 2) {
+        if (hubMoisture < 300) {
             icon = <WaterDropTwoToneIcon  color="warning" sx={{ fontSize: 65 }}/>;
             status = "Low Moisture";
         } else {
@@ -147,23 +292,19 @@ const IconBox1 = () => {
         <Dialog open={openMoisture} onClose={handleCloseMoisture} fullWidth>
             <DialogTitle>Moisture Status:</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    {readMoistureStatus}
-                </DialogContentText>
+                <Line data={moi_data} options={options} />
             </DialogContent>
             <DialogActions>
-            <Button onClick={handleCloseMoisture} color="primary">
-                Okay
-            </Button>
+                <Button onClick={handleCloseMoisture} color="primary">
+                    Okay
+                </Button>
             </DialogActions>
-      </Dialog> 
+    </Dialog> 
       {/* Dialog for Temperature: */}
       <Dialog open={openTemp} onClose={handleCloseTemp} fullWidth>
             <DialogTitle>Temperature Status:</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    {readTempStatus}
-                </DialogContentText>
+            <Line data={tem_data} options={options} />
             </DialogContent>
             <DialogActions>
             <Button onClick={handleCloseTemp} color="primary">
@@ -173,12 +314,10 @@ const IconBox1 = () => {
       </Dialog> 
 
       {/* Dialog for Sunlight:  */} 
-      <Dialog open={openSunglight} onClose={handleCloseSunlight} fullWidth>
+      <Dialog open={openSunlight} onClose={handleCloseSunlight} fullWidth>
             <DialogTitle>Sunlight Status:</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    {readSunlightStatus}
-                </DialogContentText>
+            <Line data={sun_data} options={options} />
             </DialogContent>
             <DialogActions>
             <Button onClick={handleCloseSunlight} color="primary">
