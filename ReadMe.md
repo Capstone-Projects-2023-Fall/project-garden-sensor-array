@@ -5,6 +5,7 @@ Created by
 - Regina
 - Jimson
 - Giorgio
+- Gabriel
 
 For any questions, please feel free to email, alexander.korsunsky@outlook.com
 _____________________________________________________________________________
@@ -42,9 +43,10 @@ INSTALL REQ : make sure to install these on terminal when running the program on
 2. npm install react-router-dom
 3. npm install firebase 
 4. npm install @mui/material @emotion/react @emotion/styled
-5.npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
-6.npm install react-native
-7.npm install  @material-ui/core 
-8.when ready, cd to gsa-website and type: npm start
+5. npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
+6. npm install react-native
+7. npm install  @material-ui/core
+8. npm install --save chart.js react-chartjs-2
+9. when ready, cd to gsa-website and type: npm start
 
 
