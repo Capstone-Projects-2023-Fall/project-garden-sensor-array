@@ -4,8 +4,7 @@ Created by
 - Sam
 - Regina
 - Jimson
-- Georgio
-- Jimson
+- Giorgio
 
 For any questions, please feel free to email, alexander.korsunsky@outlook.com
 _____________________________________________________________________________
