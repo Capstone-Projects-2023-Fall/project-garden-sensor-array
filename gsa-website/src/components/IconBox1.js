@@ -75,61 +75,56 @@ const IconBox1 = () => {
     const [avg, setAvg] = useState({ "Temperature": 0, "Moisture": 0, "Sunlight": 0 });
     
     async function fillGraph() {
-      const q = query(collection(firestore, "HUB_2"), 
-                orderBy("Time", "asc"), 
-                where("Time", "<", currDate),
-                where("Time", ">", prevDate));
-        try {
-
-          console.log(avg["Temperature"] + "INIIALIZE")  // 0
-
-          const querySnapshot = await getDocs(q);
-          querySnapshot.forEach((doc) => {
-
-            var TempCount = 0;
-             
-            setAvg(prevAvg => ({              // total of all stats
-                ...prevAvg,
-                Temperature: (prevAvg.Temperature + doc.data().Temperature) / querySnapshot.size,
-                Moisture: (prevAvg.Moisture + doc.data().Moisture) / querySnapshot.size,
-                Sunlight: (prevAvg.Sunlight + doc.data().Sunlight) / querySnapshot.size
-              }));
-
-            TempCount += doc.data().Temperature 
-            
-
-              console.log(avg["Temperature"] + "TEST")  // NaN
+      try {
+        let q;
     
-            setSun((prevSun) => [...prevSun, doc.data().Sunlight]);   // adding data 
-            setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
-            setTem((prevTem) => [...prevTem, doc.data().Temperature]);
+        q = query(
+          collection(firestore, "HUB_2"),
+          orderBy("Time", "asc"),
+          where("Time", "<", currDate),
+          where("Time", ">", prevDate)
+        );
     
-            var date = doc.data().Time.toDate();
-            setDates(prevDates => ([
-              ...prevDates,
-              date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
-            ]));
-            
-            /*console.log(TempCount + "Total")
-            console.log(querySnapshot.size + "Size")
-            TempCount = TempCount / querySnapshot.size
-            console.log(TempCount + "Average")*/
-
-          });
-
-
+        const querySnapshot = await getDocs(q);
     
-          /*setAvg(prevAvg => ({   // dividing averages via querySnapshot size instead of a count var
-            ...prevAvg,
-            Temperature: prevAvg.Temperature / querySnapshot.size,
-            Moisture: prevAvg.Moisture / querySnapshot.size,
-            Sunlight: prevAvg.Sunlight / querySnapshot.size
-          }));*/
+        let totalTemperature = 0;
+        let totalMoisture = 0;
+        let totalSunlight = 0;
+    
+        querySnapshot.forEach((doc) => {
+          totalTemperature += parseFloat(doc.data().Temperature);
+          totalMoisture += parseFloat(doc.data().Moisture);
+          totalSunlight += parseFloat(doc.data().Sunlight);
+    
+          setSun((prevSun) => [...prevSun, doc.data().Sunlight]);
+          setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
+          setTem((prevTem) => [...prevTem, doc.data().Temperature]);
+    
+          var date = doc.data().Time.toDate();
+          setDates((prevDates) => [
+            ...prevDates,
+            date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+          ]);
+        });
 
-        } catch (error) {
-          console.log("Error fetching data:", error);
-        }
+        console.log("Sunlight Total: " +  totalSunlight)
+        console.log("Query Snapshot Size: " + querySnapshot.size)
+    
+        const avgTemperature = totalTemperature / querySnapshot.size;
+        const avgMoisture = totalMoisture / querySnapshot.size;
+        const avgSunlight = totalSunlight / querySnapshot.size;
+
+        console.log("AVG SUNLIGHT: " + avgSunlight)
+    
+        setAvg({
+          Temperature: avgTemperature,
+          Moisture: avgMoisture,
+          Sunlight: avgSunlight,
+        });
+      } catch (error) {
+        console.log("Error fetching data:", error);
       }
+    }
 
     
       const sun_data = {
@@ -228,10 +223,10 @@ const IconBox1 = () => {
     //Temperature Icon
     function TempLogic() { 
         let icon, status;
-        if (hubTemperature < 5) { 
+        if (avg["Temperature"] < 5) { 
             icon =  <AcUnitTwoToneIcon  color="warning" sx={{ fontSize: 65 }} />
             status = "Low Temperature";
-        } else if (hubTemperature > 5 || hubTemperature <= 32) {
+        } else if (avg["Temperature"] > 5 && avg["Temperature"] <= 32) {
             icon = <WbSunnyTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Temperature";
         } else { 
@@ -247,10 +242,10 @@ const IconBox1 = () => {
     //Sunglight Logic
     function SunlightLogic() { 
         let icon, status;  
-        if (hubSunlight < 50 ) { 
+        if (avg["Sunlight"] < 50 ) { 
             icon = <BedtimeTwoToneIcon color="warning"  sx={{ fontSize: 65 }}/> 
             status = "Not Enough Sunlight"; 
-        } else if (hubSunlight > 50 || hubSunlight <= 150) {
+        } else if (avg["Sunlight"]  > 50 && avg["Sunlight"]  <= 150) {
             icon = <EmojiObjectsTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Sunlight";
         } else { 
@@ -267,7 +262,7 @@ const IconBox1 = () => {
     function MoistureInfo() {
         let icon, status;
     
-        if (hubMoisture < 300) {
+        if (avg["Moisture"]  < 300) {
             icon = <WaterDropTwoToneIcon  color="warning" sx={{ fontSize: 65 }}/>;
             status = "Low Moisture";
         } else {

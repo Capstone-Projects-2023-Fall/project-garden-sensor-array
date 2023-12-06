@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box,Card,CardContent,Typography,Button} from '@mui/material'
+import {Box,Card,CardContent,Typography,Button, avatarGroupClasses} from '@mui/material'
 import { getFirestore, collection, doc, setDoc, onSnapshot } from "firebase/firestore";
 import { useState, useRef, useEffect} from "react";
 
@@ -60,64 +60,65 @@ const CardData = (props) => {
     const [avg, setAvg] = useState({ "Temperature": 0, "Moisture": 0, "Sunlight": 0 });
 
     async function fillCard() {
-      var s
-      var q
-      var qry
-      var count = 0
-
-      try {              
-
+      try {
+        let s;
+        let q;
+        let qry;
+    
         if (authUser) {
-          // Get the user's UID from the authUser object
-          const userUid = authUser.uid  
-        
-        const dbref = ref(fs, 'Users/' + userUid + '/' + currentHub);
-        onValue(dbref, (snapshot) => {
-            console.log(snapshot.val().Serial)  // works
-            console.log("Check=====" + currentDate)
-            s = snapshot.val().Serial
-            setSerial(s); // doesnt fucking work
-            console.log("|" + s + "|") //fucking works
-
-            qry = query(collection(db, "HUB_2"), 
-                where("AccountID", "==", s));
-        });
-      }
-
-      q = query(collection(db, "HUB_2"), 
-                orderBy("Time", "asc"), 
-                where("Time", "<", currDate),
-                where("Time", ">", prevDate));
-
+          const userUid = authUser.uid;
+    
+          const dbref = ref(fs, 'Users/' + userUid + '/' + currentHub);
+          onValue(dbref, (snapshot) => {
+            s = snapshot.val().Serial;
+            setSerial(s);
+            qry = query(collection(db, "HUB_2"), where("AccountID", "==", s));
+          });
+        }
+    
+        q = query(
+          collection(db, "HUB_2"),
+          orderBy("Time", "asc"),
+          where("Time", "<", currDate),
+          where("Time", ">", prevDate)
+        );
+    
         const querySnapshot = await getDocs(q);
+    
+        let totalTemperature = 0;
+        let totalMoisture = 0;
+        let totalSunlight = 0;
+    
         querySnapshot.forEach((doc) => {
-          console.log("|" + doc.data().Temperature + "|")
-          setAvg(prevAvg => ({              // total of all stats
-              ...prevAvg,
-              Temperature: prevAvg.Temperature + doc.data().Temperature,
-              Moisture: prevAvg.Moisture + doc.data().Moisture,
-              Sunlight: prevAvg.Sunlight + doc.data().Sunlight
-            }));
-            count++;
-          
-  
-          setSun((prevSun) => [...prevSun, doc.data().Sunlight]);   // adding data 
+          totalTemperature += parseFloat(doc.data().Temperature);
+          totalMoisture += parseFloat(doc.data().Moisture);
+          totalSunlight += parseFloat(doc.data().Sunlight);
+    
+          setSun((prevSun) => [...prevSun, doc.data().Sunlight]);
           setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
           setTem((prevTem) => [...prevTem, doc.data().Temperature]);
-  
+    
           var date = doc.data().Time.toDate();
           setDates((prevDates) => [
             ...prevDates,
             date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
           ]);
         });
-        
-        setAvg(prevAvg => ({   // dividing averages via querySnapshot size instead of a count var
-          ...prevAvg,
-          Temperature: prevAvg.Temperature / querySnapshot.size,
-          Moisture: prevAvg.Moisture / querySnapshot.size,
-          Sunlight: prevAvg.Sunlight / querySnapshot.size 
-        }));  
+
+        console.log("Sunlight Total: " +  totalSunlight)
+        console.log("Query Snapshot Size: " + querySnapshot.size)
+    
+        const avgTemperature = totalTemperature / querySnapshot.size;
+        const avgMoisture = totalMoisture / querySnapshot.size;
+        const avgSunlight = totalSunlight / querySnapshot.size;
+
+        console.log("AVG SUNLIGHT: " + avgSunlight)
+    
+        setAvg({
+          Temperature: avgTemperature,
+          Moisture: avgMoisture,
+          Sunlight: avgSunlight,
+        });
       } catch (error) {
         console.log("Error fetching data:", error);
       }
@@ -125,7 +126,7 @@ const CardData = (props) => {
   
     useEffect(() => { // useEffect ensures it only runs when mounted
       fillCard();
-    },[ authUser]);
+    },[ authUser ]);
     
   return (
     <>
@@ -134,13 +135,13 @@ const CardData = (props) => {
             Today's Averages
         </Typography>
         <Typography>
-            Temperature: {avg["Temperature"]}
+            Temperature: {avg["Temperature"].toFixed(2)}
         </Typography>
         <Typography>
-            Moisture: {avg["Moisture"]}
+            Moisture: {avg["Moisture"].toFixed(2)}
         </Typography>
         <Typography>
-            Sunlight: {avg["Sunlight"]}
+            Sunlight: {avg["Sunlight"].toFixed(2)}
         </Typography>
     </Box>
     
