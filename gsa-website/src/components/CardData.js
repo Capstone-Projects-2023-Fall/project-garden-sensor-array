@@ -105,13 +105,14 @@ const CardData = (props) => {
           ]);
         });
 
-        console.log(totalTemperature)
-        console.log(totalMoisture)
+        console.log("Sunlight Total: " +  totalSunlight)
+        console.log("Query Snapshot Size: " + querySnapshot.size)
     
         const avgTemperature = totalTemperature / querySnapshot.size;
-        console.log(avgTemperature)
         const avgMoisture = totalMoisture / querySnapshot.size;
         const avgSunlight = totalSunlight / querySnapshot.size;
+
+        console.log("AVG SUNLIGHT: " + avgSunlight)
     
         setAvg({
           Temperature: avgTemperature,
