@@ -226,7 +226,7 @@ const IconBox1 = () => {
         if (avg["Temperature"] < 5) { 
             icon =  <AcUnitTwoToneIcon  color="warning" sx={{ fontSize: 65 }} />
             status = "Low Temperature";
-        } else if (avg["Temperature"] > 5 || avg["Temperature"] <= 32) {
+        } else if (avg["Temperature"] > 5 && avg["Temperature"] <= 32) {
             icon = <WbSunnyTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Temperature";
         } else { 
@@ -245,7 +245,7 @@ const IconBox1 = () => {
         if (avg["Sunlight"] < 50 ) { 
             icon = <BedtimeTwoToneIcon color="warning"  sx={{ fontSize: 65 }}/> 
             status = "Not Enough Sunlight"; 
-        } else if (avg["Sunlight"]  > 50 || avg["Sunlight"]  <= 150) {
+        } else if (avg["Sunlight"]  > 50 && avg["Sunlight"]  <= 150) {
             icon = <EmojiObjectsTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Sunlight";
         } else { 
