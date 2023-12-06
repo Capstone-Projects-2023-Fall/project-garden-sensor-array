@@ -1,111 +1,52 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-7f7980b617ed060a017424585567c406b6ee15c891e84e1186181d67ecf80aa0.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=11818477)
-<div align="center">
+WELCOME TO GARDEN SENSOR ARRAY README
+Created by
+- Alexander
+- Sam
+- Regina
+- Jimson
+- Giorgio
+- Gabriel
 
-# Garden Sensor Array
-[![Report Issue on Jira](https://img.shields.io/badge/Report%20Issues-Jira-0052CC?style=flat&logo=jira-software)](https://temple-cis-projects-in-cs.atlassian.net/jira/software/c/projects/DT/issues)
-[![Deploy Docs](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml/badge.svg)](https://github.com/ApplebaumIan/tu-cis-4398-docs-template/actions/workflows/deploy.yml)
-[![Documentation Website Link](https://img.shields.io/badge/-Documentation%20Website-brightgreen)](https://applebaumian.github.io/tu-cis-4398-docs-template/)
+For any questions, please feel free to email, alexander.korsunsky@outlook.com
+_____________________________________________________________________________
 
+SETUP
+_____________________________________________________________________________
+### SCU SETUP
+1. Install the Pico C SDK
+2. Create a Pico project in the Server subdirectory located in the SCU_Code directory 
+    
+- Raspberry Pi's official  instructions for completing both of the above steps can be found [here](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf)
+    - Please note that these instructions vary depending on what operating system you are running, so double check you are following the correct steps for your operating system 
 
-</div>
+3. Create a build directory inside your newly created project, then cd into it and run "cmake .."
+4. Now you can run "make" and the Server.uf2 executable will be built.
+    - Note that you must be inside the build folder to run make
+5. Connect the Pico to your computer using a micro-USB cable while holding down the BOOTSEL button to put it into mass storage mode.
+6. Now the Server.uf2 exectuable can be copied to the Pico and the BLE server will start running automatically once the copy is finished.
+______________________________________________________________________________
+### RASPBERRY PI HUB DEVICE SETUP
 
+1. Install the HUB_code folder from our GitHub in the root dir
 
-## Keywords
+2. Create a python virtual environment in the root dir
+-python -m venv env
+-source env/bin/activate
 
-Distributed Sensor Networks, Arduino, Raspberry Pi, Urban Agriculture, Community Gardens
+3. Put the service file from our GitHub into /lib/systemd/system 
+-start it with this command: sudo systemctl enable garden_sensor.service
+______________________________________________________________________________
 
-## Project Abstract
-
-The purpose of this project is to provide the average community gardener with little to no technical knowledge the ability to place previously implemented sensors in their garden that will notify them through a webpage, sensor information related to gardening i.e., sunlight, soil moisture, and ambient temperature. Through achieving this we will be able to reduce the working hours of community gardeners in food-desert areas in Philadelphia. This will help reduce the fresh food shortage in areas that have less common access to nutrition. We will do this by accomplishing three things, making the sensors cost-effective, reliable, and with high levels of UX design.
-
-## High Level Requirement
-
-To meet those accomplishments, we will focus on having the sensors themselves require the user to simply power them on and install them into the soil where the plants occupy. The sensors will utilize wireless I2C Bluetooth communication to a local unit. This local unit will then utilize cellular connection to a webpage with MQTT. The webpage when logged in through the local unit’s login credentials will display the sensor’s collected information through an easy-to-understand display.
-
-## Conceptual Design
-
-The sensors will be using Raspberry Pico W (microcontroller) hardware to be able to retrieve and send their sensors (BH1750 and Stemma Soil Sensor) information to another Raspberry Pico W. They will send this information through packets containing the following integers of sunlight, soil moisture, and temperature. All of the software will utilize python and several libraries that are already made for the sensors and Bluetooth capabilities.
-
-In order for the local unit to be able to publish the information to the webpage, we will use MQTT(Message Query Telemetry Transport) that will send the packets as they are retrieved in real time.
-
-Once the webpage receives the information it will store it using a Web API on a file server. When queried from an outside source, the webpage will verify the credentials requesting the information to ensure that it displays the correct local unit’s sensor information.
-## Background
-
-There are already several companies that make garden sensors but when looking at the amateur gardener level there is no cost-effective sensor that relays its information in a Local Area Network to then a Wide Area Network. With the information being incredibly lightweight, this is a perfect job for microcontrollers to handle. Instead of having gardeners who work at community gardens take their time out of the day to confirm whether their garden requires certain levels of maintenance they can now only spend their working hours on items that are necessary. Another future concept of this device’s implementation is to provide automatic watering and LED lighting.
-
-## Required Resources
-
-·         Software Requirements
-
-o   Python
-
-o   Web API JavaScript
-
-o   MQTT
-
-·         Hardware Requirements
-
-o   (3) Raspberry Pico W
-
-o   (1) Cellular Data plan
-
-o   (2) BH1750 Sunlight sensors with dome
-
-o   (2) Adafruit Stemma Soil Sensors
-
-o   Soldering Kit
-
-o   Electric Static Discharge (ESD) Mat
-
-o   ESD personnel grounding cable
+### Website Setup
+INSTALL REQ : make sure to install these on terminal when running the program on vs code
+1. npm install bootstrap react-bootstrap 
+2. npm install react-router-dom
+3. npm install firebase 
+4. npm install @mui/material @emotion/react @emotion/styled
+5. npm install @mui/icons-material @mui/material @emotion/styled @emotion/react
+6. npm install react-native
+7. npm install  @material-ui/core
+8. npm install --save chart.js react-chartjs-2
+9. when ready, cd to gsa-website and type: npm start
 
 
-## Collaborators
-
-[//]: # ( readme: collaborators -start )
-<table>
-<td align="center">
-        <a href="https://github.com/ak74ub">
-            <img src="https://github.com/ak74ub.png" width="100;" alt="ak74ub"/>
-            <br />
-            <sub><b>Alexander Korsunsky</b></sub>
-        </a>
-    </td>
-<td align="center">
-        <a href="https://github.com/tuj91536">
-            <img src="https://github.com/tuj91536.png" width="100;" alt="Sam GL"/>
-            <br />
-            <sub><b>Sam GL</b></sub>
-        </a>
-    </td>
-<td align="center">
-        <a href="https://github.com/roda33">
-            <img src="https://github.com/roda33.png" width="100;" alt="Regina Oda"/>
-            <br />
-            <sub><b>Regina Oda</b></sub>
-        </a>
-    </td>
-<td align="center">
-        <a href="https://github.com/giotata">
-            <img src="https://github.com/giotata.png" width="100;" alt="Giorgio Tatarelli"/>
-            <br />
-            <sub><b>Giorgio Tatarelli</b></sub>
-        </a>
-    </td>
-<td align="center">
-        <a href="https://github.com/gistaana">
-            <img src="https://github.com/gistaana.png" width="100;" alt="Gabriel Sta Ana"/>
-            <br />
-            <sub><b>Gabriel Sta Ana</b></sub>
-        </a>
-    </td>
-<td align="center">
-        <a href="https://github.com/noise404">
-            <img src="https://github.com/noise404.png" width="100;" alt="noise404"/>
-            <br />
-            <sub><b>Jimson Whiskeyman</b></sub>
-        </a>
-    </td>
-</table>
-
-[//]: # ( readme: collaborators -end )
