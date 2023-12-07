@@ -16,6 +16,7 @@ from firebase_admin import db
 import asyncio
 import time
 from bleak import BleakScanner, BleakClient
+from Bluetooth import read_bt
 
 HUB_ID = 'HUB_1'
 
@@ -57,54 +58,62 @@ async def main():
         print("hub offline")
         time.sleep(5)
 
-    cred = credentials.Certificate('/home/garden/hub_code/cred.json')
+    cred = credentials.Certificate('cred.json')
     app = firebase_admin.initialize_app(cred)
 
     fs = firestore.client()
 
-    doc_ref = fs.collection("HUBS_ONLINE").document(HUB_ID)
-
-    doc_ref.set(
-        HUB(1, HUB_ID, 3, 4, 5, SERVER_TIMESTAMP).to_fb()
-    )
+    doc_ref = fs.collection("DATA")
 
     SLEEP_INTERVAL_ADV  = 1
     SLEEP_INTERVAL_POLL = 10
 
-    SENSOR_INFO_CHAR_UUID = '0000181b-0000-1000-8000-00805f9b34fb'
+    class AsyncStringIterator:
+        def __init__(self, strings):
+            self.strings = strings
+            self.index = 0
 
-    async with BleakScanner() as scanner:
-        async for bd, ad in scanner.advertisement_data():
-            if ad.local_name == 'SCU':
-                client = BleakClient(bd)
-                print('SCU')
-                await client.connect(timeout=100)
-                print('connected!')
-                break
+        def __aiter__(self):
+            return self
 
-    characteristics = client.services.characteristics
-    for char in characteristics:
-        if characteristics[char].uuid == SENSOR_INFO_CHAR_UUID:
-            sensor_info_char = characteristics[char] 
+        async def __anext__(self):
+            if self.index < len(self.strings):
+                result = self.strings[self.index]
+                self.index += 1
+                return result
+            else:
+                raise StopAsyncIteration
+            
+    async def get_birds():
+        string_list = ['Canary','Junco']
+        async_strings = AsyncStringIterator(string_list)
+
+        return async_strings
+        # Using async for loop with the asynchronous string iterator
+        #async for string_item in async_strings:
+        #    print(string_item)
 
     while(True):
         while(not check_connection()):
             print('hub offline')
             time.sleep(5)
 
-        sensor_data = await client.read_gatt_char(sensor_info_char)
-        data = sensor_data.decode().split(',')
+        birds = await get_birds()
+        async for bird in birds:
+            sensor_data = await read_bt(bird)
+            data = sensor_data.decode().split(',')
         
-        temp = data[1] 
-        moist = data[0]
-        sun = data[2]
-        doc_ref.update(
-                HUB(1, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
-        )
+            temp = data[1] 
+            moist = data[0]
+            sun = data[2]
+            print(f'Temp: {temp}, Moisture: {moist}, Sun: {sun}')
+            #doc_ref.add(
+            #        HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
+            #)
 
-        print("updating...")
-        time.sleep(10)
+            print("updating...")
+    
+        #time.sleep(10)
         
 if __name__ == "__main__":
     asyncio.run(main())
-    
