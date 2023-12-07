@@ -92,7 +92,7 @@ const IconBox1 = (props) => {
         if (authUser) {
           const userUid = authUser.uid;
     
-          const dbref = ref(fs, 'Users/' + userUid + '/' + currentHub);
+          const dbref = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub);
           /*onValue(dbref, (snapshot) => {
             s = snapshot.val().Serial;
             setSerial(s);
@@ -102,7 +102,7 @@ const IconBox1 = (props) => {
           const snapshot = await get(dbref); // Use get to retrieve the data once
 
           if (snapshot.exists()) {
-            s = snapshot.val().Serial;
+            s = snapshot.val().HubSerial;
             setSerial(s);
             qry = query(collection(db, s), where("AccountID", "==", s));
           }
