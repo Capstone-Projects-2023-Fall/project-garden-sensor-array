@@ -81,8 +81,8 @@ const IconBox1 = () => {
         q = query(
           collection(firestore, "HUB_2"),
           orderBy("Time", "asc"),
-          where("Time", "<", currDate),
-          where("Time", ">", prevDate)
+          /*where("Time", "<", currDate),
+          where("Time", ">", prevDate)*/
         );
     
         const querySnapshot = await getDocs(q);
@@ -229,9 +229,11 @@ const IconBox1 = () => {
         } else if (avg["Temperature"] > 5 && avg["Temperature"] <= 32) {
             icon = <WbSunnyTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Temperature";
-        } else { 
+        } else if (avg["Temperature"] > 32) {
             icon =  <LocalFireDepartmentTwoToneIcon  color="error" sx={{ fontSize: 65 }}/>
             status = "Temperature is too High"; 
+        } else {
+            icon =  <LocalFireDepartmentTwoToneIcon  color="Black" sx={{ fontSize: 65 }}/>
         }
         return {icon, status};
     }
@@ -248,9 +250,11 @@ const IconBox1 = () => {
         } else if (avg["Sunlight"]  > 50 && avg["Sunlight"]  <= 150) {
             icon = <EmojiObjectsTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
             status = "Good Sunlight";
-        } else { 
+        } else if (avg["Sunlight"] > 150) { 
             icon =  <LightModeTwoToneIcon color="error"  sx={{ fontSize: 65 }}/>
             status = "Too Much Sunlight"; 
+        } else {
+            icon =  <LightModeTwoToneIcon color="Black"  sx={{ fontSize: 65 }}/>
         }
         return {icon, status};
     }
@@ -262,12 +266,14 @@ const IconBox1 = () => {
     function MoistureInfo() {
         let icon, status;
     
-        if (avg["Moisture"]  < 300) {
+        if (avg["Moisture"]  <= 300) {
             icon = <WaterDropTwoToneIcon  color="warning" sx={{ fontSize: 65 }}/>;
             status = "Low Moisture";
-        } else {
+        } else if (avg["Moisture"]  > 300) {
             icon = <WavesTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>;
             status = "Good Moisture";
+        } else {
+            icon = <WavesTwoToneIcon color="Black"  sx={{ fontSize: 65 }}/>;
         }
         return {icon, status};
     }

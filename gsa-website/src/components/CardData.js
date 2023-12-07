@@ -79,8 +79,8 @@ const CardData = (props) => {
         q = query(
           collection(db, "HUB_2"),
           orderBy("Time", "asc"),
-          where("Time", "<", currDate),
-          where("Time", ">", prevDate)
+          /*where("Time", "<", currDate),
+          where("Time", ">", prevDate)*/
         );
     
         const querySnapshot = await getDocs(q);
