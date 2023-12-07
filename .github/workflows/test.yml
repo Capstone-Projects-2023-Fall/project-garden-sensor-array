@@ -5,19 +5,23 @@ on:
   push:
     branches: [ GSA-131-Testing-Document-Feedback-1 ]
   pull_request:
-    branches: [ master ]
+    branches: [ GSA-131-Testing-Document-Feedback-1 ]
 
 jobs:
-  checkout-and-check-formatting:
+  testing:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Run unit tests
-      uses: HorstBaerbel/action-ctest@1.1
-      # These are optional (defaults displayed)
-      with:
-        sourcedir: '../src/SCU_Main_Test'
-        builddir: '../src/SCU_Main_Test/build'
-        cmakeoptions: '--config Release'
-        ctestoptions: 'CTest'
+     - name: Check out repository code
+       uses: actions/checkout@v2
+    
+     - name: Use Node.js
+       uses: actions/setup-node@v2
+    
+     - name: Install dependencies
+       run: npm ci
+       working-directory: ./src/SCU_Main_Test
+
+     - name: Run tests
+       run: npm test
+       working-directory: ./src/SCU_Main_Test
