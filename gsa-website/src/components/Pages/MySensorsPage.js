@@ -143,7 +143,7 @@ const MySensorsPage = () => {
         .then((snapshot) => {
           if (snapshot.exists()) {
             // Hub exists, proceed with the update
-            update(ref(database, `Users/${userUid}/${hubName}`), {
+            update(ref(database, `Users/${userUid}/HUBS/${hubName}/SENSORS`), {
               [sensorName]: { SensorSerial: sensorSerial }
             })
 
