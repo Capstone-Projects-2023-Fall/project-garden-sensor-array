@@ -99,8 +99,8 @@ const MySensorsPage = () => {
       // Get the user's UID from the authUser object
       const userUid = authUser.uid;
 
-      update(ref(database, `Users/${userUid}`), {   // add HUB to UID folder in Users
-        [hubName]: { Serial: hubSerial }
+      update(ref(database, `Users/${userUid}/HUBS`), {   // add HUB to UID folder in Users
+        [hubName]: { HubSerial: hubSerial }
       })
 
       const serialMapDocRef = doc(collection(firestore, 'SERIAL_MAP'), hubSerial);  // add HUB to SERIAL_MAP
@@ -136,15 +136,15 @@ const MySensorsPage = () => {
     if (authUser) {   
       const userUid = authUser.uid;  // get user uid
 
-      const hubRef = ref(database, `Users/${userUid}/${hubName}`);  // get reference to User
+      const hubRef = ref(database, `Users/${userUid}/HUBS/${hubName}`);  // get reference to User
       
       // Fetch data to check if the hub exists
       get(hubRef) 
         .then((snapshot) => {
           if (snapshot.exists()) {
             // Hub exists, proceed with the update
-            update(ref(database, `Users/${userUid}/${hubName}`), {
-              [sensorName]: { sensorSerial }
+            update(ref(database, `Users/${userUid}/HUBS/${hubName}/SENSORS`), {
+              [sensorName]: { SensorSerial: sensorSerial }
             })
 
             // Sensor information added to SERIAL_MAP
