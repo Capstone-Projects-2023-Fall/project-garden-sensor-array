@@ -301,7 +301,7 @@ const MySensorsPage = () => {
 
                                 <Grid item xs={4}>
                                     <Typography variant="h5" color="textSecondary">
-                                      <IconBox1 />
+                                      <IconBox1 name = {userHubNames[index]}/>
                                     </Typography>
                                 </Grid>
                             </Grid>
