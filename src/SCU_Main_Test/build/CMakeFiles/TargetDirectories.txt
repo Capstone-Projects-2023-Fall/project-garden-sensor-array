@@ -1,0 +1,4 @@
+C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CMakeFiles/CommonCxxTests.dir
+C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CMakeFiles/test.dir
+C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CMakeFiles/edit_cache.dir
+C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,5 @@
+1:testgetASSMsoilmoisture
+2:testgetASSMtempC
+3:testgetBH1750lux
+4:testgetSensorData
+5:testformat_sensor_data

@@ -1,0 +1,80 @@
+Start testing: Dec 08 15:54 Eastern Standard Time
+----------------------------------------------------------
+1/5 Testing: testgetASSMsoilmoisture
+1/5 Test: testgetASSMsoilmoisture
+Command: "C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CommonCxxTests.exe" "testgetASSMsoilmoisture"
+Directory: C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build
+"testgetASSMsoilmoisture" start time: Dec 08 15:54 Eastern Standard Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.56 sec
+----------------------------------------------------------
+Test Passed.
+"testgetASSMsoilmoisture" end time: Dec 08 15:54 Eastern Standard Time
+"testgetASSMsoilmoisture" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/5 Testing: testgetASSMtempC
+2/5 Test: testgetASSMtempC
+Command: "C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CommonCxxTests.exe" "testgetASSMtempC"
+Directory: C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build
+"testgetASSMtempC" start time: Dec 08 15:54 Eastern Standard Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"testgetASSMtempC" end time: Dec 08 15:54 Eastern Standard Time
+"testgetASSMtempC" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/5 Testing: testgetBH1750lux
+3/5 Test: testgetBH1750lux
+Command: "C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CommonCxxTests.exe" "testgetBH1750lux"
+Directory: C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build
+"testgetBH1750lux" start time: Dec 08 15:54 Eastern Standard Time
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"testgetBH1750lux" end time: Dec 08 15:54 Eastern Standard Time
+"testgetBH1750lux" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/5 Testing: testgetSensorData
+4/5 Test: testgetSensorData
+Command: "C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CommonCxxTests.exe" "testgetSensorData"
+Directory: C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build
+"testgetSensorData" start time: Dec 08 15:54 Eastern Standard Time
+Output:
+----------------------------------------------------------
+I'm in sensor data
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"testgetSensorData" end time: Dec 08 15:54 Eastern Standard Time
+"testgetSensorData" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/5 Testing: testformat_sensor_data
+5/5 Test: testformat_sensor_data
+Command: "C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build/CommonCxxTests.exe" "testformat_sensor_data"
+Directory: C:/Users/Ak74u/Documents/Garden Sensor Array/SCU_Main_Test/build
+"testformat_sensor_data" start time: Dec 08 15:54 Eastern Standard Time
+Output:
+----------------------------------------------------------
+I'm in sensor data
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"testformat_sensor_data" end time: Dec 08 15:54 Eastern Standard Time
+"testformat_sensor_data" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Dec 08 15:54 Eastern Standard Time
