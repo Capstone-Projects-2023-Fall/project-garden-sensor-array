@@ -110,11 +110,21 @@ const IconBox1 = (props) => {
 
         console.log("cardata serial: "+ s)
 
+        currDate.setDate(currentDate.getDate());
+        currDate.setHours(23)
+        currDate.setMinutes(59)
+        currDate.setSeconds(59)
+
+        prevDate.setDate(currentDate.getDate() - props.range)
+        prevDate.setHours(23)
+        prevDate.setMinutes(59)
+        prevDate.setSeconds(59)
+
         q = query(
           collection(db, s),
           orderBy("Time", "asc"),
-          /*where("Time", "<", currDate),
-          where("Time", ">", prevDate)*/
+          where("Time", "<", currDate),
+          where("Time", ">", prevDate)
         );
     
         const querySnapshot = await getDocs(q);
@@ -133,10 +143,20 @@ const IconBox1 = (props) => {
           setTem((prevTem) => [...prevTem, doc.data().Temperature]);
     
           var date = doc.data().Time.toDate();
-          setDates((prevDates) => [
-            ...prevDates,
-            date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
-          ]);
+          const options = { weekday: 'long' };
+          
+          if(props.range == 1){
+            setDates((prevDates) => [
+              ...prevDates,
+              date.toLocaleDateString('en-US', options) + ", " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+            ]);
+          }
+          else{
+            setDates((prevDates) => [
+              ...prevDates,
+              date.toLocaleDateString('en-US', options) + ", " + date.getHours() + ":" + date.getMinutes(),
+            ]);
+          }
         });
 
         console.log("Sunlight Total: " +  totalSunlight)
@@ -192,15 +212,19 @@ const IconBox1 = (props) => {
           ticks: {
             display: true,
             autoSkip: true,
-            maxTicksLimit: 12
+            maxTicksLimit: 7
           }
         },
       },
     };
   
     useEffect(() => { // useEffect ensures it only runs when mounted
+      setSun([]);
+      setMoi([]);
+      setTem([]);
+      setDates([]);
       fillCard();
-    },[ authUser ]);
+    },[ authUser, props.range ]);
 
     const handleOpenTemp = () => {
       setOpenTemp(true);
