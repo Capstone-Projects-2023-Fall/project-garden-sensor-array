@@ -14,4 +14,4 @@ jobs:
     steps:
      - name: RunCtest
        run: ctest
-       working-directory: /workspaces/project-garden-sensor-array/src/SCU_Main_Test/build
+       working-directory: /project-garden-sensor-array/src/SCU_Main_Test/build
