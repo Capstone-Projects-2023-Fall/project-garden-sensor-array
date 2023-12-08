@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+     - uses: actions/checkout@v3
      - name: RunCtest
        run: ctest
        working-directory: src/SCU_Main_Test/build
