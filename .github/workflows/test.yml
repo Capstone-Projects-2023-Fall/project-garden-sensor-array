@@ -14,7 +14,11 @@ jobs:
     steps:
      - uses: actions/checkout@v3
      - name: RunCmake
-       run: cmake
+       run: cmake ..
+     - name: Run make
+       run: make
+     - name: changetobuild
+       run: cd build
      - name: RunCtest
        run: ctest
        working-directory: src/SCU_Main_Test/build
