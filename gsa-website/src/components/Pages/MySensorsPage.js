@@ -128,6 +128,24 @@ const MySensorsPage = () => {
     setSensorSerial('');  
   };
 
+  const [time, setTime] = useState(0);
+
+  const today = () => {
+    setTime(1)
+  };
+
+  const week = () => {
+    setTime(7)
+  };
+
+  const month = () => {
+    setTime(31)
+  };
+
+  const year = () => {
+    setTime(365)
+  };
+
   const AddingSensor = async (e) => {
     if (e) {
       e.preventDefault();
@@ -251,27 +269,40 @@ const MySensorsPage = () => {
     fetchData();
   }, [FetchHubs]);
 
-
-
-
-
-
-
-
   return (
     <>
         <Layout /> 
         <Box>
             <Box align = "center">
                 <Typography align="center" variant="h3" sx={{ fontWeight: 900 }}>
-                    My Sensors
+                    My Hubs
                 </Typography>
                 <Typography align="center" variant="body2" sx={{ fontWeight: 100 }}>
-                    Here are your Hubs! Click on them to find more info
+                    Here are your Hubs!
                 </Typography>
             </Box>
         </Box>
         <Box> 
+
+        <div style={{ textAlign: 'center', marginTop: '50px' }}>
+              <p>
+                {time === 1
+                ? `Data Range Selected: Last 24 Hours`
+                : `Data Range Selected: Last ${time} Days`}
+              </p>
+              <button style={{ margin: 'auto' }} onClick={today}>
+                Day
+              </button>
+              <button style={{ margin: 'auto' }} onClick={week}>
+                Week
+              </button>
+              <button style={{ margin: 'auto' }} onClick={month}>
+                Month
+              </button>
+              <button style={{ margin: 'auto' }} onClick={year}>
+                Year
+              </button>
+            </div>
 
           
             {Array.from({ length: hubCardAmount }, (_, index) => (
@@ -295,13 +326,13 @@ const MySensorsPage = () => {
 
                                 <Grid item xs={4} onClick={handleClickCard.bind(null, index)}>
                                     <Typography variant="h5" color="textSecondary" align = 'center'>
-                                      <CardData name = {userHubNames[index]}/>
+                                      <CardData name = {userHubNames[index]} range = {time}/>
                                     </Typography>
                                 </Grid>
 
                                 <Grid item xs={4}>
                                     <Typography variant="h5" color="textSecondary">
-                                      <IconBox1 name = {userHubNames[index]}/>
+                                      <IconBox1 name = {userHubNames[index]} range = {time}/>
                                     </Typography>
                                 </Grid>
                             </Grid>
