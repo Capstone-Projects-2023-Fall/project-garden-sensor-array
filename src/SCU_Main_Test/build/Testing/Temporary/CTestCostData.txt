@@ -1,6 +1,0 @@
-testgetASSMsoilmoisture 1 0.556107
-testgetASSMtempC 1 0.0248014
-testgetBH1750lux 1 0.0183507
-testgetSensorData 1 0.0175594
-testformat_sensor_data 1 0.0241679
----
