@@ -64,7 +64,7 @@ const CardData = (props) => {
     currDate.setMinutes(59)
     currDate.setSeconds(59)
 
-    prevDate.setDate(currentDate.getDate() - 1)
+    prevDate.setDate(currentDate.getDate() - props.range)
     prevDate.setHours(23)
     prevDate.setMinutes(59)
     prevDate.setSeconds(59)
@@ -113,8 +113,8 @@ const CardData = (props) => {
         q = query(
           collection(db, s),
           orderBy("Time", "asc"),
-          /*where("Time", "<", currDate),
-          where("Time", ">", prevDate)*/
+          where("Time", "<", currDate),
+          where("Time", ">", prevDate)
         );
     
         const querySnapshot = await getDocs(q);
@@ -199,8 +199,19 @@ const CardData = (props) => {
     };
   
     useEffect(() => { // useEffect ensures it only runs when mounted
+      setSun([]);
+      setMoi([]);
+      setTem([]);
+      setDates([]);
+
+      setAvg({
+        Temperature: 0,
+        Moisture: 0,
+        Sunlight: 0,
+      });
+
       fillCard();
-    },[ authUser ]);
+    },[ authUser, props.range ]);
 
     const handleOpenTemp = () => {
       setOpenTemp(true);
