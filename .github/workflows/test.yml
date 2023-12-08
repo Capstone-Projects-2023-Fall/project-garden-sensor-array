@@ -16,7 +16,7 @@ jobs:
      - name: changetosrc
        run: cd src
      - name: changetoSCUMAINTEST
-       run: cd SCU_Main_Test
+       run: pwd
      - name: changetobuild
        run: cd build
      - name: RunCtest
