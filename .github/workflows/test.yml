@@ -14,11 +14,4 @@ jobs:
     steps:
      - uses: actions/checkout@v3
      - name: changetosrc
-       run: cd src
-     - name: changetoSCUMAINTEST
-       run: pwd
-     - name: changetobuild
-       run: cd build
-     - name: RunCtest
-       run: ctest
-       working-directory: src/SCU_Main_Test/build
+       run: cd src && cdSCU_Main_Test && cd build && ctest
