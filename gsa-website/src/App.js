@@ -10,7 +10,8 @@ import Home from './components/Pages/Home';
 import HelpPage from './components/Pages/HelpPage';
 import MissionPage from './components/Pages/MissionPage';
 import AccountPage from './components/Pages/AccountPage'; 
-import HubPage from './components/Pages/HubPage';
+import HubPage from './components/Pages/HubPage'; 
+import ScuPage from './components/Pages/ScuPage';
 
 
 
@@ -36,7 +37,8 @@ function App() {
         <Route path="/HelpPage" element={<HelpPage />} /> 
         <Route path="/MissionPage" element={<MissionPage />} /> 
         <Route path="/AccountPage" element={<AccountPage />} />  
-        <Route path="/HubPage" element={<HubPage />} /> 
+        <Route path="/HubPage" element={<HubPage />} />  
+        <Route path="/ScuPage" element={<ScuPage />} /> 
    
 
       </Routes>
