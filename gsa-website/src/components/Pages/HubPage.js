@@ -138,12 +138,9 @@ const HubPage = () => {
 
         {/* Row 3: Statistic Buttons */}
         <Box sx={{ border: 1 }}  gridColumn="span 12"  p="30px" alignItems="center">
-            <Typography variant="h5" fontWeight="600" textAlign="center">
-                Weekday Buttons and Update Hub Button 
+            <Typography variant="h6" fontWeight="600" textAlign="center">
+                Update Hub Button
             </Typography>  
-    
-         
- 
             <Box display="flex" flexDirection="column" alignItems="center" mt="75px">
             <Button size="large" variant="contained" onClick={null}> Update Hub Statistics </Button> 
             </Box>
