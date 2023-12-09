@@ -83,32 +83,26 @@ const IconBox1 = (props) => {
     
     const [avg, setAvg] = useState({ "Temperature": 0, "Moisture": 0, "Sunlight": 0 });
 
-    async function fillCard() {
-      try {
-        let s;
-        let q;
-        let qry;
-    
-        if (authUser) {
-          const userUid = authUser.uid;
-    
-          const dbref = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub);
-          /*onValue(dbref, (snapshot) => {
-            s = snapshot.val().Serial;
-            setSerial(s);
-            console.log("Serial: " + serial)
-            qry = query(collection(db, "HUB_2"), where("AccountID", "==", s));
-          });*/
-          const snapshot = await get(dbref); // Use get to retrieve the data once
-
-          if (snapshot.exists()) {
-            s = snapshot.val().HubSerial;
-            setSerial(s);
-            qry = query(collection(db, s), where("AccountID", "==", s));
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          let s;
+          let q;
+          let qry;
+  
+          if (authUser) {
+            const userUid = authUser.uid;
+      
+            const dbref = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub);
+      
+            const snapshot = await get(dbref); // Use get to retrieve the data once
+  
+            if (snapshot.exists()) {
+              s = snapshot.val().HubSerial;
+              setSerial(s);
+              qry = query(collection(db, s), where("AccountID", "==", s));
+            }
           }
-        }
-
-        console.log("cardata serial: "+ s)
 
         currDate.setDate(currentDate.getDate());
         currDate.setHours(23)
@@ -126,57 +120,66 @@ const IconBox1 = (props) => {
           where("Time", "<", currDate),
           where("Time", ">", prevDate)
         );
-    
-        const querySnapshot = await getDocs(q);
-    
-        let totalTemperature = 0;
-        let totalMoisture = 0;
-        let totalSunlight = 0;
-    
-        querySnapshot.forEach((doc) => {
-          totalTemperature += parseFloat(doc.data().Temperature);
-          totalMoisture += parseFloat(doc.data().Moisture);
-          totalSunlight += parseFloat(doc.data().Sunlight);
-    
-          setSun((prevSun) => [...prevSun, doc.data().Sunlight]);
-          setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
-          setTem((prevTem) => [...prevTem, doc.data().Temperature]);
-    
-          var date = doc.data().Time.toDate();
-          const options = { weekday: 'long' };
-          
-          if(props.range == 1){
-            setDates((prevDates) => [
-              ...prevDates,
-              date.toLocaleDateString('en-US', options) + ", " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
-            ]);
-          }
-          else{
-            setDates((prevDates) => [
-              ...prevDates,
-              date.toLocaleDateString('en-US', options) + ", " + date.getHours() + ":" + date.getMinutes(),
-            ]);
-          }
-        });
-
-        console.log("Sunlight Total: " +  totalSunlight)
-        console.log("Query Snapshot Size: " + querySnapshot.size)
-    
-        const avgTemperature = totalTemperature / querySnapshot.size;
-        const avgMoisture = totalMoisture / querySnapshot.size;
-        const avgSunlight = totalSunlight / querySnapshot.size;
-
-        console.log("AVG SUNLIGHT: " + avgSunlight)
-    
-        setAvg({
-          Temperature: avgTemperature,
-          Moisture: avgMoisture,
-          Sunlight: avgSunlight,
-        });
-      } catch (error) {
-        console.log("Error fetching data:", error);
-      }
-    }
+  
+          // Use onSnapshot to listen for real-time updates
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            // Clear previous data when a change occurs
+            setSun([]);
+            setMoi([]);
+            setTem([]);
+            setDates([]);
+  
+            let totalTemperature = 0;
+            let totalMoisture = 0;
+            let totalSunlight = 0;
+  
+            querySnapshot.forEach((doc) => {
+              totalTemperature += parseFloat(doc.data().Temperature);
+              totalMoisture += parseFloat(doc.data().Moisture);
+              totalSunlight += parseFloat(doc.data().Sunlight);
+  
+              setSun((prevSun) => [...prevSun, doc.data().Sunlight]);
+              setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
+              setTem((prevTem) => [...prevTem, doc.data().Temperature]);
+  
+              var date = doc.data().Time.toDate();
+              const options = { weekday: 'long' };
+  
+              if (props.range == 1) {
+                setDates((prevDates) => [
+                  ...prevDates,
+                  date.toLocaleDateString('en-US', options) + ", " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+                ]);
+              } else {
+                setDates((prevDates) => [
+                  ...prevDates,
+                  date.toLocaleDateString('en-US', options) + ", " + date.getHours() + ":" + date.getMinutes(),
+                ]);
+              }
+            });
+  
+            const avgTemperature = totalTemperature / querySnapshot.size;
+            const avgMoisture = totalMoisture / querySnapshot.size;
+            const avgSunlight = totalSunlight / querySnapshot.size;
+  
+            setAvg({
+              Temperature: avgTemperature,
+              Moisture: avgMoisture,
+              Sunlight: avgSunlight,
+            });
+          });
+  
+          // Clean up the listener when the component unmounts or when it's no longer needed
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log("Error fetching data:", error);
+        }
+      };
+  
+      fetchData();
+    }, [ props.range ]); // Run this effect whenever 'props.range' changes
 
     const sun_data = {
       labels: dates,
@@ -217,14 +220,7 @@ const IconBox1 = (props) => {
         },
       },
     };
-  
-    useEffect(() => { // useEffect ensures it only runs when mounted
-      setSun([]);
-      setMoi([]);
-      setTem([]);
-      setDates([]);
-      fillCard();
-    },[ authUser, props.range ]);
+
 
     const handleOpenTemp = () => {
       setOpenTemp(true);

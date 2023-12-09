@@ -83,32 +83,36 @@ const CardData = (props) => {
     
     const [avg, setAvg] = useState({ "Temperature": 0, "Moisture": 0, "Sunlight": 0 });
 
-    async function fillCard() {
-      try {
-        let s;
-        let q;
-        let qry;
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          let s;
+          let q;
+          let qry;
+  
+          if (authUser) {
+            const userUid = authUser.uid;
+      
+            const dbref = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub);
     
-        if (authUser) {
-          const userUid = authUser.uid;
-    
-          const dbref = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub);
-          /*onValue(dbref, (snapshot) => {
-            s = snapshot.val().Serial;
-            setSerial(s);
-            console.log("Serial: " + serial)
-            qry = query(collection(db, "HUB_2"), where("AccountID", "==", s));
-          });*/
-          const snapshot = await get(dbref); // Use get to retrieve the data once
-
-          if (snapshot.exists()) {
-            s = snapshot.val().HubSerial;
-            setSerial(s);
-            qry = query(collection(db, s), where("AccountID", "==", s));
+            const snapshot = await get(dbref); // Use get to retrieve the data once
+  
+            if (snapshot.exists()) {
+              s = snapshot.val().HubSerial;
+              setSerial(s);
+              qry = query(collection(db, s), where("AccountID", "==", s));
+            }
           }
-        }
 
-        console.log("cardata serial: "+ s)
+        currDate.setDate(currentDate.getDate());
+        currDate.setHours(23)
+        currDate.setMinutes(59)
+        currDate.setSeconds(59)
+
+        prevDate.setDate(currentDate.getDate() - props.range)
+        prevDate.setHours(23)
+        prevDate.setMinutes(59)
+        prevDate.setSeconds(59)
 
         q = query(
           collection(db, s),
@@ -116,187 +120,65 @@ const CardData = (props) => {
           where("Time", "<", currDate),
           where("Time", ">", prevDate)
         );
-    
-        const querySnapshot = await getDocs(q);
-    
-        let totalTemperature = 0;
-        let totalMoisture = 0;
-        let totalSunlight = 0;
-    
-        querySnapshot.forEach((doc) => {
-          totalTemperature += parseFloat(doc.data().Temperature);
-          totalMoisture += parseFloat(doc.data().Moisture);
-          totalSunlight += parseFloat(doc.data().Sunlight);
-    
-          setSun((prevSun) => [...prevSun, doc.data().Sunlight]);
-          setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
-          setTem((prevTem) => [...prevTem, doc.data().Temperature]);
-    
-          var date = doc.data().Time.toDate();
-          setDates((prevDates) => [
-            ...prevDates,
-            date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
-          ]);
-        });
-
-        console.log("Sunlight Total: " +  totalSunlight)
-        console.log("Query Snapshot Size: " + querySnapshot.size)
-    
-        const avgTemperature = totalTemperature / querySnapshot.size;
-        const avgMoisture = totalMoisture / querySnapshot.size;
-        const avgSunlight = totalSunlight / querySnapshot.size;
-
-        console.log("AVG SUNLIGHT: " + avgSunlight)
-    
-        setAvg({
-          Temperature: avgTemperature,
-          Moisture: avgMoisture,
-          Sunlight: avgSunlight,
-        });
-      } catch (error) {
-        console.log("Error fetching data:", error);
-      }
-    }
-
-    const sun_data = {
-      labels: dates,
-      datasets: [{
-        label: 'Sunlight',
-        data: sun,
-        borderColor: 'rgb(255, 100, 0)',
-      }]
-    };
   
-    const moi_data = {
-      labels: dates,
-      datasets: [{
-        label: 'Moisture',
-        data: moi,
-        borderColor: 'rgb(0, 100, 255)',
-      }]
-    };
+          // Use onSnapshot to listen for real-time updates
+          const unsubscribe = onSnapshot(q, (querySnapshot) => {
+            // Clear previous data when a change occurs
+            setSun([]);
+            setMoi([]);
+            setTem([]);
+            setDates([]);
   
-    const tem_data = {
-      labels: dates,
-      datasets: [{
-        label: 'Temperature',
-        data: tem,
-        borderColor: 'rgb(100, 255, 0)',
-      }]
-    };
+            let totalTemperature = 0;
+            let totalMoisture = 0;
+            let totalSunlight = 0;
   
-    const options = {
-      responsive: true,
-      scales: {
-        x: {
-          ticks: {
-            display: true,
-            autoSkip: true,
-            maxTicksLimit: 12
-          }
-        },
-      },
-    };
+            querySnapshot.forEach((doc) => {
+              totalTemperature += parseFloat(doc.data().Temperature);
+              totalMoisture += parseFloat(doc.data().Moisture);
+              totalSunlight += parseFloat(doc.data().Sunlight);
   
-    useEffect(() => { // useEffect ensures it only runs when mounted
-      setSun([]);
-      setMoi([]);
-      setTem([]);
-      setDates([]);
-
-      setAvg({
-        Temperature: 0,
-        Moisture: 0,
-        Sunlight: 0,
-      });
-
-      fillCard();
-    },[ authUser, props.range ]);
-
-    const handleOpenTemp = () => {
-      setOpenTemp(true);
-  };
-    const handleCloseTemp = () => {
-      setOpenTemp(false);
-  };
+              setSun((prevSun) => [...prevSun, doc.data().Sunlight]);
+              setMoi((prevMoi) => [...prevMoi, doc.data().Moisture]);
+              setTem((prevTem) => [...prevTem, doc.data().Temperature]);
   
+              var date = doc.data().Time.toDate();
+              const options = { weekday: 'long' };
   
+              if (props.range == 1) {
+                setDates((prevDates) => [
+                  ...prevDates,
+                  date.toLocaleDateString('en-US', options) + ", " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds(),
+                ]);
+              } else {
+                setDates((prevDates) => [
+                  ...prevDates,
+                  date.toLocaleDateString('en-US', options) + ", " + date.getHours() + ":" + date.getMinutes(),
+                ]);
+              }
+            });
   
-  const handleOpenMoisture = () => {
-      setOpenMoisture(true);
-  };
-  const handleCloseMoisture = () => {
-  setOpenMoisture(false);
-  };
+            const avgTemperature = totalTemperature / querySnapshot.size;
+            const avgMoisture = totalMoisture / querySnapshot.size;
+            const avgSunlight = totalSunlight / querySnapshot.size;
+  
+            setAvg({
+              Temperature: avgTemperature,
+              Moisture: avgMoisture,
+              Sunlight: avgSunlight,
+            });
+          });
 
-
-  const handleOpenSunlight = () => {
-      setOpenSunlight(true);
-  };
-  const handleCloseSunlight = () => {
-   setOpenSunlight(false);
-  };
-
-  //Temperature Icon
-  function TempLogic() { 
-    let icon, status;
-    if (avg["Temperature"] < 5) { 
-        icon =  <AcUnitTwoToneIcon  color="warning" sx={{ fontSize: 65 }} />
-        status = "Low Temperature";
-    } else if (avg["Temperature"] > 5 && avg["Temperature"] <= 32) {
-        icon = <WbSunnyTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
-        status = "Good Temperature";
-    } else if (avg["Temperature"] > 32) {
-        icon =  <LocalFireDepartmentTwoToneIcon  color="error" sx={{ fontSize: 65 }}/>
-        status = "Temperature is too High"; 
-    } else {
-        icon =  <LocalFireDepartmentTwoToneIcon  color="Black" sx={{ fontSize: 65 }}/>
-    }
-    return {icon, status};
-}
-let { icon: readTempIcon, 
-    status: readTempStatus } = TempLogic();
-
-
-//Sunglight Logic
-function SunlightLogic() { 
-    let icon, status;  
-    if (avg["Sunlight"] < 50 ) { 
-        icon = <BedtimeTwoToneIcon color="warning"  sx={{ fontSize: 65 }}/> 
-        status = "Not Enough Sunlight"; 
-    } else if (avg["Sunlight"]  > 50 && avg["Sunlight"]  <= 150) {
-        icon = <EmojiObjectsTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
-        status = "Good Sunlight";
-    } else if (avg["Sunlight"] > 150) { 
-        icon =  <LightModeTwoToneIcon color="error"  sx={{ fontSize: 65 }}/>
-        status = "Too Much Sunlight"; 
-    } else {
-        icon =  <LightModeTwoToneIcon color="Black"  sx={{ fontSize: 65 }}/>
-    }
-    return {icon, status};
-}
-let { icon: readSunlightIcon, 
-    status: readSunlightStatus } = SunlightLogic();
-
-
-
-function MoistureInfo() {
-    let icon, status;
-
-    if (avg["Moisture"]  <= 300) {
-        icon = <WaterDropTwoToneIcon  color="warning" sx={{ fontSize: 65 }}/>;
-        status = "Low Moisture";
-    } else if (avg["Moisture"]  > 300) {
-        icon = <WavesTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>;
-        status = "Good Moisture";
-    } else {
-        icon = <WavesTwoToneIcon color="Black"  sx={{ fontSize: 65 }}/>;
-    }
-    return {icon, status};
-}
-let { icon: readMoistureIcon, 
-    status: readMoistureStatus } = MoistureInfo();
-
+          return () => {
+            unsubscribe();
+          };
+        } catch (error) {
+          console.log("Error fetching data:", error);
+        }
+      };
+  
+      fetchData();
+    }, [ props.range ]); // Run this effect whenever 'props.range' changes
     
   return (
     <>
