@@ -100,8 +100,9 @@ const HubPage = () => {
         <Box sx={{ border: 3,  backgroundColor: 'white'  }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center">
           <Typography variant="h5" fontWeight="600" textAlign="center">
             {currentHub}  
-          </Typography> 
-          <Box alignItems="center">   
+          </Typography>  
+          {/* This is for the DATE BUTTONS !!! - Alter code here - or add functions to onClick part */}
+          <Box alignItems="center">    
             <Stack direction="row" spacing={1} alignItems="center">
               <Button size="small" variant="contained" onClick={null}> Today </Button>
               <Button size="small" variant="contained" onClick={null}> Week </Button>
