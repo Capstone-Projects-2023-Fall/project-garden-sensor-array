@@ -155,12 +155,12 @@ const HubPage = () => {
           <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
               <Typography variant="h5" fontWeight="600" >
-                Moisture Line Chart 
+                Moisture Line Graph 
               </Typography>
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0"> 
-          {/* Space for Another Graph or figure - prob Bar Graph  */}
+          {/* Enter what is returend for Moisture Graph here */}
           </Box>
         </Box>  
 
@@ -169,12 +169,12 @@ const HubPage = () => {
           <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
               <Typography variant="h5" fontWeight="600"   >
-                Temperature Line Chart
+                Temperature Line graph
               </Typography>
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            {/* Space for Another Graph or figure - prob Bar Graph  */}
+            {/* Enter what is returned for Temperature graph here */}
           </Box>
         </Box>  
 
@@ -182,7 +182,7 @@ const HubPage = () => {
           <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
               <Typography variant="h5" fontWeight="600"   >
-                Sunlight Line Chart
+                Sunlight Line Graph
               </Typography>
             </Box>
           </Box>
@@ -256,6 +256,7 @@ const HubPage = () => {
         </Box>   
         
   
+
       </Box>  
     </Box>   
     </div>
