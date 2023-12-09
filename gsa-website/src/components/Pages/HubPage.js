@@ -26,9 +26,10 @@ const HubPage = () => {
   const [openHistoryModal, setOpenHistoryModal] = React.useState(false); //for the data table
   const currentHub = localStorage.getItem('currHub'); 
 
-
-
-
+  const [userSensNames, setUserSensNames] = useState([""]);
+  const [registeredSens, setRegisteredSens] = useState([""]);
+  const [sensCardAmount, setSensCardAmount] = useState('');
+  
 // Columns for the data table - currently filled with fake filler numbers
   const columns = [
     { field: 'Date', headerName: 'Date', width: 90 },
@@ -67,8 +68,74 @@ const HubPage = () => {
       navigate(`/ScuPage`);
     };
 
+    const [time, setTime] = useState(0);
 
+    const today = () => {
+      setTime(1)
+    };
 
+    const week = () => {
+      setTime(7)
+    };
+
+    const month = () => {
+      setTime(31)
+    };
+
+    const year = () => {
+      setTime(365)
+    };
+  
+    const FetchSens = useCallback(async() => { 
+      try {
+        if (authUser) {
+          const userUid = authUser.uid;
+          
+          // real-time database, get ref for information under user's account ID 
+          console.log(`Users/${userUid}/HUBS/${currentHub}/SENSORS`)
+          const userRef = ref(database, `Users/${userUid}/HUBS/${currentHub}/SENSORS`);
+          const snapshot = await get(userRef); //get a snapshot
+          if (snapshot.exists()) { //if there's data - proceed 
+            
+            const sens = snapshot.val(); //data found saved as a const
+            console.log('Sensors:', sens); //should print out a user's: email, username, and name of hubs 
+    
+            let nameOfSens, acctInfo; 
+              
+            nameOfSens = Object.keys(sens); 
+            
+            console.log('Sens Names:', nameOfSens); 
+            setRegisteredSens(nameOfSens); //setting in constant use-state variable
+
+            return nameOfSens
+          } else {
+            console.log('No info found for this user.');
+          }
+        } else {
+          setError('You must be logged in to see hubs.');
+        }
+      } catch (error) {
+        
+      }
+      return [];
+    },[authUser, database, setError]);
+
+    const LoadCards = async (nameOfSens) => { 
+      if (nameOfSens) {
+        setUserSensNames(nameOfSens);
+        setSensCardAmount(nameOfSens.length); 
+      }
+    }
+
+    useEffect(() => {
+      const fetchData = async () => {
+        const nameOfSens = await FetchSens();
+
+        await LoadCards(nameOfSens);
+      };
+
+      fetchData();
+    }, [FetchSens]);
 
   return ( 
     <> 
@@ -98,33 +165,51 @@ const HubPage = () => {
           </Box>
         </Box>  
 
-        <Box sx={{ border: 3,  backgroundColor: 'white'  }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center">
+        <Box sx={{ border: 3,  backgroundColor: 'white'  }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center" >
           <Typography variant="h5" fontWeight="600" textAlign="center">
             {currentHub}  
           </Typography>  
           {/* This is for the DATE BUTTONS !!! - Alter code here - or add functions to onClick part */}
           <Box alignItems="center">    
+            <p>
+              {time === 1
+              ? `Data Range Selected: Last 24 Hours`
+              : `Data Range Selected: Last ${time} Days`}
+            </p>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Button size="small" variant="contained" onClick={null}> Today </Button>
-              <Button size="small" variant="contained" onClick={null}> Week </Button>
-              <Button size="small" variant="contained" onClick={null}> Month </Button>
-             <Button size="small" variant="contained" onClick={null}> Year </Button> 
+              <Button size="small" variant="contained" onClick={today}> Today </Button>
+              <Button size="small" variant="contained" onClick={week}> Week </Button>
+              <Button size="small" variant="contained" onClick={month}> Month </Button>
+              <Button size="small" variant="contained" onClick={year}> Year </Button> 
             </Stack>
-            </Box> 
-          <Box height="250px" m="-20px 0 0 0" display="flex" flexDirection="column" alignItems="center" mt="45px"> 
-            <Typography>
-              Today's Averages
-            </Typography>
-            <Typography>
-                Temperature: 
-            </Typography>
-            <Typography>
-                Moisture: 
-            </Typography>
-            <Typography>
-                Sunlight: 
-            </Typography>
-          </Box>
+          </Box> 
+            {Array.from({ length: sensCardAmount }, (_, index) => (
+              <div key={index}>
+                  <Card style = {{marginBottom: '46px', marginTop: '46px', cursor: 'pointer' }} > 
+                  <Typography gutterBottom variant='h5' component='div' align="center"> {registeredSens[index]}</Typography>
+                      <CardContent style={{ display: 'flex', flexDirection: 'row' }}>
+                    
+                          <Grid container spacing={2}>
+
+                              <Grid item xs={4}>
+                                  <Typography variant="h5" color="textSecondary" align = 'center'>
+                                    add data
+                                  </Typography>
+                              </Grid>
+
+                              <Grid item xs={4}>
+                              </Grid>
+
+                              <Grid item xs={4}>
+                                  <Typography variant="h5" color="textSecondary" align = 'center'>
+                                    add icons
+                                  </Typography>
+                              </Grid>
+                          </Grid>
+                      </CardContent>
+                  </Card>
+              </div>
+          ))}
         </Box>  
 
         <Box  sx={{ border: 1,  backgroundColor: 'white'  }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
@@ -136,20 +221,7 @@ const HubPage = () => {
           </Box>
         </Box>   
 
-
-
-        {/* Row 3: Statistic Buttons */}
-        <Box sx={{ border: 1 }}  gridColumn="span 12"  p="30px" alignItems="center">
-            <Typography variant="h6" fontWeight="600" textAlign="center">
-                Update Hub Button
-            </Typography>  
-            <Box display="flex" flexDirection="column" alignItems="center" mt="75px">
-            <Button size="large" variant="contained" onClick={null}> Update Hub Statistics </Button> 
-            </Box>
-        </Box>  
-
-
-        {/* Row 4 - Line Graphs */} 
+        {/* Row 3 - Line Graphs */} 
         <Box  sx={{ border: 1,  backgroundColor: 'white'  }} gridColumn="span 4" gridRow="span 2" bg="white" >
           <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
@@ -193,7 +265,7 @@ const HubPage = () => {
 
 
 
-        {/* Row 5 - Access More Data */}
+        {/* Row 4 - Access More Data */}
         <Box gridColumn="span 4" gridRow="span 2"   p="30px" bg="white">
           <Typography variant="h5" fontWeight="600">
            {/* Don't erase I'm putting pictures here  */}
@@ -266,11 +338,3 @@ const HubPage = () => {
 };
 
 export default HubPage; 
-
-
-
-
-
-
-
-
