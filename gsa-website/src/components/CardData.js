@@ -1,11 +1,8 @@
 import React from 'react';
-import {Box,Card,CardContent,Typography,Button, avatarGroupClasses} from '@mui/material'
-import { getFirestore, collection, doc, setDoc, onSnapshot } from "firebase/firestore";
-import { useState, useRef, useEffect} from "react";
-
-import { auth } from '../firebase';
-import Authenticate from './Authenticate';
+import {Box,Card,CardContent,Typography,Button, IconButton} from '@mui/material'
+import { getFirestore, collection, doc, setDoc, onSnapshot, query, where, orderBy, getDocs, Timestamp } from "firebase/firestore";
 import { getDatabase, ref, onValue, get } from "firebase/database";
+import { useState, useRef, useEffect } from "react";
 //Temperature
 import AcUnitTwoToneIcon from '@mui/icons-material/AcUnitTwoTone'; //Low Temp - snowflake 
 import WbSunnyTwoToneIcon from '@mui/icons-material/WbSunnyTwoTone'; // Good Temp - sun 
@@ -17,8 +14,35 @@ import WavesTwoToneIcon from '@mui/icons-material/WavesTwoTone'; // Good Moistur
 import BedtimeTwoToneIcon from '@mui/icons-material/BedtimeTwoTone'; // Low Sunglight - the moon (cresent) 
 import EmojiObjectsTwoToneIcon from '@mui/icons-material/EmojiObjectsTwoTone'; // Good Sunlight - lightbulb
 import LightModeTwoToneIcon from '@mui/icons-material/LightModeTwoTone'; // Too much  Sunlight - the sun 
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import { Line } from 'react-chartjs-2';
+import Authenticate from './Authenticate';
 
-import { query, where, orderBy, getDocs } from "firebase/firestore";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 
 const CardData = (props) => {
     const [hubTime, setHubTime] = useState('');
@@ -40,7 +64,7 @@ const CardData = (props) => {
     currDate.setMinutes(59)
     currDate.setSeconds(59)
 
-    prevDate.setDate(currentDate.getDate() - 1)
+    prevDate.setDate(currentDate.getDate() - props.range)
     prevDate.setHours(23)
     prevDate.setMinutes(59)
     prevDate.setSeconds(59)
@@ -68,16 +92,26 @@ const CardData = (props) => {
         if (authUser) {
           const userUid = authUser.uid;
     
-          const dbref = ref(fs, 'Users/' + userUid + '/' + currentHub);
-          onValue(dbref, (snapshot) => {
+          const dbref = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub);
+          /*onValue(dbref, (snapshot) => {
             s = snapshot.val().Serial;
             setSerial(s);
+            console.log("Serial: " + serial)
             qry = query(collection(db, "HUB_2"), where("AccountID", "==", s));
-          });
+          });*/
+          const snapshot = await get(dbref); // Use get to retrieve the data once
+
+          if (snapshot.exists()) {
+            s = snapshot.val().HubSerial;
+            setSerial(s);
+            qry = query(collection(db, s), where("AccountID", "==", s));
+          }
         }
-    
+
+        console.log("cardata serial: "+ s)
+
         q = query(
-          collection(db, "HUB_2"),
+          collection(db, s),
           orderBy("Time", "asc"),
           where("Time", "<", currDate),
           where("Time", ">", prevDate)
@@ -123,10 +157,146 @@ const CardData = (props) => {
         console.log("Error fetching data:", error);
       }
     }
+
+    const sun_data = {
+      labels: dates,
+      datasets: [{
+        label: 'Sunlight',
+        data: sun,
+        borderColor: 'rgb(255, 100, 0)',
+      }]
+    };
+  
+    const moi_data = {
+      labels: dates,
+      datasets: [{
+        label: 'Moisture',
+        data: moi,
+        borderColor: 'rgb(0, 100, 255)',
+      }]
+    };
+  
+    const tem_data = {
+      labels: dates,
+      datasets: [{
+        label: 'Temperature',
+        data: tem,
+        borderColor: 'rgb(100, 255, 0)',
+      }]
+    };
+  
+    const options = {
+      responsive: true,
+      scales: {
+        x: {
+          ticks: {
+            display: true,
+            autoSkip: true,
+            maxTicksLimit: 12
+          }
+        },
+      },
+    };
   
     useEffect(() => { // useEffect ensures it only runs when mounted
+      setSun([]);
+      setMoi([]);
+      setTem([]);
+      setDates([]);
+
+      setAvg({
+        Temperature: 0,
+        Moisture: 0,
+        Sunlight: 0,
+      });
+
       fillCard();
-    },[ authUser ]);
+    },[ authUser, props.range ]);
+
+    const handleOpenTemp = () => {
+      setOpenTemp(true);
+  };
+    const handleCloseTemp = () => {
+      setOpenTemp(false);
+  };
+  
+  
+  
+  const handleOpenMoisture = () => {
+      setOpenMoisture(true);
+  };
+  const handleCloseMoisture = () => {
+  setOpenMoisture(false);
+  };
+
+
+  const handleOpenSunlight = () => {
+      setOpenSunlight(true);
+  };
+  const handleCloseSunlight = () => {
+   setOpenSunlight(false);
+  };
+
+  //Temperature Icon
+  function TempLogic() { 
+    let icon, status;
+    if (avg["Temperature"] < 5) { 
+        icon =  <AcUnitTwoToneIcon  color="warning" sx={{ fontSize: 65 }} />
+        status = "Low Temperature";
+    } else if (avg["Temperature"] > 5 && avg["Temperature"] <= 32) {
+        icon = <WbSunnyTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
+        status = "Good Temperature";
+    } else if (avg["Temperature"] > 32) {
+        icon =  <LocalFireDepartmentTwoToneIcon  color="error" sx={{ fontSize: 65 }}/>
+        status = "Temperature is too High"; 
+    } else {
+        icon =  <LocalFireDepartmentTwoToneIcon  color="Black" sx={{ fontSize: 65 }}/>
+    }
+    return {icon, status};
+}
+let { icon: readTempIcon, 
+    status: readTempStatus } = TempLogic();
+
+
+//Sunglight Logic
+function SunlightLogic() { 
+    let icon, status;  
+    if (avg["Sunlight"] < 50 ) { 
+        icon = <BedtimeTwoToneIcon color="warning"  sx={{ fontSize: 65 }}/> 
+        status = "Not Enough Sunlight"; 
+    } else if (avg["Sunlight"]  > 50 && avg["Sunlight"]  <= 150) {
+        icon = <EmojiObjectsTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>
+        status = "Good Sunlight";
+    } else if (avg["Sunlight"] > 150) { 
+        icon =  <LightModeTwoToneIcon color="error"  sx={{ fontSize: 65 }}/>
+        status = "Too Much Sunlight"; 
+    } else {
+        icon =  <LightModeTwoToneIcon color="Black"  sx={{ fontSize: 65 }}/>
+    }
+    return {icon, status};
+}
+let { icon: readSunlightIcon, 
+    status: readSunlightStatus } = SunlightLogic();
+
+
+
+function MoistureInfo() {
+    let icon, status;
+
+    if (avg["Moisture"]  <= 300) {
+        icon = <WaterDropTwoToneIcon  color="warning" sx={{ fontSize: 65 }}/>;
+        status = "Low Moisture";
+    } else if (avg["Moisture"]  > 300) {
+        icon = <WavesTwoToneIcon color="success"  sx={{ fontSize: 65 }}/>;
+        status = "Good Moisture";
+    } else {
+        icon = <WavesTwoToneIcon color="Black"  sx={{ fontSize: 65 }}/>;
+    }
+    return {icon, status};
+}
+let { icon: readMoistureIcon, 
+    status: readMoistureStatus } = MoistureInfo();
+
     
   return (
     <>
@@ -143,6 +313,7 @@ const CardData = (props) => {
         <Typography>
             Sunlight: {avg["Sunlight"].toFixed(2)}
         </Typography>
+    
     </Box>
     
     </>
