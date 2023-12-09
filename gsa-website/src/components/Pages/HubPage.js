@@ -35,7 +35,6 @@ const HubPage = () => {
     { field: 'Temperature', headerName: 'Temperature', type: 'number', width: 150, editable: true,},
     { field: 'Moisture', headerName: 'Moisture', type: 'number', width: 150, editable: true,},
     { field: 'Sunlight', headerName: 'Sunlight', type: 'number', width: 110, editable: true, },
-  
   ]; 
 // rows for the data table - currently filled with fake filler numbers 
   const rows = [
@@ -47,10 +46,11 @@ const HubPage = () => {
     { id: 6, Temperature: 39, Moisture: 89, Sunlight: 150 },
     { id: 7, Temperature: 43, Moisture: 55, Sunlight: 44 },
     { id: 8, Temperature: 49, Moisture: 57, Sunlight: 36 },
-    { id: 9, Temperature: 54, Moisture: 31, Sunlight: 65 }, 
-
+    { id: 9, Temperature: 54, Moisture: 31, Sunlight: 65 },  
+    { id: 10, Temperature: 71, Moisture: 60, Sunlight: 43 },
+    { id: 11, Temperature: 55, Moisture: 88, Sunlight: 19 },
+    { id: 12, Temperature: 39, Moisture: 72, Sunlight: 61 },
   ]; 
-
     //Functionality for opening and closing the data table modal
     const handleOpenHistoryModel = () => {
         setOpenHistoryModal(true);
@@ -59,6 +59,7 @@ const HubPage = () => {
     const handleCloseHistoryModal = () => {
       setOpenHistoryModal(false);
     }; 
+
 
 
     //Function for the go to ScuPage button 
