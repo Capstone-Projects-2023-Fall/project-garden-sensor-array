@@ -8,6 +8,7 @@ import { getDatabase, ref, set, get, update } from "firebase/database"; //Real-t
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore"; //Firestore 
 import { DataGrid } from '@mui/x-data-grid';  
 
+import ScuPage from './ScuPage'
 import Layout from '../Format/Layout'; 
 
 
@@ -26,7 +27,7 @@ const HubPage = () => {
   const [openHistoryModal, setOpenHistoryModal] = React.useState(false); //for the data table
   const currentHub = localStorage.getItem('currHub'); 
 
-  const [userSensNames, setUserSensNames] = useState([""]);
+  const [userSensorNames, setUserSensNames] = useState([""]);
   const [registeredSens, setRegisteredSens] = useState([""]);
   const [sensCardAmount, setSensCardAmount] = useState('');
   
@@ -137,6 +138,18 @@ const HubPage = () => {
       fetchData();
     }, [FetchSens]);
 
+
+    //Brings you to general Hub Page when clicking the middle section of HubCards
+  const handleClickCard = (index) => {
+    const SensorPage = userSensorNames[index];
+    console.log('Clicked on sensor:', SensorPage);
+
+    const dataToSend = SensorPage;
+    localStorage.setItem('currSens', dataToSend);
+    
+    navigate(`/ScuPage`);
+  }; 
+
   return ( 
     <> 
 
@@ -183,33 +196,27 @@ const HubPage = () => {
               <Button size="small" variant="contained" onClick={year}> Year </Button> 
             </Stack>
           </Box> 
-            {Array.from({ length: sensCardAmount }, (_, index) => (
-              <div key={index}>
-                  <Card style = {{marginBottom: '46px', marginTop: '46px', cursor: 'pointer' }} > 
-                  <Typography gutterBottom variant='h5' component='div' align="center"> {registeredSens[index]}</Typography>
-                      <CardContent style={{ display: 'flex', flexDirection: 'row' }}>
-                    
-                          <Grid container spacing={2}>
+          {Array.from({ length: sensCardAmount }, (_, index) => (
+                <div key={index}>
+                    <Card style = {{marginBottom: '46px', marginTop: '46px', cursor: 'pointer' }} > 
 
-                              <Grid item xs={4}>
-                                  <Typography variant="h5" color="textSecondary" align = 'center'>
-                                    add data
-                                  </Typography>
-                              </Grid>
+                        <CardContent style={{ display: 'flex', flexDirection: 'row' }}>
+                       
+                            <Grid container spacing={2}>
 
-                              <Grid item xs={4}>
-                              </Grid>
+                                <Grid item xs={4} onClick={handleClickCard.bind(null, index)}>
+                                    <Typography variant="h5" color="textSecondary" align = 'center'>
+                                      {userSensorNames[index]}
+                                    </Typography>
+                                </Grid>
 
-                              <Grid item xs={4}>
-                                  <Typography variant="h5" color="textSecondary" align = 'center'>
-                                    add icons
-                                  </Typography>
-                              </Grid>
-                          </Grid>
-                      </CardContent>
-                  </Card>
-              </div>
-          ))}
+                          
+                            </Grid>
+                        </CardContent>
+                    </Card>
+                </div>
+            ))}
+
         </Box>  
 
         <Box  sx={{ border: 1,  backgroundColor: 'white'  }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
@@ -219,113 +226,7 @@ const HubPage = () => {
           <Box  height="250px" m="-20px 0 0 0"display="flex" flexDirection="column" alignItems="center" mt="25px"> 
             alerts the user on what they should focus on -
           </Box>
-        </Box>   
-
-        {/* Row 3 - Line Graphs */} 
-        <Box  sx={{ border: 1,  backgroundColor: 'white'  }} gridColumn="span 4" gridRow="span 2" bg="white" >
-          <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
-            <Box>
-              <Typography variant="h5" fontWeight="600" >
-                Moisture Line Graph 
-              </Typography>
-            </Box>
-          </Box>
-          <Box height="250px" m="-20px 0 0 0"> 
-          {/* Enter what is returend for Moisture Graph here */}
-          </Box>
-        </Box>  
-
-
-        <Box  sx={{ border: 1,  backgroundColor: 'white'   }}gridColumn="span 4" gridRow="span 2" bg="white">
-          <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
-            <Box>
-              <Typography variant="h5" fontWeight="600"   >
-                Temperature Line graph
-              </Typography>
-            </Box>
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            {/* Enter what is returned for Temperature graph here */}
-          </Box>
-        </Box>  
-
-        <Box  sx={{ border: 1,  backgroundColor: 'white'  }}gridColumn="span 4" gridRow="span 2" bg="white">
-          <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
-            <Box>
-              <Typography variant="h5" fontWeight="600"   >
-                Sunlight Line Graph
-              </Typography>
-            </Box>
-          </Box>
-          <Box height="250px" m="-20px 0 0 0">
-          {/* Enter what's returned for Sunlight Graph here  */}
-          </Box>
-        </Box> 
-
-
-
-
-        {/* Row 4 - Access More Data */}
-        <Box gridColumn="span 4" gridRow="span 2"   p="30px" bg="white">
-          <Typography variant="h5" fontWeight="600">
-           {/* Don't erase I'm putting pictures here  */}
-          </Typography>
-          <Box display="flex" flexDirection="column" alignItems="center" mt="25px"> 
-          </Box>
-        </Box>  
-
-        <Box sx={{ border: 1,  backgroundColor: 'white'  }} gridColumn="span 4" gridRow="span 2"   p="35px" > 
-            <Typography variant="h5" fontWeight="600" textAlign="center">
-              Access More of Your Hub's Data: 
-            </Typography>  
-            <Box display="flex" flexDirection="column" alignItems="center" mt="75px"> 
-            <Button size="large" variant="contained" onClick={handleOpenHistoryModel}>Show History </Button> 
-              <Dialog open={openHistoryModal} onClose={handleCloseHistoryModal} fullWidth>
-                <DialogTitle> {currentHub}'s History</DialogTitle>
-                <DialogContent>
-                <DialogContentText></DialogContentText>  
-                  <Box sx={{ height: 400, width: '100%' }}>
-                <DataGrid
-                  rows={rows}
-                  columns={columns}
-                  initialState={{
-                    pagination: {
-                      paginationModel: {
-                        pageSize: 5,
-                      },
-                    },
-                  }}
-                  pageSizeOptions={[5]}
-                  checkboxSelection
-                  disableRowSelectionOnClick
-                />
-                </Box>
-                
-                
-                </DialogContent> 
-                <DialogActions>
-                  <Button onClick={handleCloseHistoryModal}>Cancel</Button>
-                </DialogActions>
-              </Dialog>
-            </Box> 
-            <Box display="flex" flexDirection="column" alignItems="center" mt="75px">
-            <Button size="large" variant="contained" onClick={GoToScuPage}> Go to SCU Page </Button> 
-            </Box>
-       
-
-        </Box>  
-          
-
-        <Box gridColumn="span 4" gridRow="span 2"   p="30px" >    
-            
-            <Typography variant="h5" fontWeight="600">
-      
-            </Typography>
-            <Box display="flex" flexDirection="column" alignItems="center" mt="25px"> 
-            </Box>   
-            
-        </Box>   
-        
+        </Box>          
   
 
       </Box>  
