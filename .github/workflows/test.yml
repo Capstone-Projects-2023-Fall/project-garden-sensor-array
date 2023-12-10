@@ -17,7 +17,7 @@ jobs:
         cmake-version: '3.16.x'
     - name: Use cmake
       run: cmake --version
-      
+
   testing:
     runs-on: ubuntu-latest
 
@@ -26,4 +26,4 @@ jobs:
      - name: changetosrc
        run: cd src && cd SCU_Main_Test && mkdir build-dir && cd build-dir && cmake 
      - name: changetobuildthentest
-       run: cd build && ctest
+       run: cd build-dir && ctest
