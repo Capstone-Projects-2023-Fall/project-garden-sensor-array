@@ -6,7 +6,7 @@ import Authenticate from '../Authenticate'; //Get Signed in user
 import { useNavigate } from "react-router-dom"; //Allow for website to switch pages
 import { getDatabase, ref, set, get, update } from "firebase/database"; //Real-time
 import { getFirestore, collection, doc, setDoc } from "firebase/firestore"; //Firestore 
-import { DataGrid } from '@mui/x-data-grid';  
+//import { DataGrid } from '@mui/x-data-grid';  
 
 import ScuPage from './ScuPage'
 import Layout from '../Format/Layout'; 

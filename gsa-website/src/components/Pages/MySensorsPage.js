@@ -312,12 +312,12 @@ const MySensorsPage = () => {
                     <Typography gutterBottom variant='h7' component='div' align="center">Sensors: </Typography>
                         <CardContent style={{ display: 'flex', flexDirection: 'row' }}>
                        
-                            <Grid container spacing={2}>
+                            <Grid container spacing={1}>
                                 <Grid item xs={4}>
                                     <Typography variant="h5" component="div" color="textSecondary" > 
                                         {/* Card {index + 1} Section 1 */}
                                         <div>
-                                            <HubPhoto /> 
+                                            <HubPhoto name = {userHubNames[index]}/> 
                                         </div>
                                        
                                         
