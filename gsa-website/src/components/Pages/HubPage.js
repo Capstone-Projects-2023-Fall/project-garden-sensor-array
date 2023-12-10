@@ -144,8 +144,8 @@ const HubPage = () => {
     const SensorPage = userSensorNames[index];
     console.log('Clicked on sensor:', SensorPage);
 
-    const dataToSend = SensorPage;
-    localStorage.setItem('currSens', dataToSend);
+    const dataToSend = [currentHub, SensorPage];
+    localStorage.setItem('hubSens', dataToSend);
     
     navigate(`/ScuPage`);
   }; 
@@ -180,22 +180,9 @@ const HubPage = () => {
 
         <Box sx={{ border: 3,  backgroundColor: 'white'  }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center" >
           <Typography variant="h5" fontWeight="600" textAlign="center">
-            {currentHub}  
+            {currentHub}'s Sensors
           </Typography>  
-          {/* This is for the DATE BUTTONS !!! - Alter code here - or add functions to onClick part */}
-          <Box alignItems="center">    
-            <p>
-              {time === 1
-              ? `Data Range Selected: Last 24 Hours`
-              : `Data Range Selected: Last ${time} Days`}
-            </p>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Button size="small" variant="contained" onClick={today}> Today </Button>
-              <Button size="small" variant="contained" onClick={week}> Week </Button>
-              <Button size="small" variant="contained" onClick={month}> Month </Button>
-              <Button size="small" variant="contained" onClick={year}> Year </Button> 
-            </Stack>
-          </Box> 
+          
           {Array.from({ length: sensCardAmount }, (_, index) => (
                 <div key={index}>
                     <Card style = {{marginBottom: '46px', marginTop: '46px', cursor: 'pointer' }} > 
