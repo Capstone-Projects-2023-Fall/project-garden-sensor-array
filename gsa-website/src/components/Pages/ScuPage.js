@@ -49,13 +49,16 @@ ChartJS.register(
 const ScuPage = (props) => {
   
   //useEffect()
+  const [openTemp, setOpenTemp] = useState(false);
+  const [openMoisture, setOpenMoisture] = useState(false);
+  const [openSunlight, setOpenSunlight] = useState(false);
 
   //constants for functionality 
   const database = getDatabase();
   const firestore = getFirestore();
   const { authUser } = Authenticate();   
   const [error, setError] = useState("");
-  const sensorName = localStorage.getItem('currSens');
+  //const sensorName = localStorage.getItem('currSens');
 
   const db = getFirestore();
   const fs = getDatabase();
@@ -76,7 +79,7 @@ const ScuPage = (props) => {
   
   //Constants 
   const [openHistoryModal, setOpenHistoryModal] = React.useState(false); //for the data table
-  const currentHub = localStorage.getItem('currHub'); 
+  const hubSens = localStorage.getItem('hubSens'); 
 
   const [sun, setSun] = useState([]);
   const [moi, setMoi] = useState([]);
@@ -86,6 +89,24 @@ const ScuPage = (props) => {
 
     
   const [avg, setAvg] = useState({ "Temperature": 0, "Moisture": 0, "Sunlight": 0 });
+
+  const [time, setTime] = useState(0);
+
+  const today = () => {
+    setTime(1)
+  };
+
+  const week = () => {
+    setTime(7)
+  };
+
+  const month = () => {
+    setTime(31)
+  };
+
+  const year = () => {
+    setTime(365)
+  };
  
     //Functionality for opening and closing the data table modal
   const handleOpenHistoryModel = () => {
@@ -96,24 +117,45 @@ const ScuPage = (props) => {
       setOpenHistoryModal(false);
   }; 
 
+  const names = hubSens.split(',')
+  const currentHub = names[0];
+  console.log(currentHub)
+
+  const currentSens = names[1];
+  console.log(currentSens)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let s;
+        let hubs;
+        let sensors;
         let q;
-        let qry;
 
+
+        console.log('Users/' + 'userUid' + '/HUBS/' + currentHub + '/' + currentSens)
         if (authUser) {
           const userUid = authUser.uid;
-    
-          const dbref = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub + '/SENSORS/' + sensorName);
-    
+          
+          //console.log('Users/' + userUid + '/HUBS/' + currentHub + '/' + currentSens)
+          //const dbref = ref(fs, 'Users/qiI94Y9OHXYygsYyy5wp2SeSrAn2/HUBS/Test-Hub/SENSORS/tomato');
+          const dbref = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub + '/SENSORS/' + currentSens);
           const snapshot = await get(dbref); // Use get to retrieve the data once
-
+          console.log("exist: " + snapshot.exists())
           if (snapshot.exists()) {
-            s = snapshot.val().SensorSerial;
-            setSerial(s);
-            qry = query(collection(db, s), where("AccountID", "==", s));
+            sensors = snapshot.val().SensorSerial;
+            setSerial(sensors);
+            console.log("serial: " + sensors)
+          }
+          
+          //const hubRef = ref(fs, 'Users/qiI94Y9OHXYygsYyy5wp2SeSrAn2/HUBS/Test-Hub');
+          const hubRef = ref(fs, 'Users/' + userUid + '/HUBS/' + currentHub);
+
+          const hubSnapshot = await get(hubRef); // Use get to retrieve the data once
+          console.log("exist: " + hubSnapshot.exists())
+          if (hubSnapshot.exists()) {
+            hubs = hubSnapshot.val().HubSerial;
+            setSerial(hubs);
+            console.log("serial: " + hubs)
           }
         }
 
@@ -122,16 +164,15 @@ const ScuPage = (props) => {
       currDate.setMinutes(59)
       currDate.setSeconds(59)
 
-      prevDate.setDate(currentDate.getDate() - props.range)
+      prevDate.setDate(currentDate.getDate() - time)
       prevDate.setHours(23)
       prevDate.setMinutes(59)
       prevDate.setSeconds(59)
 
+      console.log(hubs + "/" + sensors + "/data")
       q = query(
-        collection(db, s),
-        orderBy("Time", "asc"),
-        where("Time", "<", currDate),
-        where("Time", ">", prevDate)
+        collection(db, hubs, sensors, "data"),
+        where("Time", ">", prevDate),
       );
 
         // Use onSnapshot to listen for real-time updates
@@ -192,7 +233,8 @@ const ScuPage = (props) => {
     };
 
     fetchData();
-  }, [ props.range ]); // Run this effect whenever 'props.range' changes
+  }, [ time ]); // Run this effect whenever 'props.range' changes
+
 
   const sun_data = {
     labels: dates,
@@ -228,7 +270,7 @@ const ScuPage = (props) => {
         ticks: {
           display: true,
           autoSkip: true,
-          maxTicksLimit: 7
+          maxTicksLimit: 4
         }
       },
     },
@@ -295,6 +337,28 @@ let { icon: readMoistureIcon,
     status: readMoistureStatus } = MoistureInfo();
 
 
+  const handleOpenTemp = () => {
+    setOpenTemp(true);
+  };
+  const handleCloseTemp = () => {
+    setOpenTemp(false);
+  };
+
+  const handleOpenMoisture = () => {
+    setOpenMoisture(true);
+  };
+  const handleCloseMoisture = () => {
+    setOpenMoisture(false);
+  };
+
+
+  const handleOpenSunlight = () => {
+    setOpenSunlight(true);
+  };
+  const handleCloseSunlight = () => {
+    setOpenSunlight(false);
+  };
+
   return ( 
     <> 
 
@@ -303,13 +367,13 @@ let { icon: readMoistureIcon,
       <Layout />    
       <Box m="20px">
       {/* Below is the Grid of the General HubPage */}
-      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows="240px" gap="20px">  
+      <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows="180px" gap="20px">  
 
 
         {/* Row 1: Header/Welcome */}
         <Box sx={{ border: 1,  backgroundColor: 'white'  }}  gridColumn="span 12"  p="30px" alignItems="center">
-            <Typography variant="h3" fontWeight="600" textAlign="center">{sensorName}'s SensorPage </Typography> 
-            <Typography> Brief explanation of what HubPage is and the features it offers.</Typography>
+            <Typography variant="h3" fontWeight="600" textAlign="center">{currentSens}'s SensorPage </Typography> 
+            <Typography> </Typography>
           </Box>  
 
 
@@ -319,7 +383,7 @@ let { icon: readMoistureIcon,
             What the Data Means 
           </Typography>
           <Box  height="250px" m="-20px 0 0 0"display="flex" flexDirection="column" alignItems="center" mt="25px" > 
-            How to Read the Data - in words 
+             
           </Box>
         </Box>  
 
@@ -330,11 +394,16 @@ let { icon: readMoistureIcon,
           {/* This is for the DATE BUTTONS !!! - Alter code here - or add functions to onClick part */}
           <Box alignItems="center">    
             <Stack direction="row" spacing={1} alignItems="center">
-              <Button size="small" variant="contained" onClick={null}> Today </Button>
-              <Button size="small" variant="contained" onClick={null}> Week </Button>
-              <Button size="small" variant="contained" onClick={null}> Month </Button>
-             <Button size="small" variant="contained" onClick={null}> Year </Button> 
+              <Button size="small" variant="contained" onClick={today}> Today </Button>
+              <Button size="small" variant="contained" onClick={week}> Week </Button>
+              <Button size="small" variant="contained" onClick={month}> Month </Button>
+              <Button size="small" variant="contained" onClick={year}> Year </Button> 
             </Stack>
+            <p>
+              {time === 1
+              ? `Data Range Selected: Last 24 Hours`
+              : `Data Range Selected: Last ${time} Days`}
+             </p>
             </Box> 
           <Box height="250px" m="-20px 0 0 0" display="flex" flexDirection="column" alignItems="center" mt="45px"> 
             <Typography>
@@ -354,11 +423,64 @@ let { icon: readMoistureIcon,
 
         <Box  sx={{ border: 1,  backgroundColor: 'white'  }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
           <Typography variant="h5" fontWeight="600" textAlign="center">
-            Hub Status 
+            Sensor Status 
           </Typography>
-          <Box  height="250px" m="-20px 0 0 0"display="flex" flexDirection="column" alignItems="center" mt="25px"> 
-            alerts the user on what they should focus on -
+          <Box  height="5%" m="-20px 0 0 0"display="flex" flexDirection="column" alignItems="center" mt="25px"> 
+            
           </Box>
+          <Box>
+            
+        <Box align="center">
+            <IconButton onClick={handleOpenMoisture}>{readMoistureIcon} </IconButton> 
+            
+        </Box>
+        <Box align="center">
+           
+            <IconButton onClick={handleOpenTemp}>{readTempIcon} </IconButton>
+            
+        </Box>
+        <Box align="center">
+            
+            <IconButton onClick={handleOpenSunlight}>{readSunlightIcon}</IconButton>
+        </Box>
+
+        <Dialog open={openMoisture} onClose={handleCloseMoisture} fullWidth>
+            <DialogTitle>Moisture Status:</DialogTitle>
+            <DialogContent>
+                <Line data={moi_data} options={options} />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleCloseMoisture} color="primary">
+                    Okay
+                </Button>
+            </DialogActions>
+        </Dialog> 
+          {/* Dialog for Temperature: */}
+          <Dialog open={openTemp} onClose={handleCloseTemp} fullWidth>
+                <DialogTitle>Temperature Status:</DialogTitle>
+                <DialogContent>
+                <Line data={tem_data} options={options} />
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleCloseTemp} color="primary">
+                    Okay
+                </Button>
+                </DialogActions>
+          </Dialog> 
+
+          {/* Dialog for Sunlight:  */} 
+          <Dialog open={openSunlight} onClose={handleCloseSunlight} fullWidth>
+                <DialogTitle>Sunlight Status:</DialogTitle>
+                <DialogContent>
+                <Line data={sun_data} options={options} />
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleCloseSunlight} color="primary">
+                    Okay
+                </Button>
+                </DialogActions>
+          </Dialog>
+        </Box>
         </Box> 
 
 
@@ -367,7 +489,8 @@ let { icon: readMoistureIcon,
           <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
               <Typography variant="h5" fontWeight="600" >
-                Moisture Line Graph 
+                Moisture
+                <Line data={moi_data} options={options} />
               </Typography>
             </Box>
           </Box>
@@ -381,7 +504,8 @@ let { icon: readMoistureIcon,
           <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
               <Typography variant="h5" fontWeight="600"   >
-                Temperature Line graph
+                Temperature
+                <Line data={tem_data} options={options} />
               </Typography>
             </Box>
           </Box>
@@ -394,7 +518,8 @@ let { icon: readMoistureIcon,
           <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
               <Typography variant="h5" fontWeight="600"   >
-                Sunlight Line Graph
+                Sunlight
+                <Line data={sun_data} options={options} />
               </Typography>
             </Box>
           </Box>
