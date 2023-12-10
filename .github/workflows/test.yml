@@ -24,6 +24,6 @@ jobs:
     steps:
      - uses: actions/checkout@v3
      - name: changetosrc
-       run: cd src && cd SCU_Main_Test && mkdir build-dir && cd build-dir && cmake 
+       run: cd src && cd SCU_Main_Test && mkdir build-dir && cd build-dir && cmake ..
      - name: changetobuildthentest
        run: cd build-dir && ctest
