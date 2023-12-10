@@ -67,7 +67,7 @@ async def main():
 
     fs = firestore.client()
 
-    doc_ref = fs.collection("DATA")
+    hub_ref = fs.collection(HUB_ID)
 
     SLEEP_INTERVAL_ADV  = 1
     SLEEP_INTERVAL_POLL = 10
@@ -94,9 +94,7 @@ async def main():
 
         return async_strings
         # Using async for loop with the asynchronous string iterator
-        #async for string_item in async_strings:
-        #    print(string_item)
-
+    
     if(exists):
 
         t1 = threading.Thread(target=camScript.imgCap, args=(HUB_ID, ))
@@ -119,9 +117,13 @@ async def main():
                 moist = data[0]
                 sun = data[2]
                 print(f'Temp: {temp}, Moisture: {moist}, Sun: {sun}')
-                #doc_ref.add(
-                #        HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
-                #)
+                sens_ref = fs.collection(HUB_ID, bird, "data")
+                hub_ref.add(
+                        HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
+                )
+                sens_ref.add(
+                        HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
+                )
 
                 print("updating...")
             except:
