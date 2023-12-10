@@ -11,8 +11,6 @@ sidebar_position: 4
 -  Raspberry Pico W
 -  BH1750
 -  Seesaw Soil Sensor
--  3 Red LED
--  6 Green LED
 
 ### Connections Descriptions
 
