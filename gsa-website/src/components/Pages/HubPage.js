@@ -160,9 +160,9 @@ const HubPage = () => {
           
           {Array.from({ length: sensCardAmount }, (_, index) => (
                 <div key={index}>
-                    <Card style = {{marginBottom: '34px', marginTop: '34px', cursor: 'pointer', boxShadow: 5  }} > 
+                    <Card style = {{marginBottom: '34px', marginTop: '34px', cursor: 'pointer', boxShadow: 5, color: '#dcedc8'  }} > 
 
-                        <CardContent style={{ display: 'flex', flexDirection: 'row' }}>
+                        <CardContent style={{ display: 'flex', flexDirection: 'row', color:'#dcedc8' }}>
                        
                             <Grid container spacing={2}>
 
@@ -181,12 +181,24 @@ const HubPage = () => {
 
         </Box>  
 
-        <Box  sx={{ border: 4,  backgroundColor: 'white', boxShadow: 5, borderRadius: '15px', borderColor: "#1b5e20" }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
+        <Box  sx={{ border: 4,  backgroundColor: 'white', boxShadow: 5, borderRadius: '15px', borderColor: "#1b5e20" }} gridColumn="span 3" gridRow="span 2"  p="20px" alignItems="center">
           <Typography variant="h5" fontWeight="600" textAlign="center">
-            Hub Status 
+            What the Data Means 
           </Typography>
           <Box  height="250px" m="-20px 0 0 0"display="flex" flexDirection="column" alignItems="center" mt="25px"> 
-            alerts the user on what they should focus on -
+            <Typography gutterBottom fontWeight="600"> Temperature Ranges:</Typography>
+            <Typography gutterBottom>Low: &gt;5 </Typography>
+            <Typography gutterBottom>Good: 5 to 32 </Typography> 
+            <Typography gutterBottom>Too High: 32&lt;</Typography> 
+            <Typography gutterBottom fontWeight="600"> Sunlight Ranges:</Typography>
+            <Typography gutterBottom>Low: &gt;50 </Typography>
+            <Typography gutterBottom>Good: 50 to 150 </Typography> 
+            <Typography gutterBottom>Too High: 150&lt;</Typography> 
+            <Typography gutterBottom fontWeight="600"> Moisture Ranges:</Typography>
+            <Typography gutterBottom>Low: &gt;300 </Typography>
+            {/* <Typography gutterBottom>Good: 5 to 32 </Typography> 
+            <Typography gutterBottom>Too High: 32&lt;</Typography> */}
+
           </Box>
         </Box>          
   
