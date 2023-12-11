@@ -25,6 +25,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconBox1 from '../IconBox1';
 import HubPhoto from '../HubPhoto';
+import { green, lightGreen, brown} from '@mui/material/colors';
 
 
 
@@ -268,11 +269,17 @@ const MySensorsPage = () => {
         <Navbar /> 
         <Box>
             <Box align = "center">
-                <Typography align="center" variant="h3" sx={{ fontWeight: 900 }}>
+                <Typography align="center" variant="h2" sx={{ fontWeight: 900, color: "#1b5e20" }}>
                     My Hubs
                 </Typography>
-                <Typography align="center" variant="body2" sx={{ fontWeight: 100 }}>
-                    Here are your Hubs!
+                <Typography textalign="center" variant="h7" sx={{ fontWeight: 600 }}>
+                    Welcome to your Hubs! Each HubCard below provides the averages of real-time data recorded by your sensors. 
+                    Each HubCard is split into 3 sections: self-updating photo of your plant's current state, the data averages
+                    collected acording to date selected, and a status box to provide quick insight of what your hubs are reporting.  
+                    <box>
+                    <Typography textalign="center" variant="h7"  sx={{ fontWeight: 700, color: "green" }}>Click the middle of any HubCard to proceed to it's HubPage.</Typography> 
+                    </box>
+                    
                 </Typography>
             </Box>
         </Box>
@@ -301,15 +308,14 @@ const MySensorsPage = () => {
           
             {Array.from({ length: hubCardAmount }, (_, index) => (
                 <div key={index}>
-                    <Card style = {{marginBottom: '46px', marginTop: '46px', cursor: 'pointer' }} > 
+                    <Card style = {{marginBottom: '49px', marginTop: '49px', cursor: 'pointer', boxshadow:'15',  variant:"outlined" }} > 
                     <Typography gutterBottom variant='h5' component='div' align="center"> {registeredHubs[index]}</Typography>
-                    <Typography gutterBottom variant='h7' component='div' align="center">Sensors: </Typography>
+                    <Typography gutterBottom variant='h7' component='div' align="center"> </Typography>
                         <CardContent style={{ display: 'flex', flexDirection: 'row' }}>
                        
                             <Grid container spacing={2}>
                                 <Grid item xs={4}>
                                     <Typography variant="h5" component="div" color="textSecondary" > 
-                                        {/* Card {index + 1} Section 1 */}
                                         <div>
                                             <HubPhoto /> 
                                         </div>
