@@ -374,17 +374,30 @@ let { icon: readMoistureIcon,
 
         {/* Row 1: Header/Welcome */}
         <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20"  }}  gridColumn="span 12"  p="30px" alignItems="center">
-            <Typography variant="h3" fontWeight="600" textAlign="center">{currentSens}'s SensorPage </Typography> 
+            <Typography variant="h3" fontWeight="600" textAlign="center">{currentSens}'s SensorPage </Typography>  
+            <Typography variant="h6" fontWeight="400" textAlign="center">Live data from your sensor- View the graphs below to see it's history </Typography> 
             <Typography> </Typography>
           </Box>  
 
 
         {/* Row 2 - Hub Statistics  */} 
-        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20" }}  gridColumn="span 3" gridRow="span 2"   p="30px" alignItems="center">
-          <Typography variant="h5" fontWeight="600">
+        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20" }}  gridColumn="span 3" gridRow="span 2"   p="20px" alignItems="center">
+          <Typography variant="h5" fontWeight="600"  textAlign="center">
             What the Data Means 
           </Typography>
-          <Box  height="250px" m="-20px 0 0 0"display="flex" flexDirection="column" alignItems="center" mt="25px" > 
+          <Box  height="250px" m="-20px 0 0 0"display="flex" flexDirection="column" alignItems="center" mt="20px" >  
+          <Typography gutterBottom fontWeight="600"> Temperature Ranges:</Typography>
+            <Typography gutterBottom>Low: &gt;5 </Typography>
+            <Typography gutterBottom>Good: 5 to 32 </Typography> 
+            <Typography gutterBottom>Too High: 32&lt;</Typography> 
+            <Typography gutterBottom fontWeight="600"> Sunlight Ranges:</Typography>
+            <Typography gutterBottom>Low: &gt;50 </Typography>
+            <Typography gutterBottom>Good: 50 to 150 </Typography> 
+            <Typography gutterBottom>Too High: 150&lt;</Typography> 
+            <Typography gutterBottom fontWeight="600"> Moisture Ranges:</Typography>
+            <Typography gutterBottom>Low: &gt;300 </Typography>
+            {/* <Typography gutterBottom>Good: 5 to 32 </Typography> 
+            <Typography gutterBottom>Too High: 32&lt;</Typography> */}
              
           </Box>
         </Box>  
