@@ -21,6 +21,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import { Line } from 'react-chartjs-2';
 import Authenticate from '../Authenticate';
+import { green, lightGreen, brown} from '@mui/material/colors';
 
 import Navbar from '../Format/Navbar';  
 import Footer from '../Format/Footer'; 
@@ -372,14 +373,14 @@ let { icon: readMoistureIcon,
 
 
         {/* Row 1: Header/Welcome */}
-        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'  }}  gridColumn="span 12"  p="30px" alignItems="center">
+        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20"  }}  gridColumn="span 12"  p="30px" alignItems="center">
             <Typography variant="h3" fontWeight="600" textAlign="center">{currentSens}'s SensorPage </Typography> 
             <Typography> </Typography>
           </Box>  
 
 
         {/* Row 2 - Hub Statistics  */} 
-        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px' }}  gridColumn="span 3" gridRow="span 2"   p="30px" alignItems="center">
+        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20" }}  gridColumn="span 3" gridRow="span 2"   p="30px" alignItems="center">
           <Typography variant="h5" fontWeight="600">
             What the Data Means 
           </Typography>
@@ -388,7 +389,7 @@ let { icon: readMoistureIcon,
           </Box>
         </Box>  
 
-        <Box sx={{ border: 4,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px' }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center">
+        <Box sx={{ border: 4,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20" }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center">
           <Typography variant="h4" fontWeight="600" textAlign="center">
             {currentHub}  
           </Typography>  
@@ -396,10 +397,10 @@ let { icon: readMoistureIcon,
           <Typography>
           <Box alignItems="center" mx="165px" p="11px" >    
             <Stack direction="row" spacing={1} alignItems="center">
-              <Button size="small" variant="contained" onClick={today}> Today </Button>
-              <Button size="small" variant="contained" onClick={week}> Week </Button>
-              <Button size="small" variant="contained" onClick={month}> Month </Button>
-              <Button size="small" variant="contained" onClick={year}> Year </Button> 
+              <Button size="small" variant="contained"  background-Color= '#1b5e20' onClick={today}> Today </Button>
+              <Button size="small" variant="contained" background-Color = '#1b5e20' onClick={week}> Week </Button>
+              <Button size="small" variant="contained"  background-Color=  '#1b5e20' onClick={month}> Month </Button>
+              <Button size="small" variant="contained"  background-Color= '#1b5e20' onClick={year}> Year </Button> 
             </Stack> 
           
             <p>
@@ -425,7 +426,7 @@ let { icon: readMoistureIcon,
           </Box>
         </Box>  
 
-        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'  }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
+        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20"  }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
           <Typography variant="h5" fontWeight="600" textAlign="center">
             Sensor Status 
           </Typography>
@@ -489,7 +490,7 @@ let { icon: readMoistureIcon,
 
 
         {/* Row 4 - Line Graphs */} 
-        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'  }} gridColumn="span 4" gridRow="span 2" bg="white" >
+        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20"  }} gridColumn="span 4" gridRow="span 2" bg="white" >
           <Box mx="132px" p="35px" display="flex " justifyContent="space-between" alignItems="center" textAlign="center">
             <Box>
               <Typography variant="h5" fontWeight="600" textAlign="center" alignItems="center">
@@ -504,7 +505,7 @@ let { icon: readMoistureIcon,
         </Box>  
 
 
-        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'   }}gridColumn="span 4" gridRow="span 2" bg="white">
+        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20"   }}gridColumn="span 4" gridRow="span 2" bg="white">
           <Box mx="110px" p="35px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
               <Typography variant="h5" fontWeight="600" textAlign="center"  >
@@ -518,7 +519,7 @@ let { icon: readMoistureIcon,
           </Box>
         </Box>  
 
-        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'  }}gridColumn="span 4" gridRow="span 2" bg="white">
+        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px', borderColor: "#1b5e20"  }}gridColumn="span 4" gridRow="span 2" bg="white">
           <Box mx="137px" p="35px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
               <Typography variant="h5" fontWeight="600" textAlign="center"  >
