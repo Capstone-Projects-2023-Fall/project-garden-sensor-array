@@ -1,6 +1,6 @@
 
 .picture {
-    background-Image: url('./bgimage.png');
+    background-Image: url('./newbgimage.png');
     background-size: cover;
     background-position: center;
   }
@@ -8,5 +8,6 @@
   
   .butn {
     margin-top: 3em;
-    margin-bottom: 2em;
+    margin-bottom: 2em; 
+    background-Color: '#1b5e20';
   }
