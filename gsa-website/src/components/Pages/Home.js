@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from '@mui/material';
-import Layout from '../Format/Layout';
+import Navbar from '../Format/Navbar';
 import Footer from '../Format/Footer';
 
 
@@ -10,9 +10,9 @@ const Home = () => {
   return (
     <>
 
-    <Layout />
+    <Navbar />
     <h1>Home Page</h1> 
-    <Footer />
+  
 
   </>
 
