@@ -1,6 +1,7 @@
 
 import React from 'react'; 
-import Layout from '../Format/Layout';
+import Navbar from '../Format/Navbar'; 
+import Footer from '../Format/Footer'; 
 import CardData from "../CardData";
 import CardData2 from '../CardData2';
 import { Box, Typography, Card, CardContent } from "@mui/material";
@@ -259,10 +260,7 @@ const MySensorsPage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      <ParentData />
       const nameOfHub = await FetchHubs();
-      //await FetchHubs();
-      //await LoadCards();
       await LoadCards(nameOfHub);
     };
   
@@ -271,7 +269,7 @@ const MySensorsPage = () => {
 
   return (
     <>
-        <Layout /> 
+        <Navbar /> 
         <Box>
             <Box align = "center">
                 <Typography align="center" variant="h3" sx={{ fontWeight: 900 }}>
@@ -391,7 +389,8 @@ const MySensorsPage = () => {
           </Dialog>
         </React.Fragment>
       </div>
-    </div>
+    </div> 
+  
 
 
 
