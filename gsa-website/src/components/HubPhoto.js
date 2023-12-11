@@ -1,42 +1,50 @@
 // for the 1st/leftmost section of the hubcard - will show the user's selected photo either from files or possibly from AI generation 
 //import this component into the hubcard (MySensorsPage)
 
-
+import "firebase/firestore";
+import "firebase/storage";
 import React from 'react'; 
-import Button from '@mui/material/Button';
-import { useState, useRef, useEffect, useCallback } from 'react';
-import { Box, Typography, Card, CardContent } from "@mui/material";
+import { useState, useEffect } from 'react';
+import { Box } from "@mui/material";
+import { getStorage, getDownloadURL, ref} from 'firebase/storage'
 
-const HubPhoto = () => { 
-
-
-  const [fileTransform, setFileTransform] = useState('');
-  const [selectedFile, setSelectedFile] = useState(null);
-  const fileInputRef = useRef(null);
+const HubPhoto = (props) => { 
 
 
+  const [url, setUrl] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    function AddPhoto(files) {
-      if (files) {
-        const photofile = files[0] || "";
-        const TypeFile = photofile.type || "";
-        console.log("This file upload is of type:", TypeFile);
-        const reader = new FileReader();
+  const currentHub = props.name;
+
+
+ 
+  const hubPic = `/${currentHub}.jpg`
+
+
   
-        reader.onload = function (ev) {
-          
-          setFileTransform("data:" + TypeFile + ";base64," + btoa(ev.target.result));
-          setSelectedFile(photofile);
-        };
-  
-        reader.readAsBinaryString(photofile);
+
+
+  useEffect(() => {
+    const fetchImageUrl = async () => {
+      const storage = getStorage();
+
+      try {
+ 
+        const reference = ref(storage, (hubPic));
+        const imageUrl = await getDownloadURL(reference);
+        setUrl(imageUrl);
+      } catch (error) {
+        const reference = ref(storage, '/hubDefault.png');
+        const imageUrl = await getDownloadURL(reference);
+        setUrl(imageUrl);
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
 
-
-
-
-
+    fetchImageUrl();
+  }, []);
 
 
 
@@ -45,17 +53,13 @@ const HubPhoto = () => {
 
     //here is the return for the entire photo section : 
 
-    <div>
-    <input type="file" onChange={(e) => AddPhoto(e.target.files)} style={{ display: 'none' }} ref={fileInputRef} />
-    <Button variant="outlined" component="label" htmlFor="fileInput" style={{ marginRight: '8px' }} onClick={() => fileInputRef.current.click()} >
-    Choose Photo
-    </Button>
-    <Box>
-        {selectedFile && (
-            <img src={fileTransform} alt="Uploaded File" style={{ maxWidth: '100px', maxHeight: '100px' }}/>
-        )}
-        </Box>
-    </div>
+    <Box sx={{ border: 1 }} gridColumn="span 3" gridRow="span 2"   p="30px">
+    {isLoading && <p>Loading image...</p>}
+    {error && <p>Error fetching image: {error.message}</p>}
+    {url && (
+      <img src={url} alt="Pics" style={{ width: '100%', height: '50%' }} />
+    )}
+  </Box>
     
       
 

@@ -17,6 +17,10 @@ import asyncio
 import time
 from bleak import BleakScanner, BleakClient
 from Bluetooth import read_bt
+import threading
+
+from camCheck import exists
+import camScript
 
 HUB_ID = 'HUB_1'
 
@@ -63,7 +67,7 @@ async def main():
 
     fs = firestore.client()
 
-    doc_ref = fs.collection("DATA")
+    hub_ref = fs.collection(HUB_ID)
 
     SLEEP_INTERVAL_ADV  = 1
     SLEEP_INTERVAL_POLL = 10
@@ -90,8 +94,12 @@ async def main():
 
         return async_strings
         # Using async for loop with the asynchronous string iterator
-        #async for string_item in async_strings:
-        #    print(string_item)
+    
+    if(exists):
+
+        t1 = threading.Thread(target=camScript.imgCap, args=(HUB_ID, ))
+        
+        t1.start()
 
     while(True):
         while(not check_connection()):
@@ -100,18 +108,26 @@ async def main():
 
         birds = await get_birds()
         async for bird in birds:
-            sensor_data = await read_bt(bird)
-            data = sensor_data.decode().split(',')
-        
-            temp = data[1] 
-            moist = data[0]
-            sun = data[2]
-            print(f'Temp: {temp}, Moisture: {moist}, Sun: {sun}')
-            #doc_ref.add(
-            #        HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
-            #)
 
-            print("updating...")
+            try:
+                sensor_data = await read_bt(bird)
+                data = sensor_data.decode().split(',')
+            
+                temp = data[1] 
+                moist = data[0]
+                sun = data[2]
+                print(f'Temp: {temp}, Moisture: {moist}, Sun: {sun}')
+                sens_ref = fs.collection(HUB_ID, bird, "data")
+                hub_ref.add(
+                        HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
+                )
+                sens_ref.add(
+                        HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
+                )
+
+                print("updating...")
+            except:
+                print("No Bird")
     
         #time.sleep(10)
         

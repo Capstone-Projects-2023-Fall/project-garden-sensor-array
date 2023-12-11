@@ -24,12 +24,11 @@ sidebar_position: 5
 6. User looks for trends to try and spot where the plant’s growth started to slow
 
 
-### Use Case #3: Viewing Sensor Data on graphs
+### Use Case #3: Accessing Sensor Data in Person
 #### A user is watering their plants in their yard, and would like to know if they've recieved sufficient water without having to use another device.
-1. User takes care of plants
-2. User logs on to website through their account
-3. User locates on page their HUB
-4. User presses on the coordinating icon of the three icons to see the graph's history.  
+1. User waters plants
+2. User inspects the LED on the sensor array
+3. The LED shows either Green or Red, depending on the moisture level
 
 
 ### Use Case #4: Monitoring Soil Moisture

@@ -1,15 +1,15 @@
 import React from 'react'
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
+import { Form, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap"; 
 import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import Authenticate from './Authenticate';
 // import { collection, doc, setDoc, addDoc } from "firebase/firestore";
 import { getDatabase, ref, set } from "firebase/database";
-import {Button, CssBaseline, TextField, FormControlLabel, Checkbox, Paper,Box,Grid,Typography, Alert, AlertTitle  } from '@mui/material';
-import './Register.css'
 
-//Register component from mui components 
+
 const Register = () => {
 
     //Store the values that are going to entered into the input fields 
@@ -69,44 +69,59 @@ const Register = () => {
 
   return (
         <>
-
-        <Grid sx={{ height: '100vh'}} container component="main">
-        <CssBaseline />
-        
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box  sx={{ my: 8, mx: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-            <Typography component="h1" variant="h2">
-              Register
-            </Typography>
+            <div className="p-4 box">
+            <h2 className="mb-3">Register</h2>
             {error && <Alert variant="danger">{error}</Alert>}
-            <Box sx={{ mt: 1 }} component="form" onSubmit={signUp}>
 
-              <TextField value = {email} onChange={(e) => setEmail(e.target.value)} id="email" type="email" 
-                         name="email" label="Email Address" margin="normal" autoComplete="email" autoFocus required fullWidth /> 
 
-              <TextField value = {displayName} onChange={(e) => setDisplayName(e.target.value)} id="displayName" type="displayName"
-                         label="UserName" margin="normal" autoFocus required fullWidth/> 
+            <Form onSubmit={signUp}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Control
+                    type="email"
+                    placeholder="Email address"
+                    value = {email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                </Form.Group>
 
-              <TextField value = {password} onChange={(e) => setPassword(e.target.value)} id="password" type="password" 
-                         name="password" label="Password"  margin="normal" required fullWidth/> 
+                <Form.Group className="mb-3" controlId="formBasicDisplayName">
+                <Form.Control
+                    type="displayName"
+                    placeholder="UserName"
+                    value = {displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                />
+                </Form.Group>
 
-              <TextField value = {passwordConfirm} onChange={(e) => setConfirmPassword(e.target.value)} id="passwordConfirm" type="password"
-                         name="passwordConfirm" label="Confirm Password"  margin="normal" autoFocus required fullWidth/>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    value = {password}
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                </Form.Group>
 
-              <Button className="butn" type="submit" variant="contained" fullWidth>
-                Log In
-              </Button>
-              <Grid item>
-                <div >
-                  Already have an account? <Link to="/"> Login</Link>
+
+                <Form.Group className="mb-3" controlId="formBasicPasswordConfirm">
+                <Form.Control
+                    type="password"
+                    placeholder="Confirm Password"
+                    value = {passwordConfirm}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+                </Form.Group>
+
+                <div className="d-grid gap-2">
+                <Button disabled={loading} variant="primary" type="Submit">
+                    Register
+                </Button>
                 </div>
-              </Grid>
-            </Box>
-          </Box>
-        </Grid>  
-        <Grid className="picture" item xs={false} sm={4} md={7} />
-      </Grid>
-
+            </Form>
+            </div>
+            <div className="p-4 box mt-3 text-center">
+            Already have an account? <Link to="/Login">Log In</Link>
+            </div>
         </>
     );
 };

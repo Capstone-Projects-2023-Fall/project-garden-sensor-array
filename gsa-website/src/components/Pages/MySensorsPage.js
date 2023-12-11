@@ -1,7 +1,6 @@
 
 import React from 'react'; 
-import Navbar from '../Format/Navbar'; 
-import Footer from '../Format/Footer'; 
+import Layout from '../Format/Layout';
 import CardData from "../CardData";
 import CardData2 from '../CardData2';
 import { Box, Typography, Card, CardContent } from "@mui/material";
@@ -24,9 +23,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconBox1 from '../IconBox1';
+import IconBox2 from '../IconBox2';
 import HubPhoto from '../HubPhoto';
-import { green, lightGreen, brown} from '@mui/material/colors';
-
+import ParentData from '../ParentData';
 
 
 
@@ -220,11 +219,12 @@ const MySensorsPage = () => {
         const userRef = ref(database, `Users/${userUid}/HUBS`);
         const snapshot = await get(userRef); //get a snapshot
         if (snapshot.exists()) { //if there's data - proceed 
+          
           const hubs = snapshot.val(); //data found saved as a const
           console.log('Hubs:', hubs); //should print out a user's: email, username, and name of hubs 
   
           //two variables, one for an array of hubnames, the other for an array of just email + username
-          let nameOfHub;
+          let nameOfHub, acctInfo; 
           const acctUser = ['Email', 'Username'];
             
           nameOfHub = Object.keys(hubs); 
@@ -232,6 +232,9 @@ const MySensorsPage = () => {
           console.log('Hub Names:', nameOfHub); 
           setRegisteredHubs(nameOfHub); //setting in constant use-state variable
 
+          acctInfo = Object.keys(hubs); 
+          acctInfo = acctInfo.filter(el => acctUser.includes(el));//removes HubNames and gives back an array of only username and email 
+          console.log('User Info:', acctInfo);
           return nameOfHub
         } else {
           console.log('No info found for this user.');
@@ -254,10 +257,12 @@ const MySensorsPage = () => {
     }
   }
 
-  //the first thing the file does is run the fetchdata function to get an array of hubnames 
   useEffect(() => {
     const fetchData = async () => {
+      <ParentData />
       const nameOfHub = await FetchHubs();
+      //await FetchHubs();
+      //await LoadCards();
       await LoadCards(nameOfHub);
     };
   
@@ -266,18 +271,15 @@ const MySensorsPage = () => {
 
   return (
     <>
-        <Navbar /> 
+        <Layout /> 
         <Box>
             <Box align = "center">
-                <Typography align="center" variant="h2" sx={{ fontWeight: 900, color: "#1b5e20" }}>
+                <Typography align="center" variant="h3" sx={{ fontWeight: 900 }}>
                     My Hubs
                 </Typography>
-                <Typography textalign="center" variant="h7" sx={{ fontWeight: 600 }} gutterBottom>
-                    Welcome to your Hubs! Each HubCard below provides the averages of real-time data recorded by your sensors. 
-                    Each HubCard is split into 3 sections: self-updating photo of your plant's current state, the data averages
-                    collected acording to date selected, and a status box to provide quick insight of what your hubs are reporting.   
-                </Typography> 
-                <Typography textalign="center" variant="h7"  sx={{ fontWeight: 700, color: "green" }} gutterBottom> Click the middle of any HubCard to proceed to it's HubPage.</Typography> 
+                <Typography align="center" variant="body2" sx={{ fontWeight: 100 }}>
+                    Here are your Hubs!
+                </Typography>
             </Box>
         </Box>
         <Box> 
@@ -305,16 +307,17 @@ const MySensorsPage = () => {
           
             {Array.from({ length: hubCardAmount }, (_, index) => (
                 <div key={index}>
-                    <Card style = {{marginBottom: '49px', marginTop: '49px', cursor: 'pointer', boxshadow:'15',  variant:"outlined" }} > 
+                    <Card style = {{marginBottom: '46px', marginTop: '46px', cursor: 'pointer' }} > 
                     <Typography gutterBottom variant='h5' component='div' align="center"> {registeredHubs[index]}</Typography>
-                    <Typography gutterBottom variant='h7' component='div' align="center"> </Typography>
+                    <Typography gutterBottom variant='h7' component='div' align="center">Sensors: </Typography>
                         <CardContent style={{ display: 'flex', flexDirection: 'row' }}>
                        
-                            <Grid container spacing={2}>
+                            <Grid container spacing={1}>
                                 <Grid item xs={4}>
                                     <Typography variant="h5" component="div" color="textSecondary" > 
+                                        {/* Card {index + 1} Section 1 */}
                                         <div>
-                                            <HubPhoto /> 
+                                            <HubPhoto name = {userHubNames[index]}/> 
                                         </div>
                                        
                                         
@@ -388,8 +391,7 @@ const MySensorsPage = () => {
           </Dialog>
         </React.Fragment>
       </div>
-    </div> 
-  
+    </div>
 
 
 
