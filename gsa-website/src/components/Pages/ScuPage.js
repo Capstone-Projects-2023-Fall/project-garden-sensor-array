@@ -22,7 +22,8 @@ import DialogActions from '@mui/material/DialogActions';
 import { Line } from 'react-chartjs-2';
 import Authenticate from '../Authenticate';
 
-import Layout from '../Format/Layout'; 
+import Navbar from '../Format/Navbar';  
+import Footer from '../Format/Footer'; 
 
 import {
   Chart as ChartJS,
@@ -364,21 +365,21 @@ let { icon: readMoistureIcon,
 
     <div style={{ backgroundColor: 'tan' }}> 
 
-      <Layout />    
+      <Navbar />    
       <Box m="20px">
       {/* Below is the Grid of the General HubPage */}
       <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gridAutoRows="180px" gap="20px">  
 
 
         {/* Row 1: Header/Welcome */}
-        <Box sx={{ border: 1,  backgroundColor: 'white'  }}  gridColumn="span 12"  p="30px" alignItems="center">
+        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'  }}  gridColumn="span 12"  p="30px" alignItems="center">
             <Typography variant="h3" fontWeight="600" textAlign="center">{currentSens}'s SensorPage </Typography> 
             <Typography> </Typography>
           </Box>  
 
 
         {/* Row 2 - Hub Statistics  */} 
-        <Box sx={{ border: 1,  backgroundColor: 'white'  }}  gridColumn="span 3" gridRow="span 2"   p="30px" alignItems="center">
+        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px' }}  gridColumn="span 3" gridRow="span 2"   p="30px" alignItems="center">
           <Typography variant="h5" fontWeight="600">
             What the Data Means 
           </Typography>
@@ -387,25 +388,28 @@ let { icon: readMoistureIcon,
           </Box>
         </Box>  
 
-        <Box sx={{ border: 3,  backgroundColor: 'white'  }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center">
-          <Typography variant="h5" fontWeight="600" textAlign="center">
+        <Box sx={{ border: 4,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px' }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center">
+          <Typography variant="h4" fontWeight="600" textAlign="center">
             {currentHub}  
           </Typography>  
-          {/* This is for the DATE BUTTONS !!! - Alter code here - or add functions to onClick part */}
-          <Box alignItems="center">    
+          {/* This is for the DATE BUTTONS !!! - Alter code here - or add functions to onClick part */} 
+          <Typography>
+          <Box alignItems="center" mx="165px" p="11px" >    
             <Stack direction="row" spacing={1} alignItems="center">
               <Button size="small" variant="contained" onClick={today}> Today </Button>
               <Button size="small" variant="contained" onClick={week}> Week </Button>
               <Button size="small" variant="contained" onClick={month}> Month </Button>
               <Button size="small" variant="contained" onClick={year}> Year </Button> 
-            </Stack>
+            </Stack> 
+          
             <p>
               {time === 1
               ? `Data Range Selected: Last 24 Hours`
               : `Data Range Selected: Last ${time} Days`}
              </p>
             </Box> 
-          <Box height="250px" m="-20px 0 0 0" display="flex" flexDirection="column" alignItems="center" mt="45px"> 
+          </Typography>
+          <Box height="250px" m="20px " display="flex" flexDirection="column" alignItems="center" mt="15px"> 
             <Typography>
               Today's Averages
             </Typography>
@@ -421,7 +425,7 @@ let { icon: readMoistureIcon,
           </Box>
         </Box>  
 
-        <Box  sx={{ border: 1,  backgroundColor: 'white'  }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
+        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'  }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
           <Typography variant="h5" fontWeight="600" textAlign="center">
             Sensor Status 
           </Typography>
@@ -485,46 +489,46 @@ let { icon: readMoistureIcon,
 
 
         {/* Row 4 - Line Graphs */} 
-        <Box  sx={{ border: 1,  backgroundColor: 'white'  }} gridColumn="span 4" gridRow="span 2" bg="white" >
-          <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
+        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'  }} gridColumn="span 4" gridRow="span 2" bg="white" >
+          <Box mx="132px" p="35px" display="flex " justifyContent="space-between" alignItems="center" textAlign="center">
             <Box>
-              <Typography variant="h5" fontWeight="600" >
+              <Typography variant="h5" fontWeight="600" textAlign="center" alignItems="center">
                 Moisture
-                <Line data={moi_data} options={options} />
               </Typography>
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0"> 
-          {/* Enter what is returend for Moisture Graph here */}
+          {/* Enter what is returend for Moisture Graph here */} 
+          <Line data={moi_data} options={options} />
           </Box>
         </Box>  
 
 
-        <Box  sx={{ border: 1,  backgroundColor: 'white'   }}gridColumn="span 4" gridRow="span 2" bg="white">
-          <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
+        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'   }}gridColumn="span 4" gridRow="span 2" bg="white">
+          <Box mx="110px" p="35px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
-              <Typography variant="h5" fontWeight="600"   >
+              <Typography variant="h5" fontWeight="600" textAlign="center"  >
                 Temperature
-                <Line data={tem_data} options={options} />
               </Typography>
             </Box>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            {/* Enter what is returned for Temperature graph here */}
+          <Box height="250px" m="-20px 0 0 0" >
+            {/* Enter what is returned for Temperature graph here */} 
+            <Line data={tem_data} options={options} />
           </Box>
         </Box>  
 
-        <Box  sx={{ border: 1,  backgroundColor: 'white'  }}gridColumn="span 4" gridRow="span 2" bg="white">
-          <Box mt="25px" p="0 30px" display="flex " justifyContent="space-between" alignItems="center">
+        <Box  sx={{ border: 3,  backgroundColor: 'white', boxShadow: 7, borderRadius: '8px'  }}gridColumn="span 4" gridRow="span 2" bg="white">
+          <Box mx="137px" p="35px" display="flex " justifyContent="space-between" alignItems="center">
             <Box>
-              <Typography variant="h5" fontWeight="600"   >
+              <Typography variant="h5" fontWeight="600" textAlign="center"  >
                 Sunlight
-                <Line data={sun_data} options={options} />
               </Typography>
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-          {/* Enter what's returned for Sunlight Graph here  */}
+          {/* Enter what's returned for Sunlight Graph here  */} 
+          <Line data={sun_data} options={options} />
           </Box>
         </Box> 
 
@@ -555,7 +559,8 @@ let { icon: readMoistureIcon,
 
       </Box>  
     </Box>   
-    </div>
+    </div> 
+    
     
 
     </>
