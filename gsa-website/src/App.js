@@ -27,9 +27,9 @@ function App() {
   
       <Routes> 
     
-        <Route path="/" element={<Landing />} /> 
+        <Route path="/" element={<Login />} /> 
         <Route path="/Register" element={<Register />} /> 
-        <Route path="/Login" element={<Login />} />
+        <Route path="/Landing" element={<Landing />} />
         <Route path="/MySensorsPage" element={<MySensorsPage />} />
         <Route path="/AddNewHub" element={<AddNewHub />} /> 
         <Route path="/AddNewSensor" element={<AddNewSensor />} /> 

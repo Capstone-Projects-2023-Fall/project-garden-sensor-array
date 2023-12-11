@@ -29,7 +29,7 @@ const Landing = ()=> {
 
     return (
         <>
-         <Card>
+          <Card>
             <Card.Body>
             <h2 className="text-center mb-4">Garden Sensor Array</h2>
             <Form>
@@ -41,12 +41,12 @@ const Landing = ()=> {
         </Card>
         <div className="w-100 text-center mt-2">
             Happy Planting
-        </div>  
+        </div>   
 
-        {/* <Container className="landingpic" >
+         {/* <Container className="landingpic" >
             <Button variant="contained" className="landingbtns" onClick={GoToRegister}>Register</Button> 
             <Button variant="contained" className="landingbtns" onClick={GoToLogin}>Log In</Button>
-        </Container>  */}
+        </Container>   */}
         </>
     )
 }
