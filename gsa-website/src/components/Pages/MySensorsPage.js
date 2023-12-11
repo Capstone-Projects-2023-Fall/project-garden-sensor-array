@@ -24,9 +24,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconBox1 from '../IconBox1';
-import IconBox2 from '../IconBox2';
 import HubPhoto from '../HubPhoto';
-import ParentData from '../ParentData';
+
 
 
 
@@ -220,12 +219,11 @@ const MySensorsPage = () => {
         const userRef = ref(database, `Users/${userUid}/HUBS`);
         const snapshot = await get(userRef); //get a snapshot
         if (snapshot.exists()) { //if there's data - proceed 
-          
           const hubs = snapshot.val(); //data found saved as a const
           console.log('Hubs:', hubs); //should print out a user's: email, username, and name of hubs 
   
           //two variables, one for an array of hubnames, the other for an array of just email + username
-          let nameOfHub, acctInfo; 
+          let nameOfHub;
           const acctUser = ['Email', 'Username'];
             
           nameOfHub = Object.keys(hubs); 
@@ -233,9 +231,6 @@ const MySensorsPage = () => {
           console.log('Hub Names:', nameOfHub); 
           setRegisteredHubs(nameOfHub); //setting in constant use-state variable
 
-          acctInfo = Object.keys(hubs); 
-          acctInfo = acctInfo.filter(el => acctUser.includes(el));//removes HubNames and gives back an array of only username and email 
-          console.log('User Info:', acctInfo);
           return nameOfHub
         } else {
           console.log('No info found for this user.');
@@ -258,6 +253,7 @@ const MySensorsPage = () => {
     }
   }
 
+  //the first thing the file does is run the fetchdata function to get an array of hubnames 
   useEffect(() => {
     const fetchData = async () => {
       const nameOfHub = await FetchHubs();
