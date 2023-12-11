@@ -3,7 +3,8 @@ sidebar_position: 1
 ---
 # Unit tests
 
-## SCU Unit Testing
+
+## SCU(Sensor Control Unit) Unit Test
 
 For this testing metric we use GitHub actions to test our logic when we update our SCU technology. 
 We created data type structures to represent the connecting sensors to the SCU, and update the logic
@@ -15,3 +16,4 @@ whenever it cleans the section.
 
 In order to be able to see our testing through Github actions please follow this link.
 [LINK](https://github.com/Capstone-Projects-2023-Fall/project-garden-sensor-array/actions)
+
