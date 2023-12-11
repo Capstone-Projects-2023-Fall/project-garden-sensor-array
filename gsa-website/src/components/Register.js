@@ -98,7 +98,7 @@ const Register = () => {
               </Button>
               <Grid item>
                 <div >
-                  Already have an account? <Link to="/Login"> Login</Link>
+                  Already have an account? <Link to="/"> Login</Link>
                 </div>
               </Grid>
             </Box>
