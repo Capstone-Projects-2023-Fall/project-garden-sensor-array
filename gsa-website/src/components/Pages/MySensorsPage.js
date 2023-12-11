@@ -272,15 +272,12 @@ const MySensorsPage = () => {
                 <Typography align="center" variant="h2" sx={{ fontWeight: 900, color: "#1b5e20" }}>
                     My Hubs
                 </Typography>
-                <Typography textalign="center" variant="h7" sx={{ fontWeight: 600 }}>
+                <Typography textalign="center" variant="h7" sx={{ fontWeight: 600 }} gutterBottom>
                     Welcome to your Hubs! Each HubCard below provides the averages of real-time data recorded by your sensors. 
                     Each HubCard is split into 3 sections: self-updating photo of your plant's current state, the data averages
-                    collected acording to date selected, and a status box to provide quick insight of what your hubs are reporting.  
-                    <box>
-                    <Typography textalign="center" variant="h7"  sx={{ fontWeight: 700, color: "green" }}>Click the middle of any HubCard to proceed to it's HubPage.</Typography> 
-                    </box>
-                    
-                </Typography>
+                    collected acording to date selected, and a status box to provide quick insight of what your hubs are reporting.   
+                </Typography> 
+                <Typography textalign="center" variant="h7"  sx={{ fontWeight: 700, color: "green" }} gutterBottom> Click the middle of any HubCard to proceed to it's HubPage.</Typography> 
             </Box>
         </Box>
         <Box> 
