@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavLink } from "react-router-dom";
 
-
+//mui positioned menu component
 
 const Navbar = () => { 
 
@@ -27,12 +27,14 @@ const Navbar = () => {
   });
   
   const NavMenuItem = styled("li")({
-    margin: "0px 20px",
+    margin: "0px 25px",
   });
   
   const NavMenuLink = styled(NavLink)({
     textDecoration: "none",
-    color: "white",
+    color: "white", 
+    fontweight: "200", 
+    
   });
   
 
@@ -96,9 +98,6 @@ const Navbar = () => {
       <Divider />
       <MobileNavigation>
           <MobileNavItem>
-            <MobileNavLink to={"/Home"}>Home</MobileNavLink>
-          </MobileNavItem>
-          <MobileNavItem>
             <MobileNavLink to={"/MySensorsPage"}>My Sensors</MobileNavLink>
           </MobileNavItem>
       </MobileNavigation>
@@ -117,9 +116,6 @@ const Navbar = () => {
 
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
               <NavigationMenu>
-                  <NavMenuItem>
-                    <NavMenuLink to={"/Home"}>Home</NavMenuLink>
-                  </NavMenuItem>
                   <NavMenuItem>
                     <NavMenuLink to={"/MySensorsPage"}>My Hubs</NavMenuLink>
                   </NavMenuItem>
