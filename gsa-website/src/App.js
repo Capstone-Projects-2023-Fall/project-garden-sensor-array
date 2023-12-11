@@ -1,7 +1,7 @@
 import React from 'react';
 import {Routes, Route} from "react-router-dom";
 import Login from './components/Login';
-import Landing from './Landing';
+import Landing from './components/Landing';
 import MySensorsPage from './components/Pages/MySensorsPage';
 import Register from './components/Register';
 import AddNewHub from './components/AddNewHub';
