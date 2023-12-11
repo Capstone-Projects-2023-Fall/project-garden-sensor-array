@@ -143,7 +143,7 @@ const HubPage = () => {
 
 
         {/* Row 2 - Hub Statistics  */} 
-        <Box sx={{ border: 2,  backgroundColor: 'white', boxShadow: 5, borderRadius: '15px'  }}  gridColumn="span 3" gridRow="span 2"   p="30px" alignItems="center">
+        <Box sx={{ border: 4,  backgroundColor: 'white', boxShadow: 5, borderRadius: '15px', borderColor: "#1b5e20"  }}  gridColumn="span 3" gridRow="span 2"   p="30px" alignItems="center">
           <Typography variant="h5" fontWeight="600">
             HubPage Background 
           </Typography>
@@ -153,7 +153,7 @@ const HubPage = () => {
           </Box>
         </Box>  
 
-        <Box sx={{ border: 3,  backgroundColor: 'white', boxShadow: 5, borderRadius: '15px' }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center" >
+        <Box sx={{ border: 4,  backgroundColor: 'white', boxShadow: 5, borderRadius: '15px', borderColor: "#1b5e20" }} gridColumn="span 6" gridRow="span 2" p="30px" alignItems="center" >
           <Typography variant="h5" fontWeight="600" textAlign="center">
             {currentHub}'s Sensors
           </Typography>  
@@ -181,7 +181,7 @@ const HubPage = () => {
 
         </Box>  
 
-        <Box  sx={{ border: 1,  backgroundColor: 'white', boxShadow: 5, borderRadius: '15px' }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
+        <Box  sx={{ border: 4,  backgroundColor: 'white', boxShadow: 5, borderRadius: '15px', borderColor: "#1b5e20" }} gridColumn="span 3" gridRow="span 2"  p="30px" alignItems="center">
           <Typography variant="h5" fontWeight="600" textAlign="center">
             Hub Status 
           </Typography>
