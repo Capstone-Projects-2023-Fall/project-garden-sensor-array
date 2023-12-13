@@ -1,0 +1,27 @@
+# Run unit tests using CTest
+name: Tests
+
+on:
+  push:
+    branches: [ GSA-131-Testing-Document-Feedback-1 ]
+  pull_request:
+    branches: [ GSA-131-Testing-Document-Feedback-1 ]
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup cmake
+      uses: jwlawson/actions-setup-cmake@v1.14
+      with:
+        cmake-version: '3.16.x'
+    - name: Use cmake
+      run: cmake --version
+
+  testing:
+    runs-on: ubuntu-latest
+
+    steps:
+     - uses: actions/checkout@v3
+     - name: changetosrc
+       run: cd src && cd SCU_Main_Test && mkdir build-dir && cd build-dir && cmake .. && make && ctest
