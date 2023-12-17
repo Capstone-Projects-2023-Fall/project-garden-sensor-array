@@ -10,7 +10,7 @@ sidebar_position: 5
 2. The website will be straightforward and prompt the user for their credentials
 3. Once done, the user will be taken to the main dashboard.
 4. In the dashboard, the list of all available HUBS will be shown to the user
-5. The user will press on specific HUB, which takes them to a HUB page containing all SCU's under that HUB
+5. The user will press on a specific HUB, which takes them to a HUB page containing all SCU's under that HUB
 6. The user will then press on a specific SCU, taking them to the SCU page which contains all the information about their plant
 
 
