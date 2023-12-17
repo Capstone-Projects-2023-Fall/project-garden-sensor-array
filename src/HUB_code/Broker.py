@@ -38,10 +38,11 @@ def check_connection():
         return False 
 
 async def main():
-    while(not check_connection()):
+    while(not check_connection()): #loops infinitely while not connected to wifi
         print("hub offline")
         time.sleep(5)
 
+    #Set up Firebase db connection
     cred = credentials.Certificate('cred.json')
     app = firebase_admin.initialize_app(cred)
 
@@ -49,10 +50,7 @@ async def main():
 
     hub_ref = fs.collection(HUB_ID)
 
-    SLEEP_INTERVAL_ADV  = 1
-    SLEEP_INTERVAL_POLL = 10
-
-    class AsyncStringIterator:
+    class AsyncStringIterator: #Exists to loop over list of Sensors asyncronously
         def __init__(self, strings):
             self.strings = strings
             self.index = 0
@@ -69,44 +67,51 @@ async def main():
                 raise StopAsyncIteration
             
     async def get_birds():
+        """This function turns a list of sensors that are linked to the hub into an asyncronously iterable list
+        
+
+        Returns:
+            Boolean: AsyncStringIterator version of list of sensors
+        """
+
         string_list = ['Canary','Junco']
         async_strings = AsyncStringIterator(string_list)
 
         return async_strings
         # Using async for loop with the asynchronous string iterator
     
-    if(exists):
+    if(exists): #Launches camera script
 
         t1 = threading.Thread(target=camScript.imgCap, args=(HUB_ID, ))
         
         t1.start()
 
-    while(True):
-        while(not check_connection()):
+    while(True): 
+        while(not check_connection()): #loops infinitely while not connected to wifi
             print('hub offline')
             time.sleep(5)
 
         birds = await get_birds()
-        async for bird in birds:
+        async for bird in birds: # Iterates over each sensor
 
             try:
-                sensor_data = await read_bt(bird)
-                data = sensor_data.decode().split(',')
+                sensor_data = await read_bt(bird) # listens for data from that sensor
+                data = sensor_data.decode().split(',') # data is sent as a comma separated list and split
             
                 temp = data[1] 
                 moist = data[0]
                 sun = data[2]
                 print(f'Temp: {temp}, Moisture: {moist}, Sun: {sun}')
-                sens_ref = fs.collection(HUB_ID, bird, "data")
-                hub_ref.add(
+                sens_ref = fs.collection(HUB_ID, bird, "data") # Set up database reference unique to sensor
+                hub_ref.add( # Writes data to the general hub firebase collection
                         HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
                 )
-                sens_ref.add(
+                sens_ref.add( # Writes data to the sensor specific connection
                         HUB(bird, HUB_ID, temp, moist, sun, SERVER_TIMESTAMP).to_fb()
                 )
 
                 print("updating...")
-            except:
+            except: # skips is sensor doesn't connect
                 print("No Bird")
     
         #time.sleep(10)
