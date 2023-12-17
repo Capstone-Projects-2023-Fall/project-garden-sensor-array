@@ -9,9 +9,9 @@ sidebar_position: 5
 1. The user will go into the website
 2. The website will be straightforward and prompt the user for their credentials
 3. Once done, the user will be taken to the main dashboard.
-4. The user will then be able to look all the data of their plants via a drop down list
-5. This drop down list ensures easy maneuvering through the website without any hassle
-6. The user will then be satisfied, knowing that they will be able to monitor their plants with ease
+4. In the dashboard, the list of all available HUBS will be shown to the user
+5. The user will press on specific HUB, which takes them to a HUB page containing all SCU's under that HUB
+6. The user will then press on a specific SCU, taking them to the SCU page which contains all the information about their plant
 
 
 ### Use Case #2: Monitering Long Term Plant Growth
