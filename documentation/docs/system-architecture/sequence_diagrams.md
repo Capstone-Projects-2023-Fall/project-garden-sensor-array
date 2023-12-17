@@ -8,20 +8,28 @@ sidebar_position: 2
 sequenceDiagram
     Actor User
 
-    User -->>+ GSA Website: clicks "Plant Data" dropdown list
-    GSA Website->>+Plant Database: requests for Plant Information
-   
-    Plant Database-->>-GSA Website: sends Plant Information
+    User -->>+ Dashboard: Logs into website
+    Dashboard-->>-HUB Page: presses on a specific HUB
+
+   activate HUB Page
+
+    HUB Page-->-SCU Page: presses on a specific SCU
+
+    activate SCU Page
     
-    GSA Website->>-Plant Data (Dropdown List): Updates Plant Data Dropdown List according to Database
-    activate GSA Website
-    activate Plant Data (Dropdown List)
-    Plant Data (Dropdown List)-->>-User: Plant Data Dropdown List is shown to the User after update
+    SCU Page-->>+Firebase: Requests for information
+
+
+    Firebase-->>-SCU Page: Sends Information of specific SCU
+
+    SCU Page-->>SCU Page: Updates Graph/Icons/Averages according to new data given
+
+    SCU Page -->>-User: SCU Page displays information about their plant to User
     
     
 ```
 
-In an event where the user wants to browse through their Plant data, they can do so by using Garden Sensor Array's dedicated website. In the GSA Website, the user will be given the option to press the "Plant Data" button. By selecting this button, the GSA Website will then request for the current Plant information stored within the Plant Databse. The Plant Database, upon receiving the request, will send out the current Plant information collected from the sensors to the GSA Website. The website will then take this information and update the Plant Data Dropdown list with its corresponding data field. Once the update has been completed, the newly updated Plant Data Dropdown list will be shown to the user for viewing within the GSA Website.
+In an event where the user wants to know more about the condition and health of their plant, they can do so by using Garden Sensor Array's dedicated website. Upon logging in successfully, the website will then gather all HUBS that are associated with the user and have them visible to the user as a list form. All HUBS listed are clickable items and once they are clicked, the user is taken to the specialized HUB page for that specific HUB they have chosen. The HUB Page will then gather all SCU's associated with the HUB and have them shown as list form, akin to the main dashboard. Upon clicking a specific SCU, the user will be taken to the specialized SCU page for that specific SCU they have chosen. The SCU page will then request information about the specific SCU from Firebase, which stores all the information gathered from our sensors. Firebase will then send all the required information to the SCU page and the SCU page responds by updating graphs, averages, and icons according to the new data it has received. After all updates are finalized and fixed visibly within the SCU page, the user is able to see all the information they need about their plant.
 
 
 ## Use Case #2: Monitoring Long Term Plant Growth
