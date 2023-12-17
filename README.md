@@ -9,16 +9,8 @@
 
 </div>
 
-WELCOME TO GARDEN SENSOR ARRAY README
-Created by
-- Alexander
-- Sam
-- Regina
-- Jimson
-- Giorgio
-- Gabriel
+WELCOME TO THE GARDEN SENSOR ARRAY README
 
-For any questions, please feel free to email, alexander.korsunsky@outlook.com
 
 
 ## Keywords
@@ -27,42 +19,43 @@ Distributed Sensor Networks, Arduino, Raspberry Pi, Urban Agriculture, Community
 
 ## Project Abstract
 
-The purpose of this project is to provide the average community gardener with little to no technical knowledge the ability to place previously implemented sensors in their garden that will notify them through a webpage, sensor information related to gardening i.e., sunlight, soil moisture, and ambient temperature. Through achieving this we will be able to reduce the working hours of community gardeners in food-desert areas in Philadelphia. This will help reduce the fresh food shortage in areas that have less common access to nutrition. We will do this by accomplishing three things, making the sensors cost-effective, reliable, and with high levels of UX design.
+The purpose of this project is to provide community gardeners with an easy way to access valuable, precise, information about their garden (i.e., sunlight, soil moisture, ambient temperature), without requiring any special technical knowledge or knowhow. This will hopefully alieviate some of the difficulty of cultivating larger community gardeners. 
+
+The ultimate goal is  to help make this technology available to the average person, in hopes of reducing the difficulties of growing fresh foods and enabling access to cheap and nutrious options in areas that would otherwise be at risk of becoming food deserts. To do this, we designed this project to be cost-effective, reliable, and easy to use.
 
 ## High Level Requirement
-
-To meet those accomplishments, we will focus on having the sensors themselves require the user to simply power them on and install them into the soil where the plants occupy. The sensors will utilize wireless I2C Bluetooth communication to a local unit. This local unit will then utilize cellular connection to a webpage with MQTT. The webpage when logged in through the local unit’s login credentials will display the sensor’s collected information through an easy-to-understand display.
+GSA is dead simple to get started. All that needs to be done is to put a sensor into the ground and power it on. The sensors utilize Bluetooth to communicate with a central HUB, which then uses WiFi to transmite the data to an online server. The user can then log onto a Web App using their personalized credentials, which then presents the data collected from the sensors in an easy to understand way.
 
 ## Conceptual Design
+A microcontroller is used to collect data from a light sensor and a soil moisture sensor which is then sent to a local HUB that is in charge of relaying the data to a server so that it can be displayed on a webpage. This data is sent from the sensors to the HUB over Bluetoothm and consists of: an integer representing the amount of sunlight received, an integer representing the soil moisture level, and a float representing the temperature of the soil. The code for the microcontrollers in charge of reading from the sensors is written in C, and the code for the central HUB is written in Python.
 
-The sensors will be using Raspberry Pico W (microcontroller) hardware to be able to retrieve and send their sensors (BH1750 and Stemma Soil Sensor) information to another Raspberry Pico W. They will send this information through packets containing the following integers of sunlight, soil moisture, and temperature. All of the software will utilize python and several libraries that are already made for the sensors and Bluetooth capabilities.
+In order for the HUB to send data to the server we use MQTT(Message Query Telemetry Transport), which sends the data packets as soon they are retrieved.
 
-In order for the local unit to be able to publish the information to the webpage, we will use MQTT(Message Query Telemetry Transport) that will send the packets as they are retrieved in real time.
+Once the server receives the information it stores it using Firebases Web API. When queried from an outside source, the webpage verifies the credentials of the session requesting the information to ensure that it displays the correct users information.
 
-Once the webpage receives the information it will store it using a Web API on a file server. When queried from an outside source, the webpage will verify the credentials requesting the information to ensure that it displays the correct local unit’s sensor information.
 ## Background
+There are already several commercially available garden sensors, but the options for smaller community gardens are not quite cost-effective, especially ones that allows users to collect and view their data remotely. Instead of having community gardeners take time out of their day to determine whether their garden requires maintenance, with our project they're able able to access that data remotely, allowing them to make more informed descisions. 
 
-There are already several companies that make garden sensors but when looking at the amateur gardener level there is no cost-effective sensor that relays its information in a Local Area Network to then a Wide Area Network. With the information being incredibly lightweight, this is a perfect job for microcontrollers to handle. Instead of having gardeners who work at community gardens take their time out of the day to confirm whether their garden requires certain levels of maintenance they can now only spend their working hours on items that are necessary. Another future concept of this device’s implementation is to provide automatic watering and LED lighting.
+A future goal for this project is to enable different types of automation, such as the watering of plants, to further reduce the burden on community gardens, and hopefully encourage more people everywhere to engage with urban agriculture.
 
 ## Required Resources
 
-·         Software Requirements
+**Software Requirements**
 
 o   Python
 
-o   Web API JavaScript
+o   JavaScript
 
 o   MQTT
 
-·         Hardware Requirements
+**Hardware Requirements**
 
-o   (3) Raspberry Pico W
+o   Raspberry Pico W
 
-o   (1) Cellular Data plan
 
-o   (2) BH1750 Sunlight sensors with dome
+o   BH1750 Sunlight sensors with dome
 
-o   (2) Adafruit Stemma Soil Sensors
+o   Adafruit Stemma Soil Sensors
 
 o   Soldering Kit
 
@@ -158,5 +151,7 @@ INSTALL REQ : make sure to install these on terminal when running the program on
 </table>
 
 [//]: # ( readme: collaborators -end )
+
+If you have any questions please feel free to reach out to: alexander.korsunsky@outlook.com
 
 
