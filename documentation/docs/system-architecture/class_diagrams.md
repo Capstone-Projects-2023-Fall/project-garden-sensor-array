@@ -5,7 +5,33 @@ sidebar_position: 3
 
 ## Hub Class Diagram
 
-![system_block_diagram](/img/hub.png)
+```mermaid
+classDiagram
+    Broker --> Bluetooth
+    Broker --> HUB_Class
+    Broker ..> cred
+    
+    Broker : +int HUB_ID
+   
+    Broker: +check_connection()
+    Broker: +get_birds()
+
+    class Bluetooth{
+      +read_bt()
+    }
+    class HUB_Class{
+      +String SensorID
+      +String AccountID
+      +Double Temperature
+      +Double Moisture
+      +Double Sunlight
+      +Timestamp Time
+      +to_fb()
+    }
+    class cred{
+      -Dict credentials
+    }
+```
 
 This sequence diagram describes the code package that will be run on the Garden Sensor Array's hub device. Here we have the Broker class that acts as the main class for the hub, 
 and it is responsible for controlling the flow of data from the sensors to the database as well as for connecting the hub device to WiFi. It connects to WiFi by having users

@@ -155,71 +155,23 @@ The gardener seeks for their daily or weekly data on their sensors page. The dat
 ```mermaid
 sequenceDiagram
 
-    User --)+ Web API: clicks "Add New Sensor"
-    Web API->>+Hub: Request nearby BT devices
-
-    Hub->>+Sensor Control Unit 1: lookup_name()
-    Sensor Control Unit 1 -->>-Hub: Returns device name
-    Hub->>+Sensor Control Unit 2: lookup_name()
-    Sensor Control Unit 2 -->>-Hub: Returns device name
-
-    Hub-->>-Web API: list_bt_devices()
-    Web API-->>-User: Displays nearby BT device names
-
-    User--)Web API: Selects "Sensor 1" from list
-    Web API->>+Hub: Sends "Sensor 1"
-    Hub ->>+ Sensor Control Unit 1: connect()
-    Sensor Control Unit 1 -->>-Hub: confirm_connect()
-
-    Hub-->>-Web API: Confirm Sensor 1 connection
-    Web API-->>User: "Sensor 1 Connected Successfully!"
-```
-
-When users want to monitor a new plant or garden, they can do so by pairing a new sensor control unit to one of their hubs.
-To start, they can select "add new sensors" on the web app that will send a request to the hub to begin sending requests to 
-all nearby Bluetooth devices to ask for their names. After recieving a list of all nearby devices, the hub will return that 
-list to the web app that will then prompt the user to select the sensor contol unit they wish to add. The web app then returns
-the users selection to the hub that will then initiate a connection with the respective sensor control unit. Upon successful 
-connection, the hub returns that the connection was sucessful and the web app will display "Sensor 1 Connected Successfully!"
-
-## Use Case #8: Resetting Password
-
-```mermaid
-
-sequenceDiagram
-
     Actor User
-
-    User->>+Login Page: Navigates to GSA Login Page
-
-    activate Login Page
-
-    Login Page -->> User: Login Prompt
-    User ->> Login Page: Selects "Trouble Logging in?" button
-    Login Page -->>+ Account Recovery Page: Redirects to
-
-    Account Recovery Page ->> User: Prompts for Recovery Credentials
-    User -->> Account Recovery Page: Enters Credentials
-    Account Recovery Page ->>+ User Database: Relays Credentials
-
-    User Database -->> User Database: Validates Credentials
-    User Database -->> Account Recovery Page: Confirms Identity
-    Account Recovery Page -->>+ Password Change Page: Redirects to
-
-    deactivate Account Recovery Page
-
-    Password Change Page ->> User: Prompts for new Password
-    User -->> Password Change Page: Enters New Password
-    Password Change Page -->> User Database: Updates User Password
-    User Database --) Password Change Page: Confirms Update
-    deactivate User Database
-    Password Change Page -->> User: Confirmation Message
-
-    Password Change Page -->>- Login Page: Redirects to
-    Login Page -->> User: Login Prompt
-
-    User ->> Login Page: Enters Credentials
-    Login Page -->>- Account Page: Redirects to
+    participant GSA Website
+    participant Firebase
+    participant Hub
+    participant SCU
+    
+    User -)+ GSA Website: clicks "Add New Sensor"
+    GSA Website ->>+ Firebase: Sends sensor registration info
+    Firebase->>+Firebase: Associates Sensor with account
+    Firebase->>+GSA Website: Sensor Page added
+    
+    loop
+        SCU--)Hub: Sends raw sensor data
+        Hub--)Firebase: Organizes sensor data
+        Firebase--)GSA Website: Sends processed data
+        GSA Website -->> User: Displays relevant plant data
+    end
 ```
 
-If the user finds themselves in a position where they need to reset their password, they are able to do so by navigating to the login page, and selecting the "Trouble Loggin In?" button. This will redirect them to an account recovery page, which prompts them to enter their recovery credentials (Email and secret questioon). After the user enters their credentials, they will be checked against the information stored in the user database. Upon confirmation, the user will be redirected to a page which prompts for an updated password. Once the new password is entered, it is updated in the user database, and the user is again redirected to the login page. Here, the user is able to enter their newly reestablished credentials, and log in, taking them to the account page.
+When users want to monitor a new plant or garden, they can do so by pairing a new sensor control unit to o their account. First, they type the sensor's serial number and desired name they want to give the sensor (any plant name or identifier). That information goes to Firebase where that sensor is associated with that user's account, at which point a page will be created on the website and sensor data will begin populating it and will update continuously in real time. This sensor data is transmitted from sensors via a Hub device that the user paired beforehand. 
