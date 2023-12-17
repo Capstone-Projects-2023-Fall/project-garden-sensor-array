@@ -147,7 +147,7 @@ The gardener seeks for their daily or weekly data on their sensors page. The dat
 ```mermaid
 sequenceDiagram
 
-    participant User
+    Actor User
     participant GSA Website
     participant Firebase
     participant Hub
