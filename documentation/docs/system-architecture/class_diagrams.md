@@ -18,49 +18,51 @@ credentials that will be used by the Database class' connect() to connect the de
 ## Sensor Array Class Diagram
 ```mermaid
 classDiagram
-    SensorMain --> BluetoothBLE
-    SensorMain o-- BLECharacteristic 
-    SensorMain o-- AdafruitSeesaw
-    SensorMain o-- BH1750
-    SensorMain --> Wire
+    Server --> btstack 
+    Server --> seesaw
+    Server --> bh1750
     
-    class SensorMain{
-        -AdafruitSeesaw soilSensor
-        -BH1750 lightSensor
-        -BLECharacteristic soilCharacteristic
-        -BLECharacteristic lightCharacteristic
-        setup() void
-        loop() void
+    class Server{
+        +uint16_t soil_moisture
+        +float tempC
+        +float lux
+        -le_setup() void
+        -heartbeat_handler(timer_source) void
+        -packet_handler(packet_type, channel, packet, size) void
+        -att_read_callback(connection_handle, att_handle, offset, buffer, buffer_size)
+        -att_write_callback(att_handle, buffer, buffer_size)
+        -getASSMsoilmoisture() void
+        -getASSMtempC() void
+        -getBH1750lux() void
+        -write_sensor_data() void
+        
+        main() int
     }
 
-    class BluetoothBLE{
-        +begin() bool
-        +end() void
-        +advertise() bool
-        +stopAdvertise() void
-        +setEventHandler(eventType, callback) void
+    class btstack{
+        
     }
 
-    class BLECharacteristic{
-        +BLECharacteristic(uuid, properties, value, valueSize) BLECharacteristic
+    class seesaw{
+        -int SEESAW_ADDR
+        -seesaw_read(reghigh, reglow, buffer, num, delay) bool
+        +seesaw_begin() bool
+        +seesaw_get_temp() float
+        +seesaw_touch_read(pin) uint16_t
     }
 
-    class AdafruitSeesaw{
-        +begin(address) bool
-        +getTemp() float
-        +touchRead() uint16_t
-    }
-
-    class BH1750{
-        +begin(address) bool
-        +readLightLevel() float
-    }
-
-    class Wire{
-        +begin() void
+    class bh1750{
+        -int BH1750_ADDR
+        -uint8_t BH1750_MODE
+        -uint8_t BH1750_MTREG
+        +uint8_t BH1750_DEFAULT_MTREG
+        +enum Mode
+        +bh1750_begin(mode) bool
+        +bh1750_setMTreg(MTreg)
+        +bh1750_read_lux() float
     }
 ```
-This Diagram outlines the basic architecture of the sensor units. SensorMain is the program ran by the sensor units, and it has relationships to several important classes: Adafruit_Seesaw (the soil moisture and temperature sensor), BH1750 (the ambient light sensor), BluetoothBLE (the library for finding and connecting to other Bluetooth BLE devices), and BLECharacteristic (the library for managing BLECharacteristics and how they change). Importantly, SensorMain contains objects of type Adafruit_Seesaw, for representing the soil sensor; BH1750, for representing the light sensor; and BLECharacteristic, which will track the data recorded by the sensors and send data to the hub when there is new information to report. SensorMain does not directly contain any objects of type BluetoothBLE, but it will access functions from that library to initiate the BLE connection.
+This Diagram outlines the basic architecture of the program ran by the Sensor Contrul Units. Server is the main entry point for the program, and it is primarily responsible for reading the connected sensors and sending the data to a client. Server has relationships to several important libraries: seesaw (for interacting with the soil moisture and temperature sensor), bh1750 (for interacting with the the ambient light sensor), and btstack (the library for implementing Bluetooth Low Energy Functionality). Notably, the btstack library provides the funtionality implemented by the functions le_setup (configures advertisements and enables BLE), heartbeat_handler (called on a set interval to check the status of the BLE server), packet_handler (receives Bluetooth packets and decides what actions to take), and att_read/write_callback (triggered when a client issues a read or write request to the BLE server). Importantly, Server has association relationships with the libraries seesaw and bh1750 because it does not actually contain objects of type seesaw or bh1750, as the functions provided by the libraries allow direct access to reading the sensors without the explicit use of a datatype to represent them. Similarly, Server does not directly contain any objects of type btstack, but it will access functions from that library to initiate the BLE connection and handle BLE events.
 
 ## Web API Class Diagram
 
