@@ -24,26 +24,6 @@ import camScript
 
 HUB_ID = 'HUB_1'
 
-def search_devices():
-    """This function searches for nearby bluetooth devices, gets their names, and determines which are SCUs.
-    It then returns a list of available SCUs.
-
-    
-    Returns:
-        sensor[]: an array of all nearby available SCU devices
-    """
-    devices = []
-    return devices
-
-def connect_wifi(name, password):
-    """This function edits the hub's config file to pass the user's wifi credentials to it and grant the hub internet access
-    
-
-    Returns:
-        Boolean: True if connection successful, False if not
-    """
-    return True
-
 def check_connection():
     """This function pings firebase to check if the site is down or (more likely) the hub is offline
     
