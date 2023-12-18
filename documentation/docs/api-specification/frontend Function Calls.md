@@ -4,362 +4,410 @@ sidebar_position: 1
 description: Descriptions of the frontend classes, data-fields, and methods.
 ---
 
+
 Frontend API
 =============================
 
+
 ## App
 
-**Description:**  
+**Description:** 
+The App file holds all of the react components of the application that are accessible through React Router.
 
-The App file is what holds all of the react components of this application. 
 
-**Data Fields** 
+**Data Fields**
+- N/A
+**Methods**
 - N/A
 
-**Methods** 
 
-`triggerLandingPage(): void` 
-- triggers the landing page of the website. The landing page will have a description of what Garden Sensor Array is and it will also include buttons that will trigger the login and resgister pages.
 
-`triggerLoginPage(): void`
-- Triggers the login page. 
+## Register
 
-`triggerRegiserPage(): void` 
-- Triggers the sign-up page. 
 
+**Description:**
+This is the registration page, where the user can create their account.
 
-## NavBar 
 
-**Description:**  
+**Data Fields:**
+- email: String
+   - String variable that holds the email address entered in by the user
 
-The NavBar class represents the navigation bar that will be located at the top of the website (once logged in) and will allow for the user to navigate between differnt pages. 
+- password: int
+   - Int variable that holds the password entered in by the user. 
 
-**Data Fields** 
-- page_id: int 
-    - The page_id attribute lets the application know which page it's on/wants to be shown. 
-    
+- passwordConfirm: int
+   - Int variable that needs to match the password entered above to continue. Ensures that the user knows what password they put.
 
-**Methods**  
-`triggerNextPage(page_id: int): void`
-- triggerNextPage takes in the page_id and then triggers the next page chosen (which is decided by the page_id).
-
-
-## Tabs 
-
-**Description:** 
-
-The tabs will be buttons on the navigation bar. There will be a tab for each page, this includes: home page, my sensors page, account page, and the help page. 
-
-**Data Fields** 
-- page_id: int 
-    - The page_id attribute lets the application know which page it's on/wants to be shown. 
-
-
-**Methods**  
-`setPage_id(): void`
-- changes the page_id value so the correct page chosen can be accessed.
-
-
-## Main_Content 
-
-**Description:** 
-
-The main content class will focus on what is displayed in the screen underneath the navigaton bar (header) and above the footer. 
-
-**Data Fields** 
-- page_id: int 
-    - The page_id attribute lets the application know which page it's on/wants to be shown. 
-- username: String() 
-    - string attribute for the user's username 
-- password: String() 
-    - string attribute for the user's password
-- name: String() 
-    - string attrubute for the user's name
-- email: String()
-    - string attribute for the email the user is linking to the account
-- account_id: int
-    - the numerical identfication for the user's account
-- sensor_id: int
-    - the numerical identification for that specifc sensor unit
-- sensorCount: int
-    - the amount of sensors that is linked to the account
-- garden_name: String()
-    - the name the user has assigned to the sensor unit
-- sensors_linked[]: int 
-    - an array of sensor ids, in case the user wants/has more than one sensor unit
-
-
-**Methods**   
-`fetch(): void`
-- The fetch function will be used to fetch data about the user and their sensor(s) so it's sub classes can use them.
-
-
-## HomePage 
-
-**Description:** 
-
-The home page will be the page that the user is immedieately taken to once they have logged in or completed registration. It will show the current weather status and some general tips on plant care. 
-
-**Data Fields**  
-- page_id: int 
-    - The page_id attribute lets the application know which page it's on/wants to be shown.
-- account_id: int
-    - the numerical identfication for the user's account
-- generalTips[]: Object 
-    - an object that has key/value pairs. Each tip will have a paired value
-
-**Methods**  
-`random(): void`
-- picks random numbers out of a given range. The numbers returned will be used to pick which tip object is displayed 
-
-
-`displayGeneralTips(): void`
-- displays the specific pairs chosen from the generalTips object.
-
-
-## WeatherCard
-
-**Descriptio:** 
-
-The weather card component will be the weather portion mentioned on the HomePage. The card will constantly be updating, as the weather will reflect the current condions occuring. 
-
-**Data Fields**  
-- cardTemp: int 
-    - the temperature showing on the weather card 
-- condition_descrip: String() 
-    - string variable that describes the weather condtions - ex: sunny, raining, cloudy, etc. 
-
-
-**Methods**   
-`refreshWeather(): void` 
-- refreshes the weather card so that the card is always reflecting real time api data
-
-
-## Weather 
-
-**Description:** 
-
-This component works with the weather card, and specifically aims at providing the weather api for the card. 
-
-**Data Fields**   
-- cardTemp: int 
-    - the temperature showing on the weather card 
-- condition_descrip: String() 
-    - string variable that describes the weather condtions - ex: sunny, raining, cloudy, etc. 
-
-
-**Methods**   
-`fetch(): void`
-- The fetch function will be used to fetch data from the weather api
-
-
-## MySensorsPage 
-
-**Description:** 
-
-This will the page that users will click on in order to get information about their connected sensors. The page will consits of cards - one for each sensor. 
-
-**Data Fields**  
-- lastUpdated: int 
-    - holds the calendar date of the last time the user requested a sensor update
-- account_id: int
-    - the numerical identfication for the user's account
-- sensor_id: int
-    - the numerical identification for that specifc sensor unit
-- sensorCount: int
-    - the amount of sensors that is linked to the account
-- garden_name: String()
-    - the name the user has assigned to the sensor unit
-- sensors_linked[]: int 
-    - an array of sensor ids, in case the user wants/has more than one sensor unit
-
-
-
-**Methods**  
-`fetch(): void` 
-- calling another fectch function to get the last calendar date that user requested a sensor update. 
-
-
-## SensorSelection_Card 
-
-**Description:** 
-
-Each card located on the MySensorsPage will have brief info for identification purposes (like sensor id, sensor name, etc). The cards will be clickable and once they are clicked, they lead to their specifc sensor page. 
-
-**Data Fields**   
-- account_id: int
-    - the numerical identfication for the user's account
-- sensor_id: int
-    - the numerical identification for that specifc sensor unit
-- sensorCount: int
-    - the amount of sensors that is linked to the account
-- garden_name: String()
-    - the name the user has assigned to the sensor unit
-- sensors_linked[]: int 
-    - an array of sensor ids, in case the user wants/has more than one sensor unit
-
-
-**Methods**   
-`handleClick(): void` 
-- Makes the card component clickable and leads to the specific sensor's page
-
-
-## SpecificSensorPage 
-
-**Description:** 
-
-SpecifcSensorPage component will be the page where the users will see detailed information about the specifc sensor they have selected. The page is broken into 3 sections. The top half will show the last updated stats for water and sunlgiht levels, as well as a button to activate the sensors and get current/realtime statistics. The bottom left will a "show history" button that opens up a datatable. Lastly, the bottom right will have a helpful figure to aid in understanding the data prodcued by the sensors. 
-
-**Data Fields**  
-- account_id: int
-    - the numerical identfication for the user's account
-- sensor_id: int
-    - the numerical identification for that specifc sensor unit
-- sensorCount: int
-    - the amount of sensors that is linked to the account
-- garden_name: String()
-    - the name the user has assigned to the sensor unit
-- sensors_linked[]: int 
-    - an array of sensor ids, in case the user wants/has more than one sensor unit
-- temp: int 
-    - int variable representing the most recent temperature recorded by the sensor
-- soil_moisture: int 
-    - int variable representing the most recent soil moisture level rercorded by the sensor
-- light_level: int 
-    - int variable representing the most recent light level recroded by the sensor
-
-
-**Methods**  
-`fetch(): void`
-- sends request to the backend to fetch new readings from the sensor
-
-`updateTemp(): int` 
-
-- takes data gathered from fetch and updates the int temp variable
-
-`updateSoil(): int` 
-- takes data gathered from fetch and updates the int soil_moisture variable
-
-`updateLight(): int`
-- takes data gathered from fetch and updates teh int light_level variable 
-
-
-
-
-## DataTable 
-
-**Description:** 
-
-Activated by the "Show History" Button, this datatable will provide the user with all recorded data from the sensor. The table will be easy to understand and will have content prefrences features to facilitate the process for the user. 
-
-**Data Fields**   
-- account_id: int
-    - the numerical identfication for the user's account
-- sensor_id: int
-    - the numerical identification for that specifc sensor unit
-- sensorCount: int
-    - the amount of sensors that is linked to the account
-- garden_name: String()
-    - the name the user has assigned to the sensor unit
-- sensors_linked[]: int 
-    - an array of sensor ids, in case the user wants/has more than one sensor unit
-- temp: int 
-    - int variable representing the most recent temperature recorded by the sensor
-- soil_moisture: int 
-    - int variable representing the most recent soil moisture level rercorded by the sensor
-- light_level: int 
-    - int variable representing the most recent light level recroded by the sensor
-- past_temps[]: int 
-    - int array that holds previously recorded temperatures 
-- past_soil_moistures[]: int 
-    - int array that holds previously recorded soil moisture levels
-- past_light_levels[]: int
-    - int array that holds previously recorded sun light levels
-
-
-**Methods**  
-`Datatable(): void`
-- creates a datatable component 
-
-## PlantFigure
-
-**Description:** 
-
-This component will provide a figure paired with a small explanation. The figure will show a diagram that helps explain what the data for water and sunlgiht levels mean, and how they would look when applied to an average plant. The purpose of this figure is to help the user understand what the data we are giving them means. 
-
-**Data Fields:** 
-- plant_description: string() 
-    - string that describes the purpose of the figure
+- displayName: String
+   - The display name that users get to pick to go by, instead of their email address. 
 
 **Methods** 
+`signUp()`
+- Takes in the credentials entered in by the user and creates an account for the user in firebase. Once completed, it automatically sends you to the MySensorsPage.
 
 
-## AccountPage 
+
+
+
+
+## Login
+
+
+**Description:**
+This is the login page, the first page the user is sent to when typing the url of the website.
+
+
+**Data Fields**
+- email: String
+   - String variable that holds the email address entered in by the user
+
+- password: int
+   - Int variable that holds the password entered in by the user
+
+**Methods** 
+`signIn()`
+- Method that signs the user in using the credentials entered in. Also sends you to the MySensorsPage once method is complete.
+
+
+
+
+
+
+## NavBar
+
 
 **Description:** 
+The NavBar class represents the navigation bar that will be located at the top of the website (once logged in) and will allow for the user to navigate between differnt pages.
 
-The AccountPage is another page that can be accessed through the navigation bar. It will display the user's account information. The page will also have a section where the user can add or delete sensors. 
 
-**Data Fields** 
-- username: String() 
-    - string attribute for the user's username 
-- password: String() 
-    - string attribute for the user's password
-- name: String() 
-    - string attrubute for the user's name
-- email: String()
-    - string attribute for the email the user is linking to the account
-- account_id: int
-    - the numerical identfication for the user's account
-- sensor_id: int
-    - the numerical identification for that specifc sensor unit
-- sensorCount: int
-    - the amount of sensors that is linked to the account
-- garden_name: String()
-    - the name the user has assigned to the sensor unit
-- sensors_linked[]: int 
-    - an array of sensor ids, in case the user wants/has more than one sensor unit
+**Data Fields**
+- mobileOpen: boolean
+   - Variable for mobile adaption of application. Moves navigation bar to the side when screen is a smaller size.
 
 
 **Methods** 
-`fetch(): void`
-- fetches any account info saved in the database 
+`logOut:()`
+- Function connected to the "Log Out" option located onn the navigation bar. Logs the user out and sends them back to the login page. 
+
+`handleClick:()`
+- Function to set the anchor variable to the option that the user clicks on. In this case the only option available is logging out.
+
+`handleClose:()`
+- Function to set the anchor varibale, it closes the drawer that is openend when clicking the user icon.
 
 
-## AddorDelSensor 
 
-**Description:** 
 
-This component will allow for the user to add or delete another sensor to their account. The component will make sure that the user will always have at least one sensor linked to the account at all times. As of right now, there is a max of 3 sensors per account. 
+
+
+## CardData
+
+
+**Description:**
+Card Data is not a page, but a component that is used on the MySensorsPage. CardData shows the averages of the Hub that is being called. It displays the date, temperature, sunlight, and moisture levels.
+
 
 **Data Fields** 
-- account_id: int
-    - the numerical identfication for the user's account
-- sensor_id: int
-    - the numerical identification for that specifc sensor unit
-- sensorCount: int
-    - the amount of sensors that is linked to the account
-- sensors_linked[]: int 
-    - an array of sensor ids, in case the user wants/has more than one sensor unit
+- currentHub: String
+   - The current hub that CardData is focusing on. This variable is initially sent by MySensorsPage to CardData as a prop.
+
+- sun: int
+   - Stores the average sunlight level
+
+- moi: int
+   - Stores the average moisture level
+
+- temp: int
+   - Stores the average temperature level
+
+
+**Methods** 
+`fetchData()`
+- Fetches the data stores in the database, and calculates the averages, and finally setting the correct average to the respective variable.
+
+
+
+
+
+
+## IconBox1
+
+
+**Description:**
+IconBox1 is also not a page, but rather a component - similar to CardData. It is placed onto a a card located on MySensorsPage. The purpose of the component is to supply 3 icons that signify the status of how the hub is doing. So if the levels are low - the icons will reflect that. Same with it being in a good range and it being too high.
+
+
+**Data Fields** 
+- currentHub: String
+   - The current hub that CardData is focusing on. This variable is initially sent by MySensorsPage to CardData as a prop.
+  
+- sun: int
+   - Stores the average sunlight level
+
+- moi: int
+   - Stores the average moisture level
+
+- temp: int
+   - Stores the average temperature level 
+
+- readMoistureIcon: 
+   - Displays the correct icon depending on the Moisture levels
+
+- readTempIcon: 
+   - Displays the correct Icon depending on the Tempearature levels
+
+- readSunlightIcon: 
+   - Displays the correct icon depending on the Sunlight levels.
+     
+
+**Methods**   
+`fetchData()`
+- Fetches the data stores in the database, and calculates the averages, and finally setting the correct average to the respective variable. 
+
+`TempLogic()`
+- Reads the Temperature level reported by fetchData, and calculates which icon appropriately matches.
+
+`SunlightLogic()`
+- Reads the Sunlight level reported by fetchData, and calculates which icon appropriately matches.
+
+`MoistureLogic()`
+- Reads the Moisture level reported by fetchData, and calculates which icon appropriately matches. 
+
+`moi_data()`
+- Takes the appropriate dataset that was fetched and creates a line graph representing it. This specfic method focusing on moisture.
+
+`tem_data()`
+- Takes the appropriate dataset that was fetched and creates a line graph representing it. This specfic method focusing on temperature.
+
+`sun_data()`
+- Takes the appropriate dataset that was fetched and creates a line graph representing it. This specfic method focusing on sunlight.
+
+
+
+## HubPhoto
+
+
+**Description:**
+Similar to CardData and IconBox1, HubPhoto is not seperate page, but rather a component reliant on the cards of MySensorsPage. Located on the left side of each card, the HubPhoto componenet shows an AI generated Image that matches the name of the card it's on.
+
+
+**Data Fields**  
+- url: String
+   - This string field holds the url of the image generated. Once the image is ready for use, the url is set.
 
 
 **Methods**  
-`addSensor(): void`
-- Prompts user to fill out form to create new Garden Class object, also updates sensorCount variable
-`delSensor(): void`
-- Updates sensorCount and deletes the chosen Garden Class object
+`fetchImageUrl()`
+- This method fetches the correct image created, and sets it to the correct card.
+
+
+
+## MySensorsPage
+
+
+**Description:**
+This will the page that users will click on in order to get information about their connected hubs. The page will consist of cards - one for each Hub.
+
+
+**Data Fields** 
+- hubname:String
+   - The hubname string holds the name enetered in by the user when adding a hub to their account
+
+- sensorName: String
+   - The sensorname string holds the name entered in by the user when adding a sensor to an already registered hub of thiers.
+
+- hubCardAmount:int
+   - The hubCardAmount is an int variable that counts the amount of hubs are registered to a user's account, this determines how many cards will appear on the page for that user. 
+
+- registerdHubs: Array
+   - A string array of the names of all the hubs registered to a user's account. Each name being the title of a card on the page. 
+
+- userHubNames: String
+   - This variable tracks which card is which, and lets other components such as CardData and IconBox1, which Hub to focus on. 
+
+- authUser: String
+   - This reperesents the currently signed in user. This varaible is necessary as it determines who's account the methods are fetching from.
+
+
+**Methods** 
+`handleAddHubCard()`
+- Adds the name entered into the "Add Hub" modal to the list of registeredHubs, also increases the hubCardAmount by 1.
+
+`AddingHub()`
+- Method that adds the hub information entered in by the user through the "Add Hub" modal, and creates said hub in firebase real-time database.
+
+`AddingSensor()`
+- Method that adds the sensor infromation entered in by the user through the "Add Sensor" modal, and creates said sensor in firebase firestore and real-time database.
+
+`handleClickCard()`
+- Method that sends you to the hubPage after clicking on the middle portion of any HubCard. Also sends the correct hubCard name to the hubPage.
+
+`FetchHubs()`
+- Method that reads from the firebase real-time database and collects the names of all the hubs under the specfic user's account.
+
+`LoadCards()`
+- Loads the cards on MySensorsPage. Each card represents a hub registered on the logged in user's account.
+
+
+
+
+## HubPage
+
+
+**Description:**
+This page holds and displays all the sensors that are connected to the hub selected. It supplies general information, and instructions on how to read and understand the data presenteed on the website.
+
+
+**Data Fields**  
+- currentHub: String
+   - Represents the currentHub that the Page is focusing on when trying to collect data from firebase. The value was sent by the MySensorsPage 
+
+- sensCardAmount: int
+   - The amount of sensors that are registered to that specfic hub.
+
+- time: int
+   - Time variable that is initially set to 0. When the user clicks a different date - the value changes accordingly. 
+
+- authUser: String
+   - This reperesents the currently signed in user. This varaible is necessary as it determines who's account the methods are fetching from.
+
+**Methods**  
+`today()`
+- Sets the time varibale to 1
+
+`week()`
+- Sets the time variable to 7
+
+`month()`
+- Sets the time variable to 31
+
+`year()`
+- Sets the time variable to 365
+
+`FetchSens()`
+- Uses the currentHub supplied, and searches the realtime database for all the names of the Sensors under that specifc hub.
+
+`handleClickCard()`
+- Method that sends you to the ScuPage after clicking on any SensorCard shown. Also sends the correct SensorCard name to the ScuPage.
+
+`LoadCards()`
+- Loads the cards on HubPage. Each card represents a sensor registered on that hub.
+
+
+
+
+## ScuPage
+
+
+**Description:**
+This page shows real time statistics of the specifc sensor chosen. It supplies graphs that show the progression of the temperature, moisture, and sunlight levels. It also has its own IconBox that give a visual sense of how the plants health might be according to the ranges set.
+
+
+**Data Fields**  
+- authUser: String
+   - This reperesents the currently signed in user. This varaible is necessary as it determines who's account the methods are fetching from.
+
+- hubSens: String
+   - Represents the current sensor that was selected from the HubPage. This sensor is what all the methods will be focusing on, as all the data being pulled is based of this specific sensor. 
+
+- time: int
+   - Time variable that is initially set to 0. When the user clicks a different date - the value changes accordingly.  
+
+- sun: int
+   - Stores the average sunlight level
+
+- moi: int
+   - Stores the average moisture level
+
+- temp: int
+   - Stores the average temperature level 
+
+- readMoistureIcon: 
+   - Displays the correct icon depending on the Moisture levels
+
+- readTempIcon: 
+   - Displays the correct Icon depending on the Tempearature levels
+
+- readSunlightIcon: 
+   - Displays the correct icon depending on the Sunlight levels.
+
+
+**Methods**  
+`today()`
+- Sets the time varibale to 1
+
+`week()`
+- Sets the time variable to 7
+
+`month()`
+- Sets the time variable to 31
+
+`year()`
+- Sets the time variable to 365  
+
+`fetchData()`
+- Fetches the data stores in the database, and calculates the averages, and finally setting the correct average to the respective variable. 
+
+`TempLogic()`
+- Reads the Temperature level reported by fetchData, and calculates which icon appropriately matches.
+
+`SunlightLogic()`
+- Reads the Sunlight level reported by fetchData, and calculates which icon appropriately matches.
+
+`MoistureLogic()`
+- Reads the Moisture level reported by fetchData, and calculates which icon appropriately matches. 
+
+`moi_data()`
+- Takes the appropriate dataset that was fetched and creates a line graph representing it. This specfic method focusing on moisture.
+
+`tem_data()`
+- Takes the appropriate dataset that was fetched and creates a line graph representing it. This specfic method focusing on temperature.
+
+`sun_data()`
+- Takes the appropriate dataset that was fetched and creates a line graph representing it. This specfic method focusing on sunlight.
+
+
+
+## Authenticate
+
+**Description:**
+Not an accessible component for the user, but necessary for the other components and pages to function properly. The Authenticate component works with firebase to fetch the appropriate user that is currently logged in.
+
+
+**Data Fields**  
+- authUser: String
+   - A string variable that is null at first but has it's value set later, once the user is officially logged in with a registered account. The value being their userID from firebase.
+
+**Methods** 
+`useEffect()`
+- Immediately applies an if statement to check if the user is correctly loggged in, and a userID can be found - if so - return the userID
+
 
 
 ## Footer
 
-**Description:** 
 
-The footer that will be located at the very bottom of the page. Does not serve a function but will be on every page. 
+**Description:**
+The footer that will be located at the very bottom of the page. Does not serve a function but will be on every page.
 
-**Data Fields** 
+**Data Fields**
 - N/A
-**Methods**  
+**Methods** 
 - N/A
+
+
+
+## Layout
+
+**Description:**
+The Layout commponent returns both the Navbar and the footer, and leaves space in the middle for other pages to show thier content.
+
+**Data Fields**
+- N/A
+**Methods** 
+- N/A
+
 
 
 
