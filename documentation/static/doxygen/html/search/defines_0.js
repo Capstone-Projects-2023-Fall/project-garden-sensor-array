@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sensor_5fstr_5flen_0',['SENSOR_STR_LEN',['../server_8cpp.html#a1007f93644f1515631d616725523b5e0',1,'server.cpp']]]
+  ['heartbeat_5fms_55',['HEARTBEAT_MS',['../Server_8c.html#a8095cd8bb3de52fffba928ed8ff15065',1,'Server.c']]]
 ];

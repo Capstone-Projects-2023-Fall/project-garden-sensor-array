@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['getassmsoilmoisture_0',['getASSMsoilmoisture',['../server_8cpp.html#aabb3a285ff043dc137b7f619beb1b48e',1,'server.cpp']]],
-  ['getassmtempc_1',['getASSMtempC',['../server_8cpp.html#a14b46fa4b8089826f3f2118b44a0e82c',1,'server.cpp']]],
-  ['getbh1750lux_2',['getBH1750lux',['../server_8cpp.html#a5bf8a5b3d5df080a058db3f5c636f7ae',1,'server.cpp']]],
-  ['getsensordata_3',['getSensorData',['../server_8cpp.html#a948275ed75f01fb4dc2d16153614039c',1,'server.cpp']]]
+  ['hci_5fevent_5fcallback_5fregistration_11',['hci_event_callback_registration',['../Server_8c.html#a8bf2c8f8ea4d8cfcfd790084b8db517a',1,'Server.c']]],
+  ['heartbeat_12',['heartbeat',['../Server_8c.html#a3000348b1581ee844dfdc632d67bd652',1,'Server.c']]],
+  ['heartbeat_5fhandler_13',['heartbeat_handler',['../Server_8c.html#a5c15d608421d42df9c53cfddb5e9f684',1,'Server.c']]],
+  ['heartbeat_5fms_14',['HEARTBEAT_MS',['../Server_8c.html#a8095cd8bb3de52fffba928ed8ff15065',1,'Server.c']]]
 ];

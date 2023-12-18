@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['setup_0',['setup',['../server_8cpp.html#a4fc01d736fe50cf5b977f755b675f11d',1,'server.cpp']]]
+  ['heartbeat_5fhandler_39',['heartbeat_handler',['../Server_8c.html#a5c15d608421d42df9c53cfddb5e9f684',1,'Server.c']]]
 ];
