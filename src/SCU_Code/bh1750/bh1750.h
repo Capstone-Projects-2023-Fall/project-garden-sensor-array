@@ -1,3 +1,13 @@
+/**
+ * @file bh1750.h
+ * @author Sam Gandolfo-Lucia
+ * @brief Library for interacting with the bh1750 ambient light sensor
+ * @version 0.1
+ * @date 2023-12-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include <stdio.h>
 #include "pico/stdlib.h"
 
@@ -29,26 +39,29 @@ enum Mode {
     ONE_TIME_LOW_RES_MODE = 0x23
 };
 
-/*!
- * \brief start the bh1750
+/**
+ * @public
+ * @brief start the bh1750
  * 
- * \param mode the mode (resolution) to use for lux readings
- * \return true if the bh1750 is properly initialized
- * \return false otherwise
+ * @param mode the mode (resolution) to use for lux readings
+ * @return true if the bh1750 is properly initialized
+ * @return false otherwise
  */
 bool bh1750_makeamove(uint8_t mode);
 
-/*!
- * \brief set the MT register of the bh1750
+/**
+ * @public
+ * @brief set the MT register of the bh1750
  * 
- * \param MTreg value to set the MT register to.
+ * @param MTreg value to set the MT register to.
  *  This will affect the max lux value the sensor can red 
  */
 bool bh1750_setMTreg(uint8_t MTreg); 
 
-/*!
- * \brief read lux from bh1750 
+/**
+ * @public
+ * @brief read lux from bh1750 
  * 
- * \return float representing the lux detected. Max value is around 65k by default
+ * @return float representing the lux detected. Max value is around 65k by default
  */
 float bh1750_read_lux();

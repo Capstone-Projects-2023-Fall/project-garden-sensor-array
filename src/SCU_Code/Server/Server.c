@@ -1,3 +1,14 @@
+/**
+ * @file Server.c
+ * @brief The BLE server ran by Sensor Control Units
+ * @author Sam Gandolfo-Lucia
+ * @version 0.1
+ * @date 2023-12-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "btstack.h"
@@ -20,43 +31,51 @@
 #include "../seesaw/seesaw.h"
 #include "../bh1750/bh1750.h"
 
-// for random number generation -- can be removed once sensors are working
+// for random number generation -- testing purposes!
 #include "hardware/regs/rosc.h"
 #include "hardware/regs/addressmap.h"
 
-// server will "beat" every second
+/// server will "beat" every second
 #define HEARTBEAT_MS 1000
 
 // btstack magic, it enables ble
 #define APP_AD_FLAGS 0x06
 
-static int  read_sensors = 0;   // set to 1 when there's a connection, 0 if not
-static int  le_notify = 0;   // same deal
-static int  sensors_connected = 0; // set to 1 if sensors are found
+/// set to 1 when there's a connection, 0 if not
+static int  read_sensors = 0;
+/// set to 1 when the client signs up to receive notifications, 0 otherwise
+static int  le_notify = 0;
+/// assume sensors aren't connected, set to 0 if they aren't found
+static int  sensors_connected = 1; 
+/// timer source for heartbeat_handler
 static btstack_timer_source_t heartbeat;
-static hci_con_handle_t con_handle;
+/// connection handle for notifications
+static hci_con_handle_t con_handle; 
+ /// for registering bt function callbacks
 static btstack_packet_callback_registration_t hci_event_callback_registration;
 
-// standard btstack function declarations, this is taken from their examples and the pico example
+// standard btstack function declarations
 static void  heartbeat_handler(struct btstack_timer_source *ts);
 static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
 static uint16_t att_read_callback(hci_con_handle_t con_handle, uint16_t att_handle, uint16_t offset, uint8_t * buffer, uint16_t buffer_size);
 static int att_write_callback(hci_con_handle_t connection_handle, uint16_t att_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size);
 
-// sensor function wrappers
+// sensor function wrappers for error checking
 void getASSMsoilmoisture();
 void getASSMtempC();
 void getBH1750lux();
 void write_sensor_data();
 
 #define LEN_SENSOR_DATA 30
-char sensor_data[LEN_SENSOR_DATA]; // the infamous "characteristic"
+/// a string containing the sensor data separated by commas -- the BLE characteristic that will be read by a client
+char sensor_data[LEN_SENSOR_DATA]; 
 uint8_t sensor_data_length = 0;
 
-uint16_t    soil_moisture   = 0;
-float       tempC           = 0;
-float       lux             = 0;
+uint16_t soil_moisture   = 0;
+float    tempC           = 0;
+float    lux             = 0;
 
+/// advertisement data that will be received by clients
 const uint8_t adv_data[] = {
     // Flags general discoverable
     0x02, BLUETOOTH_DATA_TYPE_FLAGS, APP_AD_FLAGS,
@@ -67,9 +86,14 @@ const uint8_t adv_data[] = {
 
 const uint8_t adv_data_len = sizeof(adv_data);
 
-// this function is called repeatedly on the interval defined by HEARTBEAT_MS
-// aka in this case it is called every second. 
-// ts is a pointer to the globally defined heartbeat variable
+/**
+ * @brief called every second to check the status of the Server
+ * @param ts the timer source (aka interval) for the function to be called on 
+ * 
+ * this function is called repeatedly on the interval defined by HEARTBEAT_MS
+ * aka in this case it is called every second. 
+ * ts is a pointer to the globally defined heartbeat variable
+ */
 static void heartbeat_handler(struct btstack_timer_source *ts) {
     // static because we want its value to persist through function calls
     static uint32_t counter = 0;
@@ -99,13 +123,16 @@ static void heartbeat_handler(struct btstack_timer_source *ts) {
     btstack_run_loop_add_timer(ts);
 }
 
+/**
+ * @brief initializes the advertisements and function callbacks for BLE events
+ */
 static void le_setup() {
     l2cap_init();
 
     // improves security, i think
     sm_init();
     
-    // define the server profile and the function call back for when a client reads the a characteristic.
+    // define the server profile and the function call back for when a client reads a characteristic.
     // the write callback is just for allowing the client to sign up for notifications.
     // aka no writes can be made to the sensor data characteristic
     att_server_init(profile_data, att_read_callback, att_write_callback);    
@@ -138,8 +165,16 @@ static void le_setup() {
     btstack_run_loop_add_timer(&heartbeat);    
 }
 
-// deals with all bt packets received
-// basically the only ones we care about are client connect, disconnect, and notify
+/** 
+ * @brief receive bt packets
+ * @param packet_type 
+ * @param channel is not used, but required by bystack
+ * @param packet the actual data contained in the packet
+ * @param size is not used, but required by btstack
+ * 
+ * deals with all bt packets received
+ * basically the only ones we care about are client connect, disconnect, and notify
+ */
 static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size) {
     UNUSED(size);
     UNUSED(channel);
@@ -147,7 +182,7 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
     if (packet_type != HCI_EVENT_PACKET) return;
 
     switch (hci_event_packet_get_type(packet)) {
-        case HCI_EVENT_LE_META:  // literally what the fuck is going on
+        case HCI_EVENT_LE_META:  // it's happening
             switch (hci_event_le_meta_get_subevent_code(packet)) {
                 case HCI_SUBEVENT_LE_CONNECTION_COMPLETE:
                     printf("connected!\n");
@@ -171,17 +206,27 @@ static void packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packe
     }
 }
 
-// called anytime a client attempts to read our sensor data characteristic
-// reads all of the sensors data into variables and then writes it to a string
-// the string is what is read by the client
+
+/**
+ * @brief called when a client reads the sensor data characteristic 
+ * @param connection_handle not used, but required by btstack
+ * @param att_handle should match the handle for our sensor data characteristic 
+ * @param offset 
+ * @param buffer 
+ * @param buffer_size 
+ * @return uint16_t
+ * 
+ * called anytime a client attempts to read our sensor data characteristic
+ * reads all of the sensors data into variables and then writes it to a string
+ * the string is what is read by the clients
+ */
 static uint16_t att_read_callback(hci_con_handle_t connection_handle, uint16_t att_handle, uint16_t offset, uint8_t * buffer, uint16_t buffer_size) {
     UNUSED(connection_handle);
 
     if (att_handle == ATT_CHARACTERISTIC_0000181b_0000_1000_8000_00805F9B34FB_01_VALUE_HANDLE) { // it's beautiful
         // a string is like a blob, right?
-        soil_moisture = seesaw_touch_read(0);
-        tempC = seesaw_get_temp();
         lux = bh1750_read_lux();
+        printf("sensor status: %d\n", sensors_connected);
         write_sensor_data();
         printf("%s\n", sensor_data);
         return att_read_callback_handle_blob((const uint8_t *)sensor_data, sensor_data_length, offset, buffer, buffer_size);
@@ -190,10 +235,22 @@ static uint16_t att_read_callback(hci_con_handle_t connection_handle, uint16_t a
     return 0;
 }
 
-// called anytime there's an attempt to write to the characteristic
-// in our case the only valid write is signing up for notifications
-// aka the client can never write to our sensor data characteristic
-// in order to change its value
+
+/**
+ * @brief called when the client wants to sign up for notifications 
+ * @param connection_handle used to notify the client of updates to the sensor data characteristic
+ * @param att_handle should match the sensor data characteristic configuration handle
+ * @param transaction_mode not used, but required by btstack
+ * @param offset not used, but required by btstack
+ * @param buffer 
+ * @param buffer_size 
+ * @return int 
+ * 
+ * called anytime there's an attempt to write to the characteristic
+ * in our case the only valid write is signing up for notifications
+ * aka the client can never write to our sensor data characteristic
+ * in order to change its value
+ */
 int att_write_callback(hci_con_handle_t connection_handle, uint16_t att_handle, uint16_t transaction_mode, uint16_t offset, uint8_t *buffer, uint16_t buffer_size) {
     UNUSED(transaction_mode);
     UNUSED(offset);
@@ -211,8 +268,7 @@ int att_write_callback(hci_con_handle_t connection_handle, uint16_t att_handle, 
 
 
 // function for generating random numbers
-// just for testing
-// raspberry pi is gonna sue me
+// useful for testing purposes
 uint32_t rnd(void){
     int k, random=0;
     volatile uint32_t *rnd_reg=(uint32_t *)(ROSC_BASE + ROSC_RANDOMBIT_OFFSET);
@@ -226,9 +282,10 @@ uint32_t rnd(void){
     return random;
 }
 
-// wrappers for our sensor functions
-// convenient because it gives use the option to generate random data
-// if the sensors aren't connected
+/**
+ * @brief wrapper for library call to read soil moisture level. 
+ * Useful because it allows for easy error handling
+ */
 void getASSMsoilmoisture() {
     if(sensors_connected) {
         soil_moisture = seesaw_touch_read(0);
@@ -238,7 +295,10 @@ void getASSMsoilmoisture() {
     soil_moisture = (uint16_t)rnd();
 }
 
-// same deal as above
+/**
+ * @brief wrapper for library call to read soil temperature. 
+ * Useful because it allows for easy error handling
+ */
 void getASSMtempC() {
     if(sensors_connected) {
         tempC = seesaw_get_temp();
@@ -248,7 +308,10 @@ void getASSMtempC() {
     tempC = (float)rnd() / rnd();
 }
 
-// okay i get it
+/**
+ * @brief wrapper for library call to read light level. 
+ * Useful because it allows for easy error handling
+ */
 void getBH1750lux() {
     if(sensors_connected) {
         lux = bh1750_read_lux();
@@ -258,15 +321,20 @@ void getBH1750lux() {
     lux = (float)rnd() / rnd(); 
 }
 
-// write the data read by our sensors into a single string
+/**
+ * @brief write the data read by our sensors into a single string 
+ */
 void write_sensor_data() {
     // write sensor data to a string -- this is what will be read by the client!
     snprintf(sensor_data, LEN_SENSOR_DATA, "%u,%f,%f", soil_moisture, tempC, lux);
     sensor_data_length = strlen(sensor_data);
 }
 
-// in theory we would use this to get a unique id for our pico 
-// but i like naming all of our SCUs after birds!
+/**
+ * @brief print a unique ID for the SCU in use. 
+ * Can be used to differentiating SCUs from each other to prevent accidental connections
+ * @param id the board ID
+ */
 void print_id(pico_unique_board_id_t *id) {
     printf("%x", id->id[0]);
     for(int i = 1; i < 8; i++) {
@@ -294,11 +362,10 @@ int main() {
     // get everything initialized for the le server
     le_setup();
 
-    if( !seesaw_hoptoit() || !bh1750_makeamove(CONTINUOUS_HIGH_RES_MODE) ) {
+    if( !bh1750_makeamove(CONTINUOUS_HIGH_RES_MODE) ) {
         puts("sensor initialization failed!");
-        return -2;
+        sensors_connected = 0;
     }
-    sensors_connected = 1;
     sleep_ms(250); // wait a second...
     
 
