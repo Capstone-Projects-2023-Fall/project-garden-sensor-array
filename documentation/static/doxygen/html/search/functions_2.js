@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['loop_0',['loop',['../server_8cpp.html#afe461d27b9c48d5921c00d521181f12f',1,'server.cpp']]]
+  ['getassmsoilmoisture_36',['getASSMsoilmoisture',['../Server_8c.html#a15137b6783463bd4cbfa500620e48ba5',1,'Server.c']]],
+  ['getassmtempc_37',['getASSMtempC',['../Server_8c.html#aea1cdb831ccca6493bb629a881269786',1,'Server.c']]],
+  ['getbh1750lux_38',['getBH1750lux',['../Server_8c.html#aef6957e38c2157f1b8bc6488a7290a6c',1,'Server.c']]]
 ];

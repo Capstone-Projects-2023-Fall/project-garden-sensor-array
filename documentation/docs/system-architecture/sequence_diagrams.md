@@ -8,56 +8,62 @@ sidebar_position: 2
 sequenceDiagram
     Actor User
 
-    User -->>+ GSA Website: clicks "Plant Data" dropdown list
-    GSA Website->>+Plant Database: requests for Plant Information
-   
-    Plant Database-->>-GSA Website: sends Plant Information
+    User -->>+ Dashboard: Logs into website
+    Dashboard-->>-HUB Page: presses on a specific HUB
+
+   activate HUB Page
+
+    HUB Page-->-SCU Page: presses on a specific SCU
+
+    activate SCU Page
     
-    GSA Website->>-Plant Data (Dropdown List): Updates Plant Data Dropdown List according to Database
-    activate GSA Website
-    activate Plant Data (Dropdown List)
-    Plant Data (Dropdown List)-->>-User: Plant Data Dropdown List is shown to the User after update
+    SCU Page-->>+Firebase: Requests for information
+
+
+    Firebase-->>-SCU Page: Sends Information of specific SCU
+
+    SCU Page-->>SCU Page: Updates Graph/Icons/Averages according to new data given
+
+    SCU Page -->>-User: SCU Page displays information about their plant to User
     
     
 ```
 
-In an event where the user wants to browse through their Plant data, they can do so by using Garden Sensor Array's dedicated website. In the GSA Website, the user will be given the option to press the "Plant Data" button. By selecting this button, the GSA Website will then request for the current Plant information stored within the Plant Databse. The Plant Database, upon receiving the request, will send out the current Plant information collected from the sensors to the GSA Website. The website will then take this information and update the Plant Data Dropdown list with its corresponding data field. Once the update has been completed, the newly updated Plant Data Dropdown list will be shown to the user for viewing within the GSA Website.
+In an event where the user wants to know more about the condition and health of their plant, they can do so by using Garden Sensor Array's dedicated website. Upon logging in successfully, the website will then gather all HUBS that are associated with the user and have them visible to the user as a list form. All HUBS listed are clickable items and once they are clicked, the user is taken to the specialized HUB page for that specific HUB they have chosen. The HUB Page will then gather all SCU's associated with the HUB and have them shown as list form, akin to the main dashboard. Upon clicking a specific SCU, the user will be taken to the specialized SCU page for that specific SCU they have chosen. The SCU page will then request information about the specific SCU from Firebase, which stores all the information gathered from our sensors. Firebase will then send all the required information to the SCU page and the SCU page responds by updating graphs, averages, and icons according to the new data it has received. After all updates are finalized and fixed visibly within the SCU page, the user is able to see all the information they need about their plant.
 
 
 ## Use Case #2: Monitoring Long Term Plant Growth
 ```mermaid
 sequenceDiagram
     Actor User
-    participant GSA Home Page
     participant Login Page
     participant Database 
-    participant My Sensors Page 
-    participant Specific Sensor Page
+    participant My Hubs Page
+    participant Specific HubPage
+    participant Specific ScuPage
 
-    User->>+GSA Home Page: Accesses Website 
-    activate GSA Home Page
-    GSA Home Page->>+Login Page: Clicks login button
+    User->>+Login Page: Clicks login button
     Login Page-->>User: Login prompt
-    User->>Login Page: Enters login info 
-    Login Page->>+Database: Sends info entered 
-    deactivate Login Page 
+    User->>Login Page: Enters login info
+    Login Page->>+Database: Sends info entered
+    deactivate Login Page
+
     Database-->>Database: Verifies login info
-    Database-->>GSA Home Page: Succesfully logged in
-    GSA Home Page-->>User: Return
-    deactivate GSA Home Page
-    User->>+My Sensors Page: Clicks My Sensors Tab
-    My Sensors Page-->>User: Prompts to choose specific sensor
+    Database-->>User: Successfully logged in
+    User->>+My Hubs Page: Sent to My Hubs Page once logged in
+    My Hubs Page-->>Database: Requests users registered hubs
+    Database->>My Hubs Page: Sends Hubs
+    My Hubs Page-->>User: Prompts to choose specific Hub Card
+    My Hubs Page->>Specific HubPage: Sent to HubPage according to Hub Chosen
+    deactivate My Hubs Page
 
-    deactivate My Sensors Page
-    User->>+Specific Sensor Page: Chooses sensor they want to know about
-    Specific Sensor Page-->>User: Return
-    User->>Specific Sensor Page: Clicks "Show History"
-    Specific Sensor Page-->>Database: Requests all recorded data 
-    Database->>Specific Sensor Page: Sends data
-    deactivate Database 
-    Specific Sensor Page-->>User: Return
+    Specific HubPage-->>+Database: Requests users registered sensors
+    Database->>Specific HubPage: returns Sensors
 
-    deactivate Specific Sensor Page
+    Specific HubPage-->>User: Prompts to choose specific Sensor Card
+    User->>Specific HubPage: Chooses Sensor Card they want to know about
+    Specific HubPage-->>Specific ScuPage: User sent to ScuPage according to Sensor Chosen
+    Specific ScuPage-->>User: Return
     User-->>User: Looking for trends in plant/sensor history
 
 ```
@@ -147,71 +153,23 @@ The gardener seeks for their daily or weekly data on their sensors page. The dat
 ```mermaid
 sequenceDiagram
 
-    User --)+ Web API: clicks "Add New Sensor"
-    Web API->>+Hub: Request nearby BT devices
-
-    Hub->>+Sensor Control Unit 1: lookup_name()
-    Sensor Control Unit 1 -->>-Hub: Returns device name
-    Hub->>+Sensor Control Unit 2: lookup_name()
-    Sensor Control Unit 2 -->>-Hub: Returns device name
-
-    Hub-->>-Web API: list_bt_devices()
-    Web API-->>-User: Displays nearby BT device names
-
-    User--)Web API: Selects "Sensor 1" from list
-    Web API->>+Hub: Sends "Sensor 1"
-    Hub ->>+ Sensor Control Unit 1: connect()
-    Sensor Control Unit 1 -->>-Hub: confirm_connect()
-
-    Hub-->>-Web API: Confirm Sensor 1 connection
-    Web API-->>User: "Sensor 1 Connected Successfully!"
-```
-
-When users want to monitor a new plant or garden, they can do so by pairing a new sensor control unit to one of their hubs.
-To start, they can select "add new sensors" on the web app that will send a request to the hub to begin sending requests to 
-all nearby Bluetooth devices to ask for their names. After recieving a list of all nearby devices, the hub will return that 
-list to the web app that will then prompt the user to select the sensor contol unit they wish to add. The web app then returns
-the users selection to the hub that will then initiate a connection with the respective sensor control unit. Upon successful 
-connection, the hub returns that the connection was sucessful and the web app will display "Sensor 1 Connected Successfully!"
-
-## Use Case #8: Resetting Password
-
-```mermaid
-
-sequenceDiagram
-
     Actor User
-
-    User->>+Login Page: Navigates to GSA Login Page
-
-    activate Login Page
-
-    Login Page -->> User: Login Prompt
-    User ->> Login Page: Selects "Trouble Logging in?" button
-    Login Page -->>+ Account Recovery Page: Redirects to
-
-    Account Recovery Page ->> User: Prompts for Recovery Credentials
-    User -->> Account Recovery Page: Enters Credentials
-    Account Recovery Page ->>+ User Database: Relays Credentials
-
-    User Database -->> User Database: Validates Credentials
-    User Database -->> Account Recovery Page: Confirms Identity
-    Account Recovery Page -->>+ Password Change Page: Redirects to
-
-    deactivate Account Recovery Page
-
-    Password Change Page ->> User: Prompts for new Password
-    User -->> Password Change Page: Enters New Password
-    Password Change Page -->> User Database: Updates User Password
-    User Database --) Password Change Page: Confirms Update
-    deactivate User Database
-    Password Change Page -->> User: Confirmation Message
-
-    Password Change Page -->>- Login Page: Redirects to
-    Login Page -->> User: Login Prompt
-
-    User ->> Login Page: Enters Credentials
-    Login Page -->>- Account Page: Redirects to
+    participant GSA Website
+    participant Firebase
+    participant Hub
+    participant SCU
+    
+    User -)+ GSA Website: clicks "Add New Sensor"
+    GSA Website ->>+ Firebase: Sends sensor registration info
+    Firebase->>+Firebase: Associates Sensor with account
+    Firebase->>+GSA Website: Sensor Page added
+    
+    loop
+        SCU--)Hub: Sends raw sensor data
+        Hub--)Firebase: Organizes sensor data
+        Firebase--)GSA Website: Sends processed data
+        GSA Website -->> User: Displays relevant plant data
+    end
 ```
 
-If the user finds themselves in a position where they need to reset their password, they are able to do so by navigating to the login page, and selecting the "Trouble Loggin In?" button. This will redirect them to an account recovery page, which prompts them to enter their recovery credentials (Email and secret questioon). After the user enters their credentials, they will be checked against the information stored in the user database. Upon confirmation, the user will be redirected to a page which prompts for an updated password. Once the new password is entered, it is updated in the user database, and the user is again redirected to the login page. Here, the user is able to enter their newly reestablished credentials, and log in, taking them to the account page.
+When users want to monitor a new plant or garden, they can do so by pairing a new sensor control unit to o their account. First, they type the sensor's serial number and desired name they want to give the sensor (any plant name or identifier). That information goes to Firebase where that sensor is associated with that user's account, at which point a page will be created on the website and sensor data will begin populating it and will update continuously in real time. This sensor data is transmitted from sensors via a Hub device that the user paired beforehand. 

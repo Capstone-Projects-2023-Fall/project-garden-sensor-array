@@ -1,11 +1,14 @@
+
 import React from 'react'
 import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
-import { Form, Alert } from "react-bootstrap";
-import { Button } from "react-bootstrap"; 
 import { auth } from "../firebase";
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database"; 
+import {Button, CssBaseline, TextField, FormControlLabel, Checkbox, Paper,Box,Grid,Typography, Alert, AlertTitle  } from '@mui/material'; 
+import './Login.css'; 
+
+//Login Component from mui 
 
 
 const Login = () => {
@@ -41,40 +44,35 @@ const Login = () => {
 
 
   return (
-    <>
-      <div className="p-4 box">
-          <h2 className="mb-3">Log In</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={signIn}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Control
-                type="email"
-                placeholder="Email address"
-                value = {email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Group>
+    <> 
 
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value = {password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
-
-            <div className="d-grid gap-2">
-              <Button variant="primary" type="Submit">
+      <Grid sx={{ height: '100vh'}} container component="main">
+        <CssBaseline />
+        <Grid className="picture" item xs={false} sm={4} md={7} />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box  sx={{ my: 8, mx: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
+            <Typography component="h1" variant="h2">
+              Log in
+            </Typography>
+            {error && <Alert variant="danger">{error}</Alert>}
+            <Box sx={{ mt: 1 }} component="form" onSubmit={signIn}>
+              <TextField value = {email} onChange={(e) => setEmail(e.target.value)} id="email" type="email" 
+                         name="email" label="Email Address" margin="normal" autoComplete="email" autoFocus required fullWidth />
+              <TextField value = {password} onChange={(e) => setPassword(e.target.value)} id="password" type="password" 
+                         name="password" label="Password"  margin="normal" required fullWidth/>
+              <Button className="butn" type="submit" variant="contained" fullWidth>
                 Log In
               </Button>
-            </div>
-          </Form>
-          <hr />
-        </div>
-        <div className="p-4 box mt-3 text-center">
-          Don't have an account? <Link to="/Register">Register</Link>
-        </div>
+              <Grid item>
+                <div >
+                  Don't have an account? <Link to="/Register"> Register</Link>
+                </div>
+              </Grid>
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+
     </>
     
   )

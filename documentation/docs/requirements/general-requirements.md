@@ -4,23 +4,28 @@ sidebar_position: 3
 
 # General Requirements
 
-### Hardware Requirements
-- BH1750 (4)
-- Stemma Soil Sensor (4)
-- Rasberry Pico W (3)
-- Rasberry Pi 4 (2)
+### Hardware
+**HUB**
+- Rasberry Pi 4
+- Libcam compatible Camera Module (*Optional*)
 
-### Software Requirements
+**SCU**
+- Rasberry Pico W
+- Stemma Soil Sensor
+- BH1750
+
+
+### Software
 - Python 3.1 
--- This will be the primary language for coding on the Rasberry Pi devices
 - HTML
 - CSS
-- Figma
--- These will be used in order to be able to provide a front end for the user on the website
 - JavaScript
 - Node.js
 - Firebase
 - express.js
---  These will be used to create a backend for storage and evaluation of data for the website. 
-- Firestore
+- Firebase Hosting and Authentication
+- Firestore Database 
+- Real-Time Database 
+- Bootstrap CSS Framework 
+- MUI React UI Framework
 

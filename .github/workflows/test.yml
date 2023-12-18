@@ -3,9 +3,9 @@ name: Tests
 
 on:
   push:
-    branches: [ GSA-131-Testing-Document-Feedback-1 ]
+    branches: [ main ]
   pull_request:
-    branches: [ GSA-131-Testing-Document-Feedback-1 ]
+    branches: [ main ]
 
 jobs:
   example:
