@@ -1,3 +1,13 @@
+/**
+ * @file seesaw.h
+ * @author Sam Gandolfo-Lucia
+ * @brief Library for interacting with the Adafruit Stemme Soil Sensor
+ * @version 0.1
+ * @date 2023-12-17
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 #include <stdio.h>
 #include "pico/stdlib.h"
 
@@ -18,25 +28,28 @@
 #define SEESAW_TOUCH_CHANNEL_OFFSET     16
 #define SEESAW_HARDWARE_ID              0x55
 
-/*!
- * \brief start the seesaw
- * \return true if the seesaw is found.
- * \return false otherwise
+/**
+ * @public
+ * @brief start the seesaw
+ * @return true if the seesaw is found.
+ * @return false otherwise
  */
 bool seesaw_hoptoit();
 
-/*!
- * \brief read the seesaw touch channel
+/**
+ * @public
+ * @brief read the seesaw touch channel
  * 
- * \param pin offset from the touch channel register read. Usually 0
- * \return an unisgned 16 bit integer representing the capacitance reading
+ * @param pin offset from the touch channel register read. Usually 0
+ * @return an unisgned 16 bit integer representing the capacitance reading
  * -- we interpret this as moisture
  */
 uint16_t seesaw_touch_read(uint8_t pin);
 
-/*!
- * \brief Read the temperature from the seesaw
+/**
+ * @public
+ * @brief Read the temperature from the seesaw
  * 
- * \return a float representing the (approximate) temperature in degrees Celsius
+ * @return a float representing the (approximate) temperature in degrees Celsius
  */
 float seesaw_get_temp();
