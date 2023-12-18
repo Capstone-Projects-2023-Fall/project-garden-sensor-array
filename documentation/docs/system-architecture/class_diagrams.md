@@ -90,6 +90,141 @@ This Diagram outlines the basic architecture of the sensor units. SensorMain is 
 
 ## Web API Class Diagram
 
-![system_block_diagram](/img/frontend.png)
+```mermaid
+classDiagram
 
-Pictured above is the UML Class Diagram for the frontend portion of the website. These are all the components that the user will directly view and interact with. The diagram is component focused as the website itself is written using React.js - which is component based. The first component at the very top is "App.js". This file is what holds all the components of the entire website, it is necessary in all react applications. This is the reason why the components underneath all eventually flow towards App.js - as it all the components are stated there. The Landingpage function is triggered which leads to the landing component - this acts as a gateway for the user to register or login into their account. Once the user is officially logged in or registered they will be directed to the fundamental part of the website. Each page on the website at this point will have three sections, a navigation bar at the top, a footer at the bottom, and the main aspect right in the center (the main aspect is the main topic shown on screen). The main component has four direct sub components. These components include: Home Page, My Sensors Page, Account Page, and Help/Setup. Each of these components have elements that create their "pages". The Home Page will have a top portion and a bottom portion. The top will display the current weather of the location that the user has set in their account page. It will only show the weather happening in real time- as reported by weather outlets, it will not forecast the hours or days after it. The bottom portion will have revolving tips that show general gardening tips. The next component titled My Sensors Page will cover the most important feature of the website. This page will showcase at least one card. Each sensor linked on the account will have their own card. The card will have the sensor id, the garden name, and it will also be clickable. When clicked it brings the user to that specific sensor's page. The specific sensor page shows the last updated statistics that were recorded, as well as button to activate the sensor and get real time statistics. A helpful figure will be on the bottom portion of this page. It gives a visual diagram of how to understand what the readings from the sensors mean and how they would apply in real life for the user. Sharing the bottom portion will be a "Show History" button that triggers the data-table. The data-table will have all the recorded info from this specific sensor. It's easy to read and easy to navigate, as usability is an essential factor of the website. Another page the user can access is the Account Page. This shows all the information entered during registration, and it also has a sub component that allows for the user to add or delete sensors linked to their account. The last main component page is the Help/Setup page, this does not have any actions or functions, just an explanation of everything the user might need to know to ensure they have a good experience using the Garden Sensor Array. The navigation bar and the footer stay the same no matter what, but the main component is what will change. The attribute: "page_id: int" is what lets the system know which "page" is which..The navigation bar will have tabs that allows the user to switch from one main aspect to another. The footer will be placed at the very bottom of the page and will have the product logo that is clickable, and leads back to the home page. When viewing this class diagram the relationships between the components are visible, and they all use aggregation. This is because without the parent the child is non- existent. For example, you can only get to a specific sensor's data table by accessing the "My Sensors Page" first, otherwise it is inaccessible/ unattainable.  
+App o-- Login
+App o-- Register
+Login o-- Authenticate
+Register o-- Authenticate
+Authenticate o-- Navbar
+Authenticate o-- MySensorsPage
+
+MySensorsPage o-- HubPage
+MySensorsPage o-- CardData
+MySensorsPage o-- HubPhoto
+MySensorsPage o-- IconBox1
+
+MySensorsPage o-- HubPage
+HubPage o-- ScuPage 
+
+
+
+class App { 
+}
+
+class Register {
+    +String: email
+    -Int: password
+    -Int: passwordConfirm
+    +String: displayName
+    +signUp() 
+}
+
+class Login {
+    +String: email
+    -Int: password
+    +signIn() 
+}
+
+class Authenticate {
+    +String: authUser
+    +useEffect() 
+}
+
+class Navbar {
+    +Boolean: mobileOpen
+    +logOut()
+    +handleClick()
+    +handleClose()
+}
+
+class MySensorsPage {
+    +String: hubName
+    +String: sensorName
+    +String: userHubNames
+    +String: authUser
+    +Int: hubCardAmount
+    +handleAddHubCard()
+    +AddingHub()
+    +AddingSensor()
+    +handleClickCard()
+    +FetchHubs()
+    +LoadCards() 
+  
+}
+
+
+class CardData {
+    +String: currentHub
+    +Int: sun
+    +Int: moi
+    +Int: temp
+    +FetchData()
+    +TempLogic()
+    +SunlightLogic()
+    +MositureLogic()
+    +moi_data()
+    +sun_data()
+    +temp_data() 
+}
+
+
+class IconBox1 {
+    +String: currentHub
+    +Int: sun
+    +Int: moi
+    +Int: temp
+    +String: readMoistureIcon
+    +String: readTempIcon
+    +String: readSunlightIcon
+    +FetchData() 
+}
+
+
+class HubPhoto {
+    +String: url
+    +fetchImageUrl() 
+}
+
+
+class HubPage {
+    +String: currentHub
+    +String: authUser
+    +Int: sensCardAmount
+    +Int: time
+    +today()
+    +week()
+    +month()
+    +year()
+    +FetchSens()
+    +handleClickCard()
+    +LoadCards()
+
+} 
+
+class ScuPage {
+    +String: authUser
+    +String: hubSens
+    +Int: sun
+    +Int: moi
+    +Int: temp
+    +String: readMoistureIcon
+    +String: readTempIcon
+    +String: readSunlightIcon
+    +FetchData()
+    +TempLogic()
+    +SunlightLogic()
+    +MoistureLogic()
+    +moi_data()
+    +sun_data()
+    +temp_data()
+
+}
+
+
+```
+
+
+Pictured above is the UML Class Diagram for the frontend portion of the website. These are all the components that the user will directly view and interact with. The diagram is component focused as the website itself is written using React.js - which is component based. The first component at the very top is "App.js". This file is what holds all the components of the entire website, it is necessary in all react applications. This is the reason why the components underneath all eventually flow towards App.js - as it all the components are stated there. Once the user is officially logged in or registered they will be directed to the fundamental part of the website. It then leads to Authenticate, which gives the rest of the components the correct user to fetch and write data to. The next component titled My Hubs Page (refered to as My SensorsPage in the code) will cover the most important feature of the website. This page will showcase at the users's hub cards - each of which use the components: CardData, HubPhoto, and IconBox1. Each hub linked to thier account will have their own card. When any hubcard is clicked it brings the user to that specific HubPage. The HubPage acts as a portal and displays all the sensors registered to that hub, all of their sensor cards being clickable as well. The specific sensor page shows the last updated statistics that were recorded. A section with 3 dynamic icons that represent the status of the sensors moisture, temperature, and sunlight levels will be present at the top right. It gives a visual representation of the data progression as well by showcasing 3 line graphs - one for each category. The navigation bar and the footer stay the same no matter what, but the main component is what will change. When viewing this class diagram the relationships between the components are visible, and they all use aggregation. This is because without the parent the child is non- existent. For example, you can only get to a specific sensor's data table by accessing the "My Sensors Page" first, otherwise it is inaccessible/ unattainable.
+
