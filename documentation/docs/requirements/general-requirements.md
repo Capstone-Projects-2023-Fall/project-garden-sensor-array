@@ -23,5 +23,9 @@ sidebar_position: 3
 - Node.js
 - Firebase
 - express.js
-- Firestore
+- Firebase Hosting and Authentication
+- Firestore Database 
+- Real-Time Database 
+- Bootstrap CSS Framework 
+- MUI React UI Framework
 

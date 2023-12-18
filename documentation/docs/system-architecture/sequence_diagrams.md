@@ -36,36 +36,34 @@ In an event where the user wants to know more about the condition and health of 
 ```mermaid
 sequenceDiagram
     Actor User
-    participant GSA Home Page
     participant Login Page
     participant Database 
-    participant My Sensors Page 
-    participant Specific Sensor Page
+    participant My Hubs Page
+    participant Specific HubPage
+    participant Specific ScuPage
 
-    User->>+GSA Home Page: Accesses Website 
-    activate GSA Home Page
-    GSA Home Page->>+Login Page: Clicks login button
+    User->>+Login Page: Clicks login button
     Login Page-->>User: Login prompt
-    User->>Login Page: Enters login info 
-    Login Page->>+Database: Sends info entered 
-    deactivate Login Page 
+    User->>Login Page: Enters login info
+    Login Page->>+Database: Sends info entered
+    deactivate Login Page
+
     Database-->>Database: Verifies login info
-    Database-->>GSA Home Page: Succesfully logged in
-    GSA Home Page-->>User: Return
-    deactivate GSA Home Page
-    User->>+My Sensors Page: Clicks My Sensors Tab
-    My Sensors Page-->>User: Prompts to choose specific sensor
+    Database-->>User: Successfully logged in
+    User->>+My Hubs Page: Sent to My Hubs Page once logged in
+    My Hubs Page-->>Database: Requests users registered hubs
+    Database->>My Hubs Page: Sends Hubs
+    My Hubs Page-->>User: Prompts to choose specific Hub Card
+    My Hubs Page->>Specific HubPage: Sent to HubPage according to Hub Chosen
+    deactivate My Hubs Page
 
-    deactivate My Sensors Page
-    User->>+Specific Sensor Page: Chooses sensor they want to know about
-    Specific Sensor Page-->>User: Return
-    User->>Specific Sensor Page: Clicks "Show History"
-    Specific Sensor Page-->>Database: Requests all recorded data 
-    Database->>Specific Sensor Page: Sends data
-    deactivate Database 
-    Specific Sensor Page-->>User: Return
+    Specific HubPage-->>+Database: Requests users registered sensors
+    Database->>Specific HubPage: returns Sensors
 
-    deactivate Specific Sensor Page
+    Specific HubPage-->>User: Prompts to choose specific Sensor Card
+    User->>Specific HubPage: Chooses Sensor Card they want to know about
+    Specific HubPage-->>Specific ScuPage: User sent to ScuPage according to Sensor Chosen
+    Specific ScuPage-->>User: Return
     User-->>User: Looking for trends in plant/sensor history
 
 ```
